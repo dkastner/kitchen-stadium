@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+
+site 'http://community.opscode.com/api/v1'
+
+# System
+cookbook 'ubuntu'
+cookbook 'apt', '>= 1.4.8'
+
+cookbook 'user', :git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.3.0'
+cookbook 'sudo', '>= 1.1.0'
+cookbook 'cron', '>= 1.0.4'
+cookbook 'curl', '>= 1.1.0'
+cookbook 'vim'
+
+cookbook 'hostname'
+cookbook 'sysstat', '>= 1.1.8'
+cookbook 'timezone', '>= 0.0.1'
+cookbook 'ntp', '>= 1.1.8'
+
+cookbook 'openssl', '>= 1.0.0'
+
+cookbook 'logrotate', '>= 0.8.2'
+
+cookbook 'git'
+cookbook 'build-essential'
+cookbook 'imagemagick', '>= 0.2.2'
+cookbook 'xml'
+cookbook 'zlib'
+
+cookbook 'rbenv', git: 'git://github.com/fnichol/chef-rbenv.git', :ref => 'v0.7.2'
+cookbook 'ruby_build', git: 'git://github.com/fnichol/chef-ruby_build.git', :ref => 'v0.7.2'
+cookbook 'rbenv-bundler', git: 'git://github.com/karlfreeman/chef-rbenv-bundler.git'
+
+# Web Application
+cookbook 'nginx'
+cookbook 'unicorn'
+cookbook 'ssl', '>= 1.0.7'
+cookbook 'mysql'
+
+cookbook 'monit'
+
+cookbook 'apache2'
+cookbook 'passenger_apache2'
+
+cookbook 'redisio'
+
+cookbook 'graphite', git: 'git://github.com/hw-cookbooks/graphite.git'
+cookbook 'statsd',   git: 'git://github.com/hectcastro/chef-statsd.git'
+cookbook 'graphiti', git: 'git://github.com/dkastner/chef-graphiti.git'

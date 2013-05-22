@@ -1,0 +1,21 @@
+{
+  "name": "data_bag_item_aws__default",
+  "json_class": "Chef::DataBagItem",
+  "chef_type": "data_bag_item",
+  "data_bag": "aws",
+  "raw_data": {
+    "id": "_default",
+    "aws_access_key_id": {
+      "encrypted_data": "chYXx4vdW2dmGS68W8x4eCU+mVJNgLk9g7OFOsbRbCZr+JZCfgyWlxrvyiGB\nRYlb\n",
+      "iv": "PSfEpd3+VYGrXL3moRElcA==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    },
+    "aws_secret_access_key": {
+      "encrypted_data": "dazBH7LxKsPOBSC0bwm/lJG+uzSVU22w4VE4wzzGw0Gj7XAffTHzAw9mTDyf\npa2M89s7NhakivPuOxDhqoAZkw==\n",
+      "iv": "/S/MVr3q0MhO2VwNukHxww==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    }
+  }
+}
