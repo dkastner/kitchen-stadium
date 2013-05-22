@@ -16,8 +16,10 @@ cookbook 'hostname'
 cookbook 'sysstat', '>= 1.1.8'
 cookbook 'timezone', '>= 0.0.1'
 cookbook 'ntp', '>= 1.1.8'
-
+cookbook 'openssh', '>= 0.8.0'
 cookbook 'openssl', '>= 1.0.0'
+
+cookbook 'iptables', '>= 0.10.0'
 
 cookbook 'logrotate', '>= 0.8.2'
 
@@ -27,23 +29,46 @@ cookbook 'imagemagick', '>= 0.2.2'
 cookbook 'xml'
 cookbook 'zlib'
 
-cookbook 'rbenv', git: 'git://github.com/fnichol/chef-rbenv.git', :ref => 'v0.7.2'
-cookbook 'ruby_build', git: 'git://github.com/fnichol/chef-ruby_build.git', :ref => 'v0.7.2'
-cookbook 'rbenv-bundler', git: 'git://github.com/karlfreeman/chef-rbenv-bundler.git'
+cookbook 'pkgin'
+cookbook 'aws'
+
+# SmartOS
+cookbook 'smartos', :git => 'git://github.com/modcloth-cookbooks/smartos.git'
+cookbook 'smf', :git => 'git://github.com/modcloth-cookbooks/smf.git'
+cookbook 'java', :path => '../java' #:git => 'git://github.com/wanelo-chef/java.git'
+cookbook 'jetty', :path => '../chef-jetty' #:git => 'git://github.com/theozaurus/chef-jetty.git'
 
 # Web Application
 cookbook 'nginx'
 cookbook 'unicorn'
 cookbook 'ssl', '>= 1.0.7'
 cookbook 'mysql'
+cookbook 'database', git: 'git://github.com/michaelklapper/database.git',
+  ref: 'grant_statement'
+
+cookbook 'fanfare', git: 'git://github.com/Lanio/chef-fanfare.git'
+cookbook 'app', path: '../app-cookbook'
+
+# Development
+cookbook 'tmux'
+cookbook 'ssh', :git => 'git://github.com/markolson/chef-ssh.git'
+cookbook 'ssh-keys', :git => 'git://github.com/nickola/chef-ssh-keys.git'
+
+# ruby
+
+cookbook 'rbenv', git: 'git://github.com/fnichol/chef-rbenv.git', :ref => 'v0.7.2'
+cookbook 'ruby_build', git: 'git://github.com/fnichol/chef-ruby_build.git', :ref => 'v0.7.2'
 
 cookbook 'monit'
 
 cookbook 'apache2'
 cookbook 'passenger_apache2'
 
+cookbook 'solr-jetty-maven', path: '../chef-solr-jetty-maven' # git: 'git://github.com/dkastner/chef-solr'
+cookbook 'redis', git: 'git://github.com/wanelo-chef/redis.git'
 cookbook 'redisio'
 
+cookbook 'collectd', git: 'git://github.com/dkastner/chef-collectd'
 cookbook 'graphite', git: 'git://github.com/hw-cookbooks/graphite.git'
 cookbook 'statsd',   git: 'git://github.com/hectcastro/chef-statsd.git'
 cookbook 'graphiti', git: 'git://github.com/dkastner/chef-graphiti.git'
