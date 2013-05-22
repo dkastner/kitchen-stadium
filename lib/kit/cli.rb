@@ -94,11 +94,10 @@ module Kit
       exec "open 'http://#{host['ip']}:8081'"
     end
 
-    desc 'destroy SITE TYPE COLOR INSTANCE', 'delete the instance'
-    def destroy(site, type, color, instance_id)
-      host = HOSTS[site][type][color]
+    desc 'destroy PLATFORM INSTANCE', 'delete the instance'
+    def destroy(platform, instance_id)
       report "Deleting server #{instance_id}..." do
-        if host['platform'] =~ /smartos/
+        if platform =~ /smartos/
           SmartOS.delete_instance instance_id
         else
           Amazon.delete_instance instance_id
