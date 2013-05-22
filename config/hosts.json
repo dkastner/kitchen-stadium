@@ -1,0 +1,82 @@
+{
+  "stats": {
+    "main": {
+      "red": {
+        "ip": "54.225.206.236",
+        "hostname": "stats.app.net",
+        "platform": "u1204_64_us_east",
+        "zone": "us-east-1c",
+        "instance_type": "t1.micro",
+        "ssh_key": "~/.ssh/stats-ssh.pem",
+        "chef_user": "ubuntu",
+        "security_groups": "graphiti,graphite,statsd,sshd"
+      }
+    }
+  },
+
+  "app": {
+    "solr": {
+      "red": {
+        "ip": "107.20.247.164",
+        "platform": "u1204_64_us_east",
+        "zone": "us-east-1c",
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "security_groups": "sshd"
+      },
+      "blue": {
+        "ip": "54.225.205.218",
+        "platform": "u1204_64_us_east",
+        "zone": "us-east-1c",
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "security_groups": "sshd"
+      }
+    },
+    "redis": {
+      "red": {
+        "ip": "107.20.247.164",
+        "platform": "u1204_64_us_east",
+        "zone": "us-east-1c",
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "security_groups": "sshd"
+      },
+      "blue": {
+        "ip": "54.225.205.218",
+        "platform": "u1204_64_us_east",
+        "zone": "us-east-1c",
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "security_groups": "sshd"
+      }
+    },
+    "importer": {
+      "red": {
+        "platform": "u1204_64_us_east",
+        "zone": "us-east-1c",
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "security_groups": "sshd"
+      }
+    },
+
+    "dev": {
+      "internal": {
+        "ip": "192.168.1.20",
+        "platform": "smartos_ubuntu"
+      },
+      "external": {
+        "ip": "99.53.249.242",
+        "ssh": "20022",
+        "http": "20080",
+        "mosh": "20123",
+        "platform": "smartos_ubuntu"
+      }
+    },
+    "dev-importer": {
+      "internal": {
+        "ip": "192.168.1.21",
+        "ssh": "21022",
+        "http": "21080",
+        "mosh": "21123",
+        "platform": "smartos_ubuntu"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-module Deploy
+module Kit
   module Helpers
     def report(txt, done = 'done!')
       print txt

@@ -5,15 +5,21 @@
   "data_bag": "aws",
   "raw_data": {
     "id": "_default",
+    "name": {
+      "encrypted_data": "njJHMCdOgQ+/OzEv3asPzVy9u7DFuB7jQUV8aQq8GR40kVA1z7ORHFjan9eD\noURv\n",
+      "iv": "UDx55lsj+pDG7gmJ+lfFKA==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    },
     "aws_access_key_id": {
-      "encrypted_data": "chYXx4vdW2dmGS68W8x4eCU+mVJNgLk9g7OFOsbRbCZr+JZCfgyWlxrvyiGB\nRYlb\n",
-      "iv": "PSfEpd3+VYGrXL3moRElcA==\n",
+      "encrypted_data": "rJ6/PI26o309Norklw0e/Dh6I3aPPmDTtxFhEUWxSGbc/TGoLACCNH/17ZUF\nRIk/\n",
+      "iv": "wtZfI4why3dqFpDSy8Nyjw==\n",
       "version": 1,
       "cipher": "aes-256-cbc"
     },
     "aws_secret_access_key": {
-      "encrypted_data": "dazBH7LxKsPOBSC0bwm/lJG+uzSVU22w4VE4wzzGw0Gj7XAffTHzAw9mTDyf\npa2M89s7NhakivPuOxDhqoAZkw==\n",
-      "iv": "/S/MVr3q0MhO2VwNukHxww==\n",
+      "encrypted_data": "eJkfxR8SHqtQklOVEEoqYJV5SuGhT1pxOFC0itRHSjNNL0JPxhYQQIHHWVOz\nvtFai5yHBJqMM1jPj5A6H8KWZA==\n",
+      "iv": "XtpaONn2Sw6wca56GQS4UQ==\n",
       "version": 1,
       "cipher": "aes-256-cbc"
     }

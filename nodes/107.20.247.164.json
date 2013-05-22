@@ -1,0 +1,15 @@
+{
+  "run_list": [
+    "role[production]"
+  ],
+
+  "override_attributes": {
+    "collectd": {
+      "url": "http://collectd.org/files/collectd-5.2.1.tar.gz",
+      "version": "5.2.1",
+      "checksum": "55fa3659218cafc57175fe7b9a67fff71519280ad02f8830e78e6fb642a3dbc9",
+      "graphite_ipaddress": "stats.lan.io",
+      "name": "app.solr"
+    }
+  }
+}
