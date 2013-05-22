@@ -1,0 +1,63 @@
+{
+  "name": "app_node",
+  "description": "",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+
+  "run_list": [
+    "recipe[app::users]",
+
+    "recipe[git]",
+    "recipe[imagemagick]",
+    "recipe[zlib]",
+
+    "recipe[ruby_build]",
+    "recipe[rbenv::user]",
+
+    "recipe[nginx]",
+    "recipe[unicorn]",
+
+    "recipe[fanfare::applications]"
+  ],
+
+  "override_attributes": {
+    "users": ["app"],
+
+    "authorization": {
+      "sudo": {
+        "groups": ["admin", "sysadmin"],
+        "users": ["app"],
+        "passwordless": "true"
+      }
+    },
+
+    "set_fqdn" : "app",
+    "tz": "Etc/UTC",
+
+    "ruby_build": {
+      "ruby": "1.9.3-p362"
+    },
+
+    "rbenv" : {
+      "install_pkgs": [],
+      "user_installs": [
+        {
+          "user": "app",
+          "home": "/home/app",
+          "rubies" : ["1.9.3-p362"],
+          "user_rubies" : "1.9.3-p362",
+          "global" : "1.9.3-p362",
+          "gems": {
+            "1.9.3-p362": [
+              { "name": "bundler" }
+            ]
+          }
+        }
+      ]
+    },
+
+    "fanfare": {
+      "root_path": "/home/app"
+    }
+  }
+}

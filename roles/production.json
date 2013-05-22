@@ -1,0 +1,17 @@
+{
+  "name": "production",
+  "description": "",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+
+  "run_list": [
+    "role[linux]",
+    "recipe[ubuntu]",
+    "role[solr]",
+    "role[redis]",
+    "role[stats]",
+    "role[monitoring]"
+
+    "recipe[build-essential]"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "stats",
+  "description": "",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+
+  "run_list": [
+    "recipe[collectd]",
+    "recipe[collectd::attribute_driven]"
+  ],
+
+  "override_attributes": {
+    "collectd": {
+      "name": "app-solr",
+      "url": "https://dl.dropbox.com/u/62592/collectd-5.2.1.tar.gz",
+      "version": "5.2.1",
+      "checksum": "55fa3659218cafc57175fe7b9a67fff71519280ad02f8830e78e6fb642a3dbc9",
+      "plugins": {
+        "collectd-solr": {},
+        "cpu": {},
+        "disk": {},
+        "interface": {
+          "config": { 
+            "Interface": "lo",
+            "IgnoreSelected": true
+          }
+        },
+        "logfile": {
+          "config": {
+            "LogLevel": "info",
+            "File": "/var/log/collectd.log",
+            "Timestamp": "true"
+          }
+        },
+        "memory": {},
+        "redis": {},
+        "swap": {},
+        "write_graphite": {
+          "config": {
+            "Host": "54.225.206.236",
+            "Port": "2004"
+          }
+        }
+      }
+    }
+  }
+}

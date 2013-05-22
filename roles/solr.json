@@ -1,0 +1,17 @@
+{
+  "name": "json",
+  "description": "",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+
+  "run_list": [
+    "recipe[solr-jetty-maven]"
+  ],
+
+  "override_attributes": {
+    "solr": {
+      "version": "4.1.0",
+      "custom_config": "blacklight-4.1.0"
+    }
+  }
+}

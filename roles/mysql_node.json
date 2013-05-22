@@ -1,0 +1,11 @@
+{
+  "name": "mysql_node",
+  "description": "A mysql server node",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+
+  "run_list": [
+    "recipe[mysql::server]",
+    "recipe[mysql::client]"
+  ]
+}
