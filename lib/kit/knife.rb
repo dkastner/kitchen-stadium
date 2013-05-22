@@ -1,8 +1,8 @@
 require 'kit/helpers'
 
 module Kit
-  module Knife
-    extend Kit::Helpers
+  class Knife
+    include Kit::Helpers
 
     def self.upload_secret(host)
       knife = new host
@@ -25,7 +25,9 @@ module Kit
       secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
 
       report "Copying encrypted data bag secret..." do
-        puts `scp -i #{ssh_key} #{secret_path} #{chef_user}@#{ip}:#{destination_path}`
+        cmd = "scp #{secret_path} #{user}@#{ip}:#{destination_path}"
+        cmd += " -i #{ssh_key}" if ssh_key
+        puts cmd
       end
     end
 
@@ -43,7 +45,7 @@ module Kit
         cmd += ' --template-file config/joyent-smartmachine.erb'
       end
 
-      sh cmd
+      exec cmd
     end
   end
 end

@@ -21,6 +21,7 @@
         "platform": "u1204_64_us_east",
         "zone": "us-east-1c",
         "ssh_key": "~/.ssh/app-ssh.pem",
+        "chef_user": "ubuntu",
         "security_groups": "sshd"
       },
       "blue": {
@@ -28,6 +29,7 @@
         "platform": "u1204_64_us_east",
         "zone": "us-east-1c",
         "ssh_key": "~/.ssh/app-ssh.pem",
+        "chef_user": "ubuntu",
         "security_groups": "sshd"
       }
     },
@@ -37,6 +39,7 @@
         "platform": "u1204_64_us_east",
         "zone": "us-east-1c",
         "ssh_key": "~/.ssh/app-ssh.pem",
+        "chef_user": "ubuntu",
         "security_groups": "sshd"
       },
       "blue": {
@@ -44,6 +47,7 @@
         "platform": "u1204_64_us_east",
         "zone": "us-east-1c",
         "ssh_key": "~/.ssh/app-ssh.pem",
+        "chef_user": "ubuntu",
         "security_groups": "sshd"
       }
     },
@@ -52,6 +56,7 @@
         "platform": "u1204_64_us_east",
         "zone": "us-east-1c",
         "ssh_key": "~/.ssh/app-ssh.pem",
+        "chef_user": "ubuntu",
         "security_groups": "sshd"
       }
     },
@@ -59,14 +64,16 @@
     "dev": {
       "internal": {
         "ip": "192.168.1.20",
-        "platform": "smartos_ubuntu"
+        "platform": "smartos_ubuntu",
+        "chef_user": "root"
       },
       "external": {
         "ip": "99.53.249.242",
         "ssh": "20022",
         "http": "20080",
         "mosh": "20123",
-        "platform": "smartos_ubuntu"
+        "platform": "smartos_ubuntu",
+        "chef_user": "root"
       }
     },
     "dev-importer": {
@@ -75,7 +82,8 @@
         "ssh": "21022",
         "http": "21080",
         "mosh": "21123",
-        "platform": "smartos_ubuntu"
+        "platform": "smartos_ubuntu",
+        "chef_user": "root"
       }
     }
   }
