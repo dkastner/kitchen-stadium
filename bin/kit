@@ -2,6 +2,6 @@
 require 'bundler/setup'
 
 $:.unshift File.expand_path('../../lib', __FILE__)
-require 'deploy'
+require 'kit'
 
-DeployCLI.start(ARGV)
+Kit::CLI.start(ARGV)
