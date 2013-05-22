@@ -12,18 +12,14 @@ module Kit
       STDOUT.flush
     end
 
-    def sh(cmd, fail = true)
-      if execution_mode == :popen
-        out = ''
-        IO.popen(cmd) do |io|
-          data = io.gets
-          puts data
-          out += data.to_s
-        end
-        out
-      else
-        exec cmd
+    def sh(cmd)
+      out = ''
+      IO.popen(cmd) do |io|
+        data = io.gets
+        puts data
+        out += data.to_s
       end
+      out
     end
 
     def wait(host)

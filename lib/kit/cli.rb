@@ -81,6 +81,13 @@ module Kit
       Knife.upload_secret(host)
     end
 
+    desc 'bootstrap HOST', 'run chef recipes on host'
+    def bootstrap(site, type, color)
+      host = HOSTS[site][type][color]
+      knife = Knife.new host
+      knife.bootstrap
+    end
+
     desc 'cook HOST', 'run chef recipes on host'
     def cook(color = :red)
       report "Cooking..." do

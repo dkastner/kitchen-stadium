@@ -35,7 +35,7 @@ module Kit
           data = ssh.exec! "vmadm create <<-EOF\n#{config.to_json}\nEOF"
           puts data
           instance_id = data.scan(/VM (.*)/).flatten.last
-          puts ssh.exec! "cp /root/.ssh/authorized_keys /zones/#{instance_id}/root/root/.ssh/"
+          copy_key(ssh) if respond_to?(:copy_key)
         end
       end
       self.instance_id = instance_id
@@ -50,7 +50,7 @@ module Kit
         File.open(node_path, 'w') { |f| f.puts node.to_json }
       end
 
-      puts "Created host #{instance_id}@#{host['ip']} with image #{IMAGE}"
+      puts "Created host #{instance_id}@#{host['ip']} with image #{image}"
 
       print "Waiting for host to boot"
       found = false
@@ -97,6 +97,10 @@ module Kit
       def self.create_instance(site, type, host)
         smartos = new site, type, host
         smartos.create_instance
+      end
+
+      def copy_key(ssh)
+        puts ssh.exec! "cp /root/.ssh/authorized_keys /zones/#{instance_id}/root/root/.ssh/"
       end
 
       def image; IMAGE; end
