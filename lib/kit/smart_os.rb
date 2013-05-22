@@ -2,13 +2,21 @@ require 'net/ssh'
 
 module Kit
   class SmartOS
+    include Kit::Helpers
+
     def self.delete_instance(instance_id)
       Net::SSH.start('houston', 'root') do |ssh|
         puts ssh.exec! "vmadm destroy #{instance_id}"
       end
     end
 
-    attr_accessor :site, :type, :host, :instance_id
+    def self.list_instances
+      Net::SSH.start('houston', 'root') do |ssh|
+        puts ssh.exec! "vmadm list"
+      end
+    end
+
+    attr_accessor :site, :type, :host, :instance_id, :image
 
     def initialize(site, type, host)
       self.site = site
@@ -22,7 +30,7 @@ module Kit
         config['nics'].first['ip'] = host['ip']
 
         Net::SSH.start('houston', 'root') do |ssh|
-          puts ssh.exec! "imgadm import #{IMAGE}"
+          puts ssh.exec! "imgadm import #{image}"
           puts "vmadm create <<-EOF\n#{config.to_json}\nEOF"
           data = ssh.exec! "vmadm create <<-EOF\n#{config.to_json}\nEOF"
           puts data
@@ -76,14 +84,12 @@ module Kit
         dev: {
           'brand' => 'joyent',
           'alias' => 'app',
-          'image_uuid' => IMAGE,
           'ram' => 1024
         },
 
         importer: {
           'brand' => 'joyent',
           'alias' => 'app-importer',
-          'image_uuid' => IMAGE,
           'ram' => 1024
         }
       }
@@ -93,16 +99,20 @@ module Kit
         smartos.create_instance
       end
 
+      def image; IMAGE; end
+
       def config
-        @config ||= ZONES[type].merge(nic_config)
+        @config ||= ZONES[type].merge(nic_config).merge({
+          'image_uuid' => IMAGE
+        })
       end
     end
 
-    class Ubuntu
+    class Ubuntu < SmartOS
       IMAGE = 'da144ada-a558-11e2-8762-538b60994628'
 
       ZONES = {
-        dev: {
+        'dev' => {
           'brand' => 'kvm',
           'alias' => 'app',
           'ram' => 1024,
@@ -110,30 +120,14 @@ module Kit
           'resolvers' => [
             '192.168.1.254'
           ],
-          'disks' => [
-            {
-              'image_uuid' => IMAGE,
-              'boot' => true,
-              'model' => 'virtio',
-              'size' => 12000
-            }
-          ]
         },
-        importer: {
+        'dev-importer' => {
           'brand' => 'kvm',
           'alias' => 'app-importer',
           #'ram' => 2024,
           'vcpus' => 2,
           'resolvers' => [
             '192.168.1.254'
-          ],
-          'disks' => [
-            {
-              'image_uuid' => IMAGE,
-              'boot' => true,
-              'model' => 'virtio',
-              'size' => 8000
-            }
           ]
         }
       }
@@ -143,12 +137,27 @@ module Kit
         ubuntu.create_instance
       end
 
+      def image; IMAGE; end
+
+      def disk_config
+        {
+          'disks' => [
+            {
+              'image_uuid' => IMAGE,
+              'boot' => true,
+              'model' => 'virtio',
+              'size' => 12000
+            }
+          ]
+        }
+      end
+
       def config
         @config ||= ZONES[type].merge({
           "customer_metadata" => {
             "root_authorized_keys" => File.read("#{ENV['HOME']}/.ssh/id_rsa.pub")
           }
-        }).merge(nic_config)
+        }).merge(nic_config).merge(disk_config)
       end
     end
   end
