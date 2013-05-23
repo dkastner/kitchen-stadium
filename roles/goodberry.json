@@ -1,0 +1,26 @@
+{
+  "name": "app",
+  "description": "",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+
+  "override_attributes": {
+    "ssh_keys": {
+      "app": "dkastner"
+    },
+
+    "postgresql": {
+      "password": {
+        "postgres": "postgres"
+      }
+    },
+
+    "authorization": {
+      "sudo": {
+        "groups": ["admin", "sysadmin"],
+        "users": ["app","ubuntu"],
+        "passwordless": "true"
+      }
+    }
+  }
+}

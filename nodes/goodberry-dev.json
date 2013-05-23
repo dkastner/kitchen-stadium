@@ -1,0 +1,20 @@
+{"run_list":["role[linux]","role[development]","recipe[ruby_build","recipe[app::importer_smartos_ubuntu]"],
+  "override_attributes":{
+    "rbenv" : {
+      "rubies": ["1.9.3-p362"],
+      "user_installs": [
+        {
+          "user": "app",
+          "home": "/home/app",
+          "rubies" : ["1.9.3-p362"],
+          "user_rubies" : "1.9.3-p362",
+          "global" : "1.9.3-p362",
+          "gems": {
+            "1.9.3-p362": [
+              { "name": "bundler" }
+            ]
+          }
+        }
+      ]
+    }
+}}

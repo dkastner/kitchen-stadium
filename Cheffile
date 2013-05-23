@@ -6,7 +6,8 @@ site 'http://community.opscode.com/api/v1'
 cookbook 'ubuntu'
 cookbook 'apt', '>= 1.4.8'
 
-cookbook 'user', :git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.3.0'
+cookbook 'user', git: 'git://github.com/burriko/chef-user.git', ref: '055c009bfca500c2b10355764063de8a7e7174a9'
+#:git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.3.0'
 cookbook 'sudo', '>= 1.1.0'
 cookbook 'cron', '>= 1.0.4'
 cookbook 'curl', '>= 1.1.0'
@@ -47,12 +48,12 @@ cookbook 'database', git: 'git://github.com/michaelklapper/database.git',
   ref: 'grant_statement'
 
 cookbook 'fanfare', git: 'git://github.com/Lanio/chef-fanfare.git'
-cookbook 'app', path: '../app-cookbook'
+cookbook 'company', path: '../company-cookbook'
 
 # Development
 cookbook 'tmux'
 cookbook 'ssh', :git => 'git://github.com/markolson/chef-ssh.git'
-cookbook 'ssh-keys', :git => 'git://github.com/nickola/chef-ssh-keys.git'
+cookbook 'ssh-keys', :git => 'git://github.com/dkastner/chef-ssh-keys.git'
 
 # ruby
 

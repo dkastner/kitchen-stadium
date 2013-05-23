@@ -1,0 +1,28 @@
+{
+  "run_list": [
+    "role[linux]",
+    "role[app]",
+    "recipe[company::ruby_dependencies]",
+    "recipe[ruby_build]",
+    "recipe[company::app_importer_ubuntu]"
+  ],
+  "override_attributes":{
+    "rbenv" : {
+      "rubies": ["1.9.3-p362"],
+      "user_installs": [
+        {
+          "user": "app",
+          "home": "/home/app",
+          "rubies" : ["1.9.3-p362"],
+          "user_rubies" : "1.9.3-p362",
+          "global" : "1.9.3-p362",
+          "gems": {
+            "1.9.3-p362": [
+              { "name": "bundler" }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

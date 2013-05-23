@@ -45,21 +45,15 @@ module Kit
       report "Writing node configuration..." do
         node_path = "nodes/#{host['ip']}.json"
         node = JSON.parse(File.read(node_path))
-        node['run_list'] = %w{role[linux] role[development]}
-        node['run_list'] << "recipe[app::#{type}_#{host['platform']}]"
+        node['run_list'] = %w{role[linux] role[development] recipe[ruby_build]}
+        recipe_type = type.sub(/dev-/,'')
+        node['run_list'] << "recipe[#{site}::#{recipe_type}_#{host['platform']}]"
         File.open(node_path, 'w') { |f| f.puts node.to_json }
       end
 
       puts "Created host #{instance_id}@#{host['ip']} with image #{image}"
 
-      print "Waiting for host to boot"
-      found = false
-      while !found
-        print '.'
-        found = true if `ping -c 1 #{host['ip']}` !~ /0 packets received/
-        sleep 1
-      end
-      puts 'ready!'
+      wait()
     end
 
     def nic_config

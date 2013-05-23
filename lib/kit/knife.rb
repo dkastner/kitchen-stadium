@@ -5,15 +5,17 @@ module Kit
     include Kit::Helpers
 
     def self.upload_secret(host)
-      knife = new host
+      knife = new nil, nil, host
       knife.upload_secret
     end
 
     KNIFE_SECRET_PATH = '~/.ssh/knife.pem'
 
-    attr_accessor :host
+    attr_accessor :site, :type, :host
 
-    def initialize(host)
+    def initialize(site, type, host)
+      self.site = site
+      self.type = type
       self.host = host
     end
 
@@ -25,9 +27,10 @@ module Kit
       secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
 
       report "Copying encrypted data bag secret..." do
-        cmd = "scp #{secret_path} #{user}@#{ip}:#{destination_path}"
+        cmd = %{scp -o "StrictHostKeyChecking=no"}
         cmd += " -i #{ssh_key}" if ssh_key
-        puts cmd
+        cmd += " #{secret_path} #{user}@#{ip}:#{destination_path}"
+        `#{cmd}`
       end
     end
 
@@ -39,7 +42,7 @@ module Kit
       destination_path = '/tmp/encrypted_data_bag_secret'
       secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
 
-      cmd = "bundle exec knife solo bootstrap #{user}@#{ip}"
+      cmd = "bundle exec knife solo bootstrap #{user}@#{ip} -N #{site}-#{type}"
       cmd += " -i #{ssh_key}" if ssh_key
       if platform == 'smartos_smartmachine'
         cmd += ' --template-file config/joyent-smartmachine.erb'
