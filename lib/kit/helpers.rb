@@ -23,11 +23,14 @@ module Kit
     end
 
     def wait(host)
-      report "Waiting for server #{host}", 'ready!' do
+      report "Waiting for server #{host['ip']}", 'ready!' do
         waiting = true
         while waiting
           status = ''
-          IO.popen(%{ssh -y -i ~/.ssh/inspire-www.pem -o "ConnectTimeout=5" -o "StrictHostKeyChecking=false" ubuntu@#{host} "echo OK"}) do |ssh|
+          cmd = "ssh -y"
+          cmd += " -i #{host['ssh_key']}" if host['ssh_key']
+          cmd += %{ -o "ConnectTimeout=5" -o "StrictHostKeyChecking=false" #{host['user']}@#{host['ip']} "echo OK"}
+          IO.popen(cmd) do |ssh|
             status += ssh.gets.to_s
           end
           waiting = (status !~ /OK/)

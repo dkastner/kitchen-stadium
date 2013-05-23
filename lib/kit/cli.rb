@@ -17,9 +17,6 @@ module Kit
       inspire_www_latest: 'ami-328a165b'
     }
 
-    HOSTS = JSON.parse(
-      File.read(File.expand_path('../../../config/hosts.json', __FILE__)))
-
     APP_SOLR_CLIENTS = %w{app-admin app-catalog}
     STATSD_CLIENTS = %w{stats}
     COLLECTD_CLIENTS = %w{app-solr}
@@ -29,7 +26,7 @@ module Kit
       require 'terminal-table'
       items = []
       items << ['Site', 'Type', 'Color', 'IP']
-      HOSTS.each do |site, types|
+      Kit.hosts.each do |site, types|
         types.each do |type, hosts|
           hosts.each do |name, data|
             items << [site, type, name, data['ip']]
@@ -43,9 +40,10 @@ module Kit
     desc 'create_instance SITE TYPE COLOR',
       'create a new ec2 instance, e.g. `app solr red'
     def create_instance(site, type, color)
-      host = HOSTS[site][type][color]
+      host = Kit.hosts[site][type][color]
       platform = host['platform'].to_sym
       instance_id = nil
+      ip = nil
 
       report 'Creating instance...' do
         case platform
@@ -55,13 +53,23 @@ module Kit
           instance_id = SmartOS::Ubuntu.create_instance site, type, host
         else
           image = AMIS[platform]
-          instance_id = Amazon::Ubuntu.create_instance site, type, host, image
+          instance_id = Amazon.create_instance site, type, host, image
+          ip = `kit list_instances amazon | grep #{instance_id} | awk '{print $2;}'`
         end
+      end
+
+      fail "Failed to create instance" if instance_id.nil?
+
+      if ip
+        host['ip'] = ip.chomp
+        Kit.update_host(site, type, color, host)
       end
 
       puts "Created host #{site}-#{type}-#{color}@#{host['ip']} id #{instance_id}"
 
-      knife = Knife.new host
+      wait host
+
+      knife = Knife.new site, type, host
       knife.upload_secret
       knife.bootstrap
     end
@@ -75,29 +83,55 @@ module Kit
       end
     end
 
-    desc 'upload_knife_secret SITE TYPE COLOR', 'upload ~/.ssh/knife.pem to server'
-    def upload_knife_secret(site, type, color)
-      host = HOSTS[site][type][color]
+    desc 'upload_knife_secret SITE TYPE COLOR [IP]', 'upload ~/.ssh/knife.pem to server'
+    def upload_knife_secret(site, type, color, ip = nil)
+      host = Kit.hosts[site][type][color]
+
+      if ip
+        host['ip'] = ip
+        Kit.update_host(site, type, color, host)
+      end
+
       Knife.upload_secret(host)
     end
 
-    desc 'bootstrap HOST', 'run chef recipes on host'
-    def bootstrap(site, type, color)
-      host = HOSTS[site][type][color]
-      knife = Knife.new host
+    desc 'bootstrap SITE TYPE COLOR [IP]', 'run chef recipes on host'
+    def bootstrap(site, type, color, ip = nil)
+      host = Kit.hosts[site][type][color]
+
+      knife = Knife.new site, type, host
       knife.bootstrap
     end
 
+    desc 'ssh SITE TYPE COLOR', 'ssh to the host'
+    def ssh(site, type, color)
+      host = Kit.hosts[site][type][color]
+      user = host['user'] || 'ubuntu'
+
+      cmd = 'ssh'
+      cmd += " -i #{host['ssh_key']}" if host['ssh_key']
+      cmd += " #{user}@#{host['ip']}"
+      puts cmd
+      exec cmd
+    end
+
+
     desc 'cook HOST', 'run chef recipes on host'
-    def cook(color = :red)
+    def cook(host)
       report "Cooking..." do
-        sh "bundle exec knife solo cook ubuntu@#{IPS[color.to_sym]} -i ~/.ssh/stats.pem"
+        sh "bundle exec knife solo cook ubuntu@#{host} -i ~/.ssh/app-ssh.pem"
       end
+    end
+
+    desc 'deploy SITE TYPE COLOR', 'run capistrano deploy scripts'
+    def deploy(site, type, color)
+      host = Kit.hosts[site][type][color]
+      exec "cap #{site} #{type} #{color} deploy_#{site}_#{type}"
     end
 
     desc 'browse HOST', 'open browser to show host'
     def browse(site, type, color = :red)
-      host = HOSTS[site][type][color]
+      host = Kit.hosts[site][type][color]
       exec "open 'http://#{host['ip']}:8081'"
     end
 
