@@ -1,1 +1,93 @@
-{"stats":{"main":{"red":{"ip":"54.225.206.236","hostname":"stats.app.net","platform":"u1204_64_us_east","zone":"us-east-1c","instance_type":"t1.micro","ssh_key":"~/.ssh/stats-ssh.pem","chef_user":"ubuntu","security_groups":"graphiti,graphite,statsd,sshd"}}},"app":{"database":{"heroku":{"hostname":"catalog"}},"solr":{"red":{"ip":"107.20.247.164","platform":"u1204_64_us_east","zone":"us-east-1c","ssh_key":"~/.ssh/app-ssh.pem","chef_user":"ubuntu","security_groups":"sshd"},"blue":{"ip":"54.225.205.218","platform":"u1204_64_us_east","zone":"us-east-1c","ssh_key":"~/.ssh/app-ssh.pem","chef_user":"ubuntu","security_groups":"sshd"}},"redis":{"red":{"ip":"107.20.247.164","platform":"u1204_64_us_east","zone":"us-east-1c","ssh_key":"~/.ssh/app-ssh.pem","chef_user":"ubuntu","security_groups":"sshd"},"blue":{"ip":"54.225.205.218","platform":"u1204_64_us_east","zone":"us-east-1c","ssh_key":"~/.ssh/app-ssh.pem","chef_user":"ubuntu","security_groups":"sshd"}},"importer":{"red":{"platform":"u1204_64_us_east","zone":"us-east-1c","instance_type":"t1.micro","ssh_key":"~/.ssh/app-ssh.pem","chef_user":"ubuntu","security_groups":"sshd","ip":"50.19.132.102"},"internal":{"ip":"192.168.1.21","ssh":"21022","http":"21080","mosh":"21123","platform":"smartos_ubuntu","chef_user":"root"}},"dev":{"internal":{"ip":"192.168.1.20","platform":"smartos_ubuntu","chef_user":"root"},"external":{"ip":"99.53.249.242","ssh":"20022","http":"20080","mosh":"20123","platform":"smartos_ubuntu","chef_user":"root"}}}}
+{
+   "stats" : {
+      "main" : {
+         "red" : {
+            "chef_user" : "ubuntu",
+            "zone" : "us-east-1c",
+            "ip" : "54.225.206.236",
+            "hostname" : "stats.app.net",
+            "ssh_key" : "~/.ssh/stats-ssh.pem",
+            "platform" : "u1204_64_us_east",
+            "instance_type" : "t1.micro",
+            "security_groups" : "graphiti,graphite,statsd,sshd"
+         }
+      }
+   },
+   "app" : {
+      "database" : {
+         "heroku" : {
+            "hostname" : "catalog"
+         }
+      },
+      "dev" : {
+         "external" : {
+            "chef_user" : "root",
+            "http" : "20080",
+            "ip" : "99.53.249.242",
+            "platform" : "smartos_ubuntu",
+            "mosh" : "20123",
+            "ssh" : "20022"
+         },
+         "internal" : {
+            "chef_user" : "root",
+            "ip" : "192.168.1.20",
+            "platform" : "smartos_ubuntu"
+         }
+      },
+      "importer" : {
+         "red" : {
+            "chef_user" : "ubuntu",
+            "ip" : "54.226.89.114",
+            "zone" : "us-east-1c",
+            "platform" : "u1204_64_us_east",
+            "security_groups" : "sshd",
+            "instance_type" : "t1.micro",
+            "ssh_key" : "~/.ssh/app-ssh.pem"
+         },
+         "internal" : {
+            "chef_user" : "root",
+            "http" : "21080",
+            "ip" : "192.168.1.21",
+            "platform" : "smartos_ubuntu",
+            "mosh" : "21123",
+            "ssh" : "21022"
+         }
+      },
+      "redis" : {
+         "blue" : {
+            "chef_user" : "ubuntu",
+            "zone" : "us-east-1c",
+            "ip" : "54.225.205.218",
+            "platform" : "u1204_64_us_east",
+            "security_groups" : "sshd",
+            "ssh_key" : "~/.ssh/app-ssh.pem"
+         },
+         "red" : {
+            "chef_user" : "ubuntu",
+            "zone" : "us-east-1c",
+            "ip" : "107.20.247.164",
+            "platform" : "u1204_64_us_east",
+            "security_groups" : "sshd",
+            "ssh_key" : "~/.ssh/app-ssh.pem"
+         }
+      },
+      "solr" : {
+         "blue" : {
+            "chef_user" : "ubuntu",
+            "zone" : "us-east-1c",
+            "ip" : "54.225.205.218",
+            "platform" : "u1204_64_us_east",
+            "security_groups" : "sshd",
+            "ssh_key" : "~/.ssh/app-ssh.pem"
+         },
+         "red" : {
+            "chef_user" : "ubuntu",
+            "zone" : "us-east-1c",
+            "ip" : "107.20.247.164",
+            "platform" : "u1204_64_us_east",
+            "security_groups" : "sshd",
+            "ssh_key" : "~/.ssh/app-ssh.pem"
+         }
+      }
+   }
+}

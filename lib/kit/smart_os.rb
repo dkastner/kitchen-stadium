@@ -26,34 +26,23 @@ module Kit
 
     def create_instance
       instance_id = nil
-      report 'Creating instance...' do
-        config['nics'].first['ip'] = host['ip']
+      config['nics'].first['ip'] = host['ip']
 
-        Net::SSH.start('houston', 'root') do |ssh|
-          puts ssh.exec! "imgadm import #{image}"
-          puts "vmadm create <<-EOF\n#{config.to_json}\nEOF"
-          data = ssh.exec! "vmadm create <<-EOF\n#{config.to_json}\nEOF"
-          puts data
-          instance_id = data.scan(/VM (.*)/).flatten.last
-          copy_key(ssh) if respond_to?(:copy_key)
-        end
+      Net::SSH.start('houston', 'root') do |ssh|
+        puts ssh.exec! "imgadm import #{image}"
+        puts "vmadm create <<-EOF\n#{config.to_json}\nEOF"
+        data = ssh.exec! "vmadm create <<-EOF\n#{config.to_json}\nEOF"
+        puts data
+        instance_id = data.scan(/VM (.*)/).flatten.last
+        copy_key(ssh) if respond_to?(:copy_key)
       end
       self.instance_id = instance_id
 
       fail 'Creation failed' if instance_id.nil?
 
-      report "Writing node configuration..." do
-        node_path = "nodes/#{host['ip']}.json"
-        node = JSON.parse(File.read(node_path))
-        node['run_list'] = %w{role[linux] role[development] recipe[ruby_build]}
-        recipe_type = type.sub(/dev-/,'')
-        node['run_list'] << "recipe[#{site}::#{recipe_type}_#{host['platform']}]"
-        File.open(node_path, 'w') { |f| f.puts node.to_json }
-      end
-
       puts "Created host #{instance_id}@#{host['ip']} with image #{image}"
 
-      wait()
+      instance_id
     end
 
     def nic_config
@@ -75,13 +64,13 @@ module Kit
       IMAGE = 'f669428c-a939-11e2-a485-b790efc0f0c1'
 
       ZONES = {
-        dev: {
+        'dev' => {
           'brand' => 'joyent',
           'alias' => 'app',
           'ram' => 1024
         },
 
-        importer: {
+        'importer' => {
           'brand' => 'joyent',
           'alias' => 'app-importer',
           'ram' => 1024
@@ -119,7 +108,7 @@ module Kit
             '192.168.1.254'
           ],
         },
-        'dev-importer' => {
+        'importer' => {
           'brand' => 'kvm',
           'alias' => 'app-importer',
           #'ram' => 2024,
