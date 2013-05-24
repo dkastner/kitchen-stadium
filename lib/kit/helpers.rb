@@ -29,11 +29,13 @@ module Kit
           status = ''
           cmd = "ssh -y"
           cmd += " -i #{host['ssh_key']}" if host['ssh_key']
-          cmd += %{ -o "ConnectTimeout=5" -o "StrictHostKeyChecking=false" #{host['user']}@#{host['ip']} "echo OK"}
+          cmd += %{ -o "ConnectTimeout=5" -o "StrictHostKeyChecking=false" #{host['chef_user']}@#{host['ip']} "echo OK"}
           IO.popen(cmd) do |ssh|
             status += ssh.gets.to_s
           end
-          waiting = (status !~ /OK/)
+          if waiting = (status !~ /OK/)
+            sleep 1
+          end
           dot
         end
       end

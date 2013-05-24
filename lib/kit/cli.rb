@@ -67,6 +67,7 @@ module Kit
 
       puts "Created host #{site}-#{type}-#{color}@#{host['ip']} id #{instance_id}"
 
+      `ssh-keygen -R #{host['ip']}`
       wait host
 
       knife = Knife.new site, type, host
@@ -118,9 +119,7 @@ module Kit
 
     desc 'cook HOST', 'run chef recipes on host'
     def cook(host)
-      report "Cooking..." do
-        sh "bundle exec knife solo cook ubuntu@#{host} -i ~/.ssh/app-ssh.pem"
-      end
+      exec "bundle exec knife solo cook ubuntu@#{host} -i ~/.ssh/app-ssh.pem"
     end
 
     desc 'deploy SITE TYPE COLOR', 'run capistrano deploy scripts'
