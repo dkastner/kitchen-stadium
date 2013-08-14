@@ -37,7 +37,7 @@ cookbook 'aws'
 cookbook 'smartos', :git => 'git://github.com/modcloth-cookbooks/smartos.git'
 cookbook 'smf', :git => 'git://github.com/modcloth-cookbooks/smf.git'
 cookbook 'java', :path => '../java' #:git => 'git://github.com/wanelo-chef/java.git'
-cookbook 'jetty', :path => '../chef-jetty' #:git => 'git://github.com/theozaurus/chef-jetty.git'
+cookbook 'jetty', :github => 'ToQoz/chef-jetty' #:git => 'git://github.com/theozaurus/chef-jetty.git'
 
 # Web Application
 cookbook 'nginx'
@@ -65,7 +65,9 @@ cookbook 'monit'
 cookbook 'apache2'
 cookbook 'passenger_apache2'
 
-cookbook 'solr-jetty-maven', path: '../chef-solr-jetty-maven' # git: 'git://github.com/dkastner/chef-solr'
+cookbook 'solr', github: 'dkastner/chef-solr'
+#cookbook 'maven'
+#cookbook 'solr-jetty-maven', path: '../chef-solr-jetty-maven' # git: 'git://github.com/dkastner/chef-solr'
 cookbook 'redis', git: 'git://github.com/wanelo-chef/redis.git'
 cookbook 'redisio'
 
@@ -73,3 +75,6 @@ cookbook 'collectd', git: 'git://github.com/dkastner/chef-collectd'
 cookbook 'graphite', git: 'git://github.com/hw-cookbooks/graphite.git'
 cookbook 'statsd',   git: 'git://github.com/hectcastro/chef-statsd.git'
 cookbook 'graphiti', git: 'git://github.com/dkastner/chef-graphiti.git'
+
+cookbook 'golang', github: 'NOX73/chef-golang'
+cookbook 'docker', github: 'bflad/chef-docker'

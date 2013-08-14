@@ -1,20 +1,33 @@
-{"run_list":["role[linux]","role[development]","recipe[ruby_build","recipe[app::importer_smartos_ubuntu]"],
-  "override_attributes":{
-    "rbenv" : {
-      "rubies": ["1.9.3-p362"],
-      "user_installs": [
-        {
-          "user": "app",
-          "home": "/home/app",
-          "rubies" : ["1.9.3-p362"],
-          "user_rubies" : "1.9.3-p362",
-          "global" : "1.9.3-p362",
-          "gems": {
-            "1.9.3-p362": [
-              { "name": "bundler" }
-            ]
-          }
-        }
-      ]
+{
+  "run_list": [
+    "role[linux]",
+    "recipe[company::development_environment]",
+    "role[app]",
+    "recipe[redisio::install]",
+    "recipe[redisio::enable]",
+    "recipe[solr]"
+  ],
+
+  "set_fqdn": "app.hou",
+
+  "solr": {
+    "version": "4.3.0",
+    "link": "http://mirrors.ibiblio.org/apache/lucene/solr/4.3.0/solr-4.3.0-src.tgz",
+    "checksum": null
+  },
+
+  "override_attributes": {
+    "postgresql": {
+      "config": {
+        "listen_address": "*"
+      },
+      "pg_hba": {
+        "type": "hostssl",
+        "db": "all",
+        "user": "all", 
+        "addr": "0.0.0.0/0",
+        "method": "md5"
+      }
     }
-}}
+  }
+}

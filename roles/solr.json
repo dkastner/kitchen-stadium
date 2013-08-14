@@ -5,13 +5,9 @@
   "chef_type": "role",
 
   "run_list": [
-    "recipe[solr-jetty-maven]"
+    "recipe[solr]"
   ],
 
   "override_attributes": {
-    "solr": {
-      "version": "4.1.0",
-      "custom_config": "blacklight-4.1.0"
-    }
   }
 }

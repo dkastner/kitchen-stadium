@@ -1,41 +1,42 @@
 SITE
   remote: http://community.opscode.com/api/v1
   specs:
-    apache2 (1.6.0)
-    apt (1.9.0)
-    ark (0.1.0)
+    apache2 (1.6.2)
+    apt (1.10.0)
     aws (0.101.0)
-    build-essential (1.3.4)
+    build-essential (1.4.0)
     chef_handler (1.1.4)
     cron (1.2.2)
     curl (1.1.0)
     dmg (1.1.0)
-    git (2.3.0)
+    git (2.5.0)
       build-essential (>= 0.0.0)
       dmg (>= 0.0.0)
-      runit (~> 1.0)
+      runit (>= 1.0)
       windows (>= 0.0.0)
       yum (>= 0.0.0)
-    hostname (0.0.4)
+    hostname (0.0.6)
+      hostsfile (>= 0.0.0)
+    hostsfile (1.0.1)
     imagemagick (0.2.2)
     iptables (0.12.0)
-    logrotate (1.1.0)
-    maven (0.16.2)
-      ark (>= 0.0.0)
-      java (>= 0.0.0)
-    memcached (1.3.0)
+    logrotate (1.2.0)
+    lxc (1.0.0)
+    memcached (1.4.0)
       runit (~> 1.0)
       yum (>= 0.0.0)
-    monit (0.7.0)
-    mysql (2.1.2)
+    modules (0.1.2)
+    monit (0.7.1)
+    mysql (3.0.0)
       build-essential (>= 0.0.0)
       openssl (>= 0.0.0)
-    nginx (1.4.0)
+    nginx (1.6.0)
       apt (>= 0.0.0)
       build-essential (>= 0.0.0)
       ohai (>= 1.1.4)
+      runit (>= 0.0.0)
       yum (>= 0.0.0)
-    nodejs (1.1.1)
+    nodejs (1.1.2)
       apt (>= 0.0.0)
       build-essential (>= 0.0.0)
     ntp (1.3.2)
@@ -50,30 +51,31 @@ SITE
       apt (>= 0.0.0)
       build-essential (>= 0.0.0)
       openssl (>= 0.0.0)
-    python (1.2.2)
+    python (1.3.0)
       build-essential (>= 0.0.0)
       yum (>= 0.0.0)
-    rbac (0.0.3)
+    rbac (1.0.1)
     redisio (1.4.1)
       ulimit (>= 0.1.2)
-    runit (1.1.0)
+    runit (1.1.4)
       build-essential (>= 0.0.0)
+      yum (>= 0.0.0)
     ssl (1.0.7)
-    sudo (2.0.4)
+    sudo (2.1.2)
     sysstat (1.2.0)
     timezone (0.0.1)
     tmux (1.2.2)
     ubuntu (1.1.2)
       apt (>= 0.0.0)
-    ulimit (0.1.3)
+    ulimit (0.2.0)
     unicorn (1.2.2)
     vim (1.0.2)
-    windows (1.8.4)
+    windows (1.9.0)
       chef_handler (>= 0.0.0)
     xfs (1.1.0)
     xml (1.1.2)
       build-essential (>= 0.0.0)
-    yum (2.1.0)
+    yum (2.2.2)
     zlib (2.0.0)
 
 GIT
@@ -137,9 +139,9 @@ GIT
 GIT
   remote: git://github.com/hectcastro/chef-statsd.git
   ref: master
-  sha: 0349f8f6c69fb8977ce1cd6065df9bc3d0d152e3
+  sha: f9aa8718ebd2cd8b337a07e1fc13b8477e6fafa3
   specs:
-    statsd (0.0.11)
+    statsd (0.1.4)
       git (>= 0.0.0)
       logrotate (>= 0.0.0)
       nodejs (>= 0.0.0)
@@ -147,7 +149,7 @@ GIT
 GIT
   remote: git://github.com/hw-cookbooks/graphite.git
   ref: master
-  sha: 39b0e35d437a7a8d4a8ce09e2617fdda4c917801
+  sha: 164b4830431e6e8fb4ffc03197780369d51321e3
   specs:
     graphite (0.4.2)
       apache2 (>= 0.0.0)
@@ -197,18 +199,41 @@ GIT
     redis (0.0.1)
       smartos (>= 0.0.0)
 
-PATH
-  remote: ../chef-jetty
+GIT
+  remote: https://github.com/NOX73/chef-golang
+  ref: master
+  sha: 417dc472aec3e547da3c0a919b66c5bfa6960a5e
+  specs:
+    golang (1.0.2)
+
+GIT
+  remote: https://github.com/ToQoz/chef-jetty
+  ref: master
+  sha: 850c0aa867c640abb81dd0f69ab560ea71eb2173
   specs:
     jetty (0.1.0)
       iptables (>= 0.0.0)
       java (>= 0.0.0)
 
-PATH
-  remote: ../chef-solr-jetty-maven
+GIT
+  remote: https://github.com/bflad/chef-docker
+  ref: master
+  sha: 87bf07a1c5212ac6490424e9da3788ca067f41e7
   specs:
-    solr-jetty-maven (0.1.2)
-      maven (>= 0.0.0)
+    docker (0.3.0)
+      apt (>= 0.0.0)
+      git (>= 0.0.0)
+      golang (>= 0.0.0)
+      lxc (>= 0.0.0)
+      modules (>= 0.0.0)
+
+GIT
+  remote: https://github.com/dkastner/chef-solr
+  ref: master
+  sha: c46d550f8c4e4113de0ad4aa20966c94fcd4374b
+  specs:
+    solr (0.1.2)
+      jetty (>= 0.0.0)
 
 PATH
   remote: ../java
@@ -221,6 +246,7 @@ PATH
     company (0.1.0)
       database (>= 0.0.0)
       git (>= 0.0.0)
+      hostname (>= 0.0.0)
       iptables (>= 0.0.0)
       nginx (>= 0.0.0)
       ohai (>= 0.0.0)
@@ -230,7 +256,7 @@ PATH
       ruby_build (>= 0.0.0)
       smartos (>= 0.0.0)
       smf (>= 0.0.0)
-      solr-jetty-maven (>= 0.0.0)
+      solr (>= 0.0.0)
       ssh (>= 0.0.0)
       user (>= 0.0.0)
 
@@ -243,8 +269,10 @@ DEPENDENCIES
   cron (>= 1.0.4)
   curl (>= 1.1.0)
   database (>= 0)
+  docker (>= 0)
   fanfare (>= 0)
   git (>= 0)
+  golang (>= 0)
   graphite (>= 0)
   graphiti (>= 0)
   hostname (>= 0)
@@ -268,7 +296,7 @@ DEPENDENCIES
   ruby_build (>= 0)
   smartos (>= 0)
   smf (>= 0)
-  solr-jetty-maven (>= 0)
+  solr (>= 0)
   ssh (>= 0)
   ssh-keys (>= 0)
   ssl (>= 1.0.7)

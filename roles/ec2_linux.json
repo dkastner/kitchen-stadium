@@ -1,12 +1,11 @@
 {
-  "name": "linux",
+  "name": "ec2_linux",
   "description": "",
   "json_class": "Chef::Role",
   "chef_type": "role",
 
   "run_list": [
     "recipe[user::data_bag]",
-    "recipe[sudo]",
     "recipe[vim]",
     "recipe[timezone]",
     "recipe[logrotate]",
