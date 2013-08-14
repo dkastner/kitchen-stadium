@@ -53,7 +53,7 @@ module Kit
           instance_id = SmartOS::Ubuntu.create_instance site, type, host
         else
           image = AMIS[platform]
-          instance_id = Amazon.create_instance site, type, host, image
+          instance_id = Amazon.create_instance site, type, color, host, image
           ip = `kit list_instances amazon | grep #{instance_id} | awk '{print $2;}'`
         end
       end
@@ -117,9 +117,10 @@ module Kit
     end
 
 
-    desc 'cook HOST', 'run chef recipes on host'
-    def cook(host)
-      exec "bundle exec knife solo cook ubuntu@#{host} -i ~/.ssh/app-ssh.pem"
+    desc 'cook SITE TYPE COLOR', 'run chef recipes on host'
+    def cook(site, type, color)
+      host = Kit.hosts[site][type][color]
+      exec "bundle exec knife solo cook ubuntu@#{host['ip']} -i ~/.ssh/app-ssh.pem"
     end
 
     desc 'deploy SITE TYPE COLOR', 'run capistrano deploy scripts'
@@ -134,12 +135,21 @@ module Kit
       exec "open 'http://#{host['ip']}:8081'"
     end
 
-    desc 'destroy PLATFORM INSTANCE', 'delete the instance'
-    def destroy(platform, instance_id)
+    desc 'destroy SITE TYPE COLOR', 'delete the instance'
+    def destroy(site, type, color)
+      host = Kit.hosts[site][type][color]
       report "Deleting server #{instance_id}..." do
-        if platform =~ /smartos/
+        if host['platform'] =~ /smartos/
+          info = `kit list_instances smartos | grep #{site}-#{type}`
+          puts "Are you sure you want to destroy #{info}?"
+          return unless STDIN.gets =~ /y/i
+          instance_id = info.split(/\s/).first
           SmartOS.delete_instance instance_id
         else
+          info = `kit list_instances ec2 | grep #{host['ip']}`
+          puts "Are you sure you want to destroy #{info}?"
+          return unless STDIN.gets =~ /y/i
+          instance_id = info.split(/\s/).first
           Amazon.delete_instance instance_id
         end
       end
