@@ -74,6 +74,12 @@ module Kit
           'brand' => 'joyent',
           'alias' => 'app-importer',
           'ram' => 1024
+        },
+
+        'solr' => {
+          'brand' => 'joyent',
+          'alias' => 'app-solr',
+          'ram' => 256
         }
       }
 
@@ -96,13 +102,13 @@ module Kit
     end
 
     class Ubuntu < SmartOS
-      IMAGE = 'da144ada-a558-11e2-8762-538b60994628'
+      IMAGE = 'd2ba0f30-bbe8-11e2-a9a2-6bc116856d85'
 
       ZONES = {
         'dev' => {
           'brand' => 'kvm',
           'alias' => 'app',
-          'ram' => 1024,
+          'ram' => 2048,
           'vcpus' => 2,
           'resolvers' => [
             '192.168.1.254'
@@ -113,6 +119,15 @@ module Kit
           'alias' => 'app-importer',
           #'ram' => 2024,
           'vcpus' => 2,
+          'resolvers' => [
+            '192.168.1.254'
+          ]
+        },
+        'solr' => {
+          'brand' => 'kvm',
+          'alias' => 'app-solr',
+          'ram' => 256,
+          'vcpus' => 1,
           'resolvers' => [
             '192.168.1.254'
           ]
