@@ -11,8 +11,7 @@
     "recipe[rbenv::user]",
     "recipe[company::ruby]",
     "recipe[company::app_packages]",
-    "recipe[company::github]",
-    "recipe[company::app_ubuntu]"
+    "recipe[company::github]"
   ],
 
   "override_attributes": {

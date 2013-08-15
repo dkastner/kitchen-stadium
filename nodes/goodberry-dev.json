@@ -3,6 +3,7 @@
     "role[linux]",
     "recipe[company::development_environment]",
     "role[app]",
+    "role[app_development]",
     "recipe[redisio::install]",
     "recipe[redisio::enable]",
     "recipe[solr]"

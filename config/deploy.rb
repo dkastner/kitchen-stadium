@@ -20,7 +20,7 @@ set :use_sudo, false
 ssh_options[:forward_agent] = true
 default_run_options[:pty] = true
 
-hosts = JSON.parse(File.read('config/hosts.json'))
+set :hosts, JSON.parse(File.read('config/hosts.json'))
 
 hosts.each do |site, type_data|
   task site do
@@ -42,3 +42,5 @@ end
 
 load File.expand_path('../deploy_app_dev.rb', __FILE__)
 load File.expand_path('../deploy_app_importer.rb', __FILE__)
+load File.expand_path('../deploy_app_exporter.rb', __FILE__)
+load File.expand_path('../deploy_app_deal-mailer.rb', __FILE__)
