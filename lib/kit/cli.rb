@@ -4,6 +4,7 @@ require 'thor'
 require 'kit/amazon'
 require 'kit/helpers'
 require 'kit/knife'
+require 'kit/server'
 require 'kit/smart_os'
 
 module Kit
@@ -11,11 +12,6 @@ module Kit
     include Kit::Helpers
 
     attr_accessor :host, :instance_id, :execution_mode
-
-    AMIS = {
-      u1204_64_us_east: 'ami-fd20ad94',
-      inspire_www_latest: 'ami-328a165b'
-    }
 
     APP_SOLR_CLIENTS = %w{app-admin app-catalog}
     STATSD_CLIENTS = %w{stats}
@@ -40,39 +36,21 @@ module Kit
     desc 'create_instance SITE TYPE COLOR',
       'create a new ec2 instance, e.g. `app solr red'
     def create_instance(site, type, color)
-      host = Kit.hosts[site][type][color]
-      platform = host['platform'].to_sym
-      instance_id = nil
-      ip = nil
+      server = Server.new site, type, color
 
       report 'Creating instance...' do
-        case platform
-        when :smartos_smartmachine then
-          instance_id = SmartOS::SmartMachine.create_instance site, type, host
-        when :smartos_ubuntu then
-          instance_id = SmartOS::Ubuntu.create_instance site, type, host
-        else
-          image = AMIS[platform]
-          instance_id = Amazon.create_instance site, type, color, host, image
-          ip = `kit list_instances amazon | grep #{instance_id} | awk '{print $2;}'`
-        end
+        server.create_instance
       end
 
-      fail "Failed to create instance" if instance_id.nil?
+      fail "Failed to create instance" unless server.instantiated?
 
-      if ip
-        host['ip'] = ip.chomp
-        Kit.update_host(site, type, color, host)
+      logger.info "Created host #{site}-#{type}-#{color}@#{server.ip} (#{server.instance_id})"
+
+      server.register_known_host
+
+      server.wait do
+        server.bootstrap
       end
-
-      puts "Created host #{site}-#{type}-#{color}@#{host['ip']} id #{instance_id}"
-
-      `ssh-keygen -R #{host['ip']}`
-      wait host
-
-      knife = Knife.new site, type, host
-      knife.upload_secret
-      knife.bootstrap
     end
 
     desc 'list_instances PLATFORM', 'list running instances'
@@ -105,12 +83,13 @@ module Kit
     end
 
     desc 'ssh SITE TYPE COLOR', 'ssh to the host'
-    def ssh(site, type, color)
+    def ssh(site, type, color, user = nil)
       host = Kit.hosts[site][type][color]
-      user = host['user'] || 'ubuntu'
+      user ||= host['user'] || 'ubuntu'
+      use_ssh_key = (user == 'ubuntu')
 
       cmd = 'ssh'
-      cmd += " -i #{host['ssh_key']}" if host['ssh_key']
+      cmd += " -i #{host['ssh_key']}" if host['ssh_key'] && use_ssh_key
       cmd += " #{user}@#{host['ip']}"
       puts cmd
       exec cmd
@@ -120,19 +99,40 @@ module Kit
     desc 'cook SITE TYPE COLOR', 'run chef recipes on host'
     def cook(site, type, color)
       host = Kit.hosts[site][type][color]
+      Kit.copy_node_config(site, type, host['ip'])
       exec "bundle exec knife solo cook ubuntu@#{host['ip']} -i ~/.ssh/app-ssh.pem"
     end
 
     desc 'deploy SITE TYPE COLOR', 'run capistrano deploy scripts'
     def deploy(site, type, color)
-      host = Kit.hosts[site][type][color]
-      exec "cap #{site} #{type} #{color} deploy_#{site}_#{type}"
+      server = Server.new site, type, color
+      server.deploy
     end
 
-    desc 'browse HOST', 'open browser to show host'
+    desc 'browse SITE TYPE COLOR', 'open browser to show host'
     def browse(site, type, color = :red)
       host = Kit.hosts[site][type][color]
       exec "open 'http://#{host['ip']}:8081'"
+    end
+
+    desc 'image SITE TYPE COLOR', 'make a bootable image of a running server'
+    def image(site, type, color = 'red')
+      host = Kit.hosts[site][type][color]
+      image = Amazon.image(site, type, color, host)
+      puts "Created image #{image}"
+    end
+
+    desc 'promote_image SITE TYPE IMAGE', 'configure all non-build instances to use new image'
+    def promote_image(site, type, image)
+      host_names = []
+      Kit.hosts[site][type].each do |color, config|
+        next if color == 'build'
+
+        Kit.update_host(site, type, color, config.merge('image' => image))
+        host_names << color
+      end
+
+      puts "Promoted image #{image} to be used by #{host_names.join(', ')}"
     end
 
     desc 'destroy SITE TYPE COLOR', 'delete the instance'
@@ -173,5 +173,11 @@ module Kit
         #end
       #end
     #end
+
+    no_commands do
+      def logger
+        @logger ||= Logger.new(STDOUT)
+      end
+    end
   end
 end
