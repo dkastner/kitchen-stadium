@@ -12,6 +12,9 @@ task :deploy_app_deal_mailer do
     'CARRIER_WAVE_STORAGE' => 'fog',
     'AWS_ACCESS_KEY' => 'AKIAJM5ZKUWGZUH3SJGQ',
     'AWS_ACCESS_SECRET' => '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',
+    'AMAZON_ECS_ASSOCIATE_ID' => 'app-20',
+    'AMAZON_ECS_ACCESS_KEY' => 'AKIAI4UJFN25GHNMBTNA',
+    'AMAZON_ECS_ACCESS_SECRET' => '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',
     'GOOGLE_USERNAME' => 'derek@lan.io',
     'GOOGLE_PASSWORD' => 'companycompany'
   }
@@ -28,5 +31,6 @@ task :deploy_app_deal_mailer do
 
   run "cd #{mailer_root} && rake deals:fetch"
   run "cd #{importer_root} && rake deal_resources"
-  run "cd #{mailer_root} && rake deals:mail"
+  run "cd #{mailer_root} && rake deals:activate"
+  #run "cd #{mailer_root} && rake deals:mail"
 end

@@ -1,5 +1,6 @@
 require 'logger'
 require 'thor'
+require 'tinder'
 
 require 'kit/server'
 
@@ -13,7 +14,7 @@ module Kit
       server = Server.new site, type, color
 
       puts 'ALLEZ CUISINE!!!'
-      `say ah-lay cuisine!`
+      `say -vAlex ah-lay cuisine!` if Random.rand(100) > 90
 
       if options.create
         logger.info "Creating instance #{server.id}"
@@ -26,7 +27,16 @@ module Kit
         logger.info "Waiting for instance #{server.id} to become available"
         server.wait
         logger.info "Deploying instance #{server.id}"
-        server.deploy
+        success = server.deploy
+
+        if success
+          campfire.speak ":tada: Allez cuisine! Chairman launched #{server.id} :tada:"
+          campfire.play 'tada'
+        else
+          campfire.speak "FAILURE Chairman tried to launch #{server.id}"
+          campfire.play 'drama'
+          campfire.speak server.log
+        end
       end
 
       if options.destroy
@@ -73,6 +83,15 @@ module Kit
     no_commands do
       def logger
         @logger ||= Logger.new(STDOUT)
+      end
+
+      def campfire
+        return @campfire unless @campfire.nil?
+
+        lobby = Tinder::Campfire.new 'company',
+          :token => 'TOKEN'
+
+        @campfire = lobby.rooms.first
       end
     end
   end
