@@ -1,4 +1,5 @@
 require 'kit/helpers'
+require 'fog'
 
 module Kit
   module Amazon
@@ -9,20 +10,31 @@ module Kit
       'inspire' => 'inspire-www'
     }
 
-    def self.create_instance(site, type, color, host, image)
-      instance_type = host['instance_type']
-      user = host['user'] || 'ubuntu'
-      key = KEY_PAIRS[site] || site
+    def self.aws
+      @aws ||= Fog::Compute.new({
+        :provider                 => 'AWS',
+        :aws_access_key_id        => ENV['AWS_ACCESS_KEY_ID'],
+        :aws_secret_access_key    => ENV['AWS_SECRET_ACCESS_KEY']
+      })
+    end
 
-      cmd = "bundle exec knife ec2 server create -f #{instance_type} -I #{image} -Z #{host['zone']} -S #{key} -G #{host['security_groups']} -N #{site}-#{type}-#{color} --ssh-user=#{user} -i #{host['ssh_key']}"
-      cmd += "--elastic-ip #{host['ip']}" if host['ip']
+
+    def self.create_instance(server)
+      instance_type = server.instance_type
+      key = KEY_PAIRS[server.site] || server.site
+
+      cmd = "bundle exec knife ec2 server create -f #{server.instance_type} -I #{server.image} -Z #{server.zone} -S #{key} -G #{server.security_groups} -N #{server.site}-#{server.type}-#{server.color} --ssh-user=#{server.user} -i #{server.ssh_key}"
+      cmd += "--elastic-ip #{server.ip}" if server.ip
 
       puts cmd
-      data = sh cmd
-      puts data
-      if item = data.split(/:/).last
+      cmd_data = sh cmd
+      puts cmd_data
+
+      instance_id = if item = cmd_data.split(/:/).last
         item.chomp
       end
+
+      instance_id
     end
 
     def self.delete_instance(instance_id)
@@ -31,6 +43,25 @@ module Kit
 
     def self.list_instances
       puts `knife ec2 server list`
+    end
+
+    def self.image(server)
+      image_name = "#{server.id}-#{Time.now.strftime('%Y%m%d%h%m%s')}"
+      data = nil
+      begin
+        data = aws.create_image(server.instance_id, image_name,
+                                'Created automatically by Kitchen Stadium')
+      rescue => e
+        puts e.response.inspect
+        puts e.inspect
+        raise e
+      end
+      data.body['imageId']
+    end
+
+    def self.instance_id(host_ip)
+      info = `kit list_instances ec2 | grep #{host_ip}`
+      info.split(/\s/).first
     end
   end
 end

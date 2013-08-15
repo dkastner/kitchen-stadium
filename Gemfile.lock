@@ -37,7 +37,7 @@ GEM
       ohai (>= 0.6.0)
       rest-client (>= 1.0.4, < 1.7.0)
       yajl-ruby (~> 1.1)
-    dotenv (0.7.0)
+    dotenv (0.8.0)
     erubis (2.7.0)
     excon (0.22.1)
     extlib (0.9.16)
@@ -130,6 +130,7 @@ PLATFORMS
 DEPENDENCIES
   capistrano
   dotenv
+  fog
   knife-ec2!
   knife-solo
   knife-solo_data_bag
