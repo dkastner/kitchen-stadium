@@ -10,12 +10,13 @@ module Kit
       inspire_www_latest: 'ami-328a165b'
     }
 
-    attr_accessor :site, :type, :color, :instance_id, :ip
+    attr_accessor :site, :type, :color, :instance_id, :ip, :log
 
     def initialize(site, type, color)
       self.site = site
       self.type = type
       self.color = color
+      self.log = ""
     end
 
     def id
@@ -148,11 +149,11 @@ module Kit
     end
 
     def cook
-      `bundle exec knife solo cook ubuntu@#{ip} -i ~/.ssh/app-ssh.pem`
+      shellout "bundle exec knife solo cook ubuntu@#{ip} -i ~/.ssh/app-ssh.pem"
     end
 
     def deploy
-      exec "cap #{site} #{type} #{color} deploy_#{site}_#{type.gsub(/-/, '_')}"
+      shellout "cap #{site} #{type} #{color} deploy_#{site}_#{type.gsub(/-/, '_')}"
     end
 
     def create_image!
@@ -166,7 +167,7 @@ module Kit
     end
 
     def register_known_host
-      `ssh-keygen -R #{ip}`
+      shellout "ssh-keygen -R #{ip}"
     end
 
     def destroy!
@@ -175,6 +176,18 @@ module Kit
       self.instance_id = nil
       self.ip = nil
       save
+    end
+
+    def shellout(cmd)
+      result = nil
+      IO.popen cmd do |io|
+        while line = io.gets
+          log += line
+        end
+        io.close
+        result = $?.to_i
+      end
+      result == 0
     end
   end
 end
