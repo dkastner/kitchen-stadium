@@ -6,6 +6,7 @@ module Kit
     extend Kit::Helpers
 
     KEY_PAIRS = {
+      'kitchen-stadium' => 'app-catalog',
       'app' => 'app-catalog',
       'inspire' => 'inspire-www'
     }
