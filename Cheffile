@@ -36,7 +36,8 @@ cookbook 'aws'
 # SmartOS
 cookbook 'smartos', :git => 'git://github.com/modcloth-cookbooks/smartos.git'
 cookbook 'smf', :git => 'git://github.com/modcloth-cookbooks/smf.git'
-cookbook 'java', :path => '../java' #:git => 'git://github.com/wanelo-chef/java.git'
+#cookbook 'java', :path => '../java' #:git => 'git://github.com/wanelo-chef/java.git'
+cookbook 'java', :git => 'git://github.com/wanelo-chef/java.git'
 cookbook 'jetty', :github => 'ToQoz/chef-jetty' #:git => 'git://github.com/theozaurus/chef-jetty.git'
 
 # Web Application
