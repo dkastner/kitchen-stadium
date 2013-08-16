@@ -200,6 +200,28 @@ GIT
       smartos (>= 0.0.0)
 
 GIT
+  remote: git@github.com:dkastner/app-cookbook.git
+  ref: master
+  sha: 915d2be7033d63bb71c6fcf2755b13363138d930
+  specs:
+    company (0.1.0)
+      database (>= 0.0.0)
+      git (>= 0.0.0)
+      hostname (>= 0.0.0)
+      iptables (>= 0.0.0)
+      nginx (>= 0.0.0)
+      ohai (>= 0.0.0)
+      postgresql (>= 0.0.0)
+      rbenv (>= 0.0.0)
+      redis (>= 0.0.0)
+      ruby_build (>= 0.0.0)
+      smartos (>= 0.0.0)
+      smf (>= 0.0.0)
+      solr (>= 0.0.0)
+      ssh (>= 0.0.0)
+      user (>= 0.0.0)
+
+GIT
   remote: https://github.com/NOX73/chef-golang
   ref: master
   sha: 417dc472aec3e547da3c0a919b66c5bfa6960a5e
@@ -239,26 +261,6 @@ PATH
   remote: ../java
   specs:
     java (1.6.5)
-
-PATH
-  remote: ../company-cookbook
-  specs:
-    company (0.1.0)
-      database (>= 0.0.0)
-      git (>= 0.0.0)
-      hostname (>= 0.0.0)
-      iptables (>= 0.0.0)
-      nginx (>= 0.0.0)
-      ohai (>= 0.0.0)
-      postgresql (>= 0.0.0)
-      rbenv (>= 0.0.0)
-      redis (>= 0.0.0)
-      ruby_build (>= 0.0.0)
-      smartos (>= 0.0.0)
-      smf (>= 0.0.0)
-      solr (>= 0.0.0)
-      ssh (>= 0.0.0)
-      user (>= 0.0.0)
 
 DEPENDENCIES
   apache2 (>= 0)
