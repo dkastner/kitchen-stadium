@@ -30,7 +30,7 @@ module Kit
         cmd = %{scp -o "StrictHostKeyChecking=no"}
         cmd += " -i #{ssh_key}" if ssh_key
         cmd += " #{secret_path} #{user}@#{ip}:#{destination_path}"
-        `#{cmd}`
+        shellout cmd
       end
     end
 
@@ -48,7 +48,7 @@ module Kit
         cmd += ' --template-file config/joyent-smartmachine.erb'
       end
 
-      exec cmd
+      shellout cmd
     end
   end
 end

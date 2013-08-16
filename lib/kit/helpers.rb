@@ -21,5 +21,17 @@ module Kit
       end
       out
     end
+
+    def shellout(cmd)
+      result = nil
+      IO.popen cmd do |io|
+        while line = io.gets
+          log += line
+        end
+        io.close
+        result = $?.to_i
+      end
+      result == 0
+    end
   end
 end

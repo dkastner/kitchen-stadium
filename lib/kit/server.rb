@@ -145,7 +145,7 @@ module Kit
     end
 
     def upload_public_key
-      exec "bundle exec knife solo cook -o company:app_user ubuntu@#{ip} -i ~/.ssh/app-ssh.pem"
+      shellout "bundle exec knife solo cook -o company:app_user ubuntu@#{ip} -i ~/.ssh/app-ssh.pem"
     end
 
     def cook
@@ -176,18 +176,6 @@ module Kit
       self.instance_id = nil
       self.ip = nil
       save
-    end
-
-    def shellout(cmd)
-      result = nil
-      IO.popen cmd do |io|
-        while line = io.gets
-          log += line
-        end
-        io.close
-        result = $?.to_i
-      end
-      result == 0
     end
   end
 end
