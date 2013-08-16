@@ -14,7 +14,9 @@ module Kit
       server = Server.new site, type, color
 
       puts 'ALLEZ CUISINE!!!'
-      `say -vAlex ah-lay cuisine!` if RUBY_PLATFORM =~ /darwan/ && Random.rand(100) > 90
+      if RUBY_PLATFORM =~ /darwin/ && Random.rand(100) > 90
+        `say -vAlex ah-lay cuisine!` 
+      end
 
       if options.create
         logger.info "Creating instance #{server.id}"
