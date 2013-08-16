@@ -62,24 +62,10 @@ module Kit
       end
     end
 
-    desc 'upload_knife_secret SITE TYPE COLOR [IP]', 'upload ~/.ssh/knife.pem to server'
-    def upload_knife_secret(site, type, color, ip = nil)
-      host = Kit.hosts[site][type][color]
-
-      if ip
-        host['ip'] = ip
-        Kit.update_host(site, type, color, host)
-      end
-
-      Knife.upload_secret(host)
-    end
-
     desc 'bootstrap SITE TYPE COLOR [IP]', 'run chef recipes on host'
     def bootstrap(site, type, color, ip = nil)
-      host = Kit.hosts[site][type][color]
-
-      knife = Knife.new site, type, host
-      knife.bootstrap
+      server = Server.new site, type, color
+      server.bootstrap
     end
 
     desc 'ssh SITE TYPE COLOR', 'ssh to the host'
@@ -98,9 +84,9 @@ module Kit
 
     desc 'cook SITE TYPE COLOR', 'run chef recipes on host'
     def cook(site, type, color)
-      host = Kit.hosts[site][type][color]
-      Kit.copy_node_config(site, type, host['ip'])
-      exec "bundle exec knife solo cook ubuntu@#{host['ip']} -i ~/.ssh/app-ssh.pem"
+      server = Server.new site, type, color
+      Kit.copy_node_config(site, type, server.ip)
+      server.cook
     end
 
     desc 'deploy SITE TYPE COLOR', 'run capistrano deploy scripts'
@@ -111,15 +97,15 @@ module Kit
 
     desc 'browse SITE TYPE COLOR', 'open browser to show host'
     def browse(site, type, color = :red)
-      host = Kit.hosts[site][type][color]
-      exec "open 'http://#{host['ip']}:8081'"
+      server = Server.new site, type, color
+      exec "open 'http://#{server.ip}:8081'"
     end
 
     desc 'image SITE TYPE COLOR', 'make a bootable image of a running server'
     def image(site, type, color = 'red')
-      host = Kit.hosts[site][type][color]
-      image = Amazon.image(site, type, color, host)
-      puts "Created image #{image}"
+      server = Server.new site, type, color
+      id = server.image
+      puts "Created image #{id}"
     end
 
     desc 'promote_image SITE TYPE IMAGE', 'configure all non-build instances to use new image'
