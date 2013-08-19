@@ -1,12 +1,7 @@
 {
   "run_list": [
     "role[linux]",
-    "role[app]",
-    "recipe[company::development_environment]",
-    "recipe[company::ruby_dependencies]",
-    "recipe[ruby_build]",
-    "recipe[company::app_user]",
-    "recipe[rbenv::user]",
+    "role[worker]",
     "recipe[company::app_chairman_ubuntu]"
   ]
 }

@@ -1,36 +1,20 @@
 {
-  "name": "app",
-  "description": "",
+  "name": "worker",
+  "description": "Stuff needed for a worker (importer, etc) to run",
   "json_class": "Chef::Role",
   "chef_type": "role",
 
   "run_list": [
     "recipe[company::ruby_app]",
-    "recipe[company::app_app]",
     "recipe[ruby_build]",
-    "recipe[company::app_user]",
-    "recipe[rbenv::user]",
-    "recipe[company::ruby]",
-    "recipe[company::app_packages]",
-    "recipe[company::github]"
+    "recipe[rbenv::user]"
   ],
 
   "override_attributes": {
-    "ssh_keys": {
-      "app": "dkastner"
-    },
-
-    "postgresql": {
-      "password": {
-        "postgres": "postgres",
-        "app": "app"
-      }
-    },
-
     "authorization": {
       "sudo": {
         "groups": ["admin", "sysadmin"],
-        "users": ["app","ubuntu"],
+        "users": ["ubuntu"],
         "passwordless": "true"
       }
     },
@@ -39,8 +23,8 @@
       "rubies": ["1.9.3-p362"],
       "user_installs": [
         {
-          "user": "app",
-          "home": "/home/app",
+          "user": "ubuntu",
+          "home": "/home/ubuntu",
           "rubies" : ["1.9.3-p362"],
           "user_rubies" : "1.9.3-p362",
           "global" : "1.9.3-p362",

@@ -22,7 +22,6 @@ module Kit
         logger.info "Creating instance #{server.id}"
         server.create_instance
         server.bootstrap
-        server.upload_public_key
       end
 
       if options.deploy

@@ -9,7 +9,7 @@ module Kit
       knife.upload_secret
     end
 
-    KNIFE_SECRET_PATH = '~/.ssh/knife.pem'
+    KNIFE_SECRET_PATH = '~/.ssh/app-knife.pem'
 
     attr_accessor :site, :type, :host
 
