@@ -144,10 +144,6 @@ module Kit
       knife.bootstrap
     end
 
-    def upload_public_key
-      shellout "bundle exec knife solo cook -o company:app_user ubuntu@#{ip} -i ~/.ssh/app-ssh.pem"
-    end
-
     def cook
       shellout "bundle exec knife solo cook ubuntu@#{ip} -i ~/.ssh/app-ssh.pem"
     end
