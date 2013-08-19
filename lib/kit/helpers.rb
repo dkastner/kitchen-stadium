@@ -24,9 +24,11 @@ module Kit
 
     def shellout(cmd)
       result = nil
+      logger = Logger.new(STDOUT)
       IO.popen cmd do |io|
         while line = io.gets
-          log += line
+          self.log += line if respond_to?(:log)
+          logger.info line
         end
         io.close
         result = $?.to_i
