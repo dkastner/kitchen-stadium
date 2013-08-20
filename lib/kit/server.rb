@@ -105,7 +105,7 @@ module Kit
         self.instance_id = SmartOS::Ubuntu.create_instance site, type, config
       else
         self.instance_id = Amazon.create_instance self
-        self.ip = `kit list_instances amazon | grep #{instance_id} | awk '{print $2;}'`.chomp
+        self.ip = `bin/kit list_instances amazon | grep #{instance_id} | awk '{print $2;}'`.chomp
       end
 
       save if ip

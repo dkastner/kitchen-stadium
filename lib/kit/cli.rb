@@ -126,13 +126,13 @@ module Kit
       host = Kit.hosts[site][type][color]
       report "Deleting server #{instance_id}..." do
         if host['platform'] =~ /smartos/
-          info = `kit list_instances smartos | grep #{site}-#{type}`
+          info = `bin/kit list_instances smartos | grep #{site}-#{type}`
           puts "Are you sure you want to destroy #{info}?"
           return unless STDIN.gets =~ /y/i
           instance_id = info.split(/\s/).first
           SmartOS.delete_instance instance_id
         else
-          info = `kit list_instances ec2 | grep #{host['ip']}`
+          info = `bin/kit list_instances ec2 | grep #{host['ip']}`
           puts "Are you sure you want to destroy #{info}?"
           return unless STDIN.gets =~ /y/i
           instance_id = info.split(/\s/).first
