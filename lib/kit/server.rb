@@ -167,7 +167,7 @@ module Kit
     end
 
     def destroy!
-      raise "No instance found for #{id}!"
+      raise "No instance found for #{id}!" if instance_id.blank?
       Amazon.delete_instance instance_id
       self.instance_id = nil
       self.ip = nil
