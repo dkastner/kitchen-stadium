@@ -3,7 +3,7 @@ module Kit
     def report(txt, done = 'done!')
       print txt
       STDOUT.flush
-      yield
+      yield if block_given?
       puts done
     end
 

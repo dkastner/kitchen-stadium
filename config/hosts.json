@@ -7,8 +7,7 @@
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem",
-        "ip": "54.227.98.6"
+        "ssh_key": "~/.ssh/app-ssh.pem"
       }
     }
   },
@@ -16,7 +15,7 @@
     "main": {
       "red": {
         "chef_user": "ubuntu",
-        "ip": "54.225.206.236",
+        "static_ip": "54.225.206.236",
         "zone": "us-east-1c",
         "hostname": "stats.app.net",
         "ssh_key": "~/.ssh/stats-ssh.pem",
@@ -36,14 +35,13 @@
       "external": {
         "chef_user": "root",
         "http": "20080",
-        "ip": "99.53.249.242",
         "ssh": "20022",
         "mosh": "20123",
         "platform": "smartos_ubuntu"
       },
       "internal": {
         "chef_user": "root",
-        "ip": "192.168.1.20",
+        "static_ip": "192.168.1.20",
         "platform": "smartos_ubuntu"
       }
     },
@@ -51,7 +49,6 @@
       "red": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
-        "ip": "174.129.141.212",
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
@@ -62,7 +59,6 @@
       "red": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
-        "ip": "23.22.218.123",
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
@@ -72,7 +68,6 @@
       "build": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
-        "ip": "54.226.49.120",
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
@@ -83,7 +78,6 @@
       "red": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
-        "ip": "54.224.143.253",
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
@@ -92,7 +86,6 @@
       "internal": {
         "chef_user": "root",
         "http": "21080",
-        "ip": "192.168.1.21",
         "ssh": "21022",
         "mosh": "21123",
         "platform": "smartos_ubuntu"
@@ -105,8 +98,7 @@
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem",
-        "ip": "50.16.21.189"
+        "ssh_key": "~/.ssh/app-ssh.pem"
       },
       "build": {
         "chef_user": "ubuntu",
@@ -115,14 +107,13 @@
         "instance_type": "t1.micro",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
-        "ip": "54.226.129.78",
         "image": "ami-62afee0b"
       }
     },
     "solr": {
       "blue": {
         "chef_user": "ubuntu",
-        "ip": "54.224.139.132",
+        "static_ip": "54.224.139.132",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
         "security_groups": "sshd,app-catalog",
@@ -131,7 +122,7 @@
       },
       "red": {
         "chef_user": "ubuntu",
-        "ip": "107.20.247.164",
+        "static_ip": "107.20.247.164",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
         "security_groups": "sshd",
@@ -140,14 +131,14 @@
       },
       "internal": {
         "chef_user": "root",
-        "ip": "192.168.1.30",
+        "static_ip": "192.168.1.30",
         "platform": "smartos_ubuntu"
       }
     },
     "redis": {
       "blue": {
         "chef_user": "ubuntu",
-        "ip": "54.225.205.218",
+        "static_ip": "54.225.205.218",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
         "security_groups": "sshd",
@@ -155,7 +146,7 @@
       },
       "red": {
         "chef_user": "ubuntu",
-        "ip": "107.20.247.164",
+        "static_ip": "107.20.247.164",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
         "security_groups": "sshd",

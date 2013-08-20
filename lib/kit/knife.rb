@@ -50,5 +50,9 @@ module Kit
 
       shellout cmd
     end
+
+    def cook(ip)
+      shellout "bundle exec knife solo cook ubuntu@#{ip} -i ~/.ssh/app-ssh.pem"
+    end
   end
 end
