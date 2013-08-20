@@ -21,7 +21,8 @@ module Kit
       if options.create
         logger.info "Creating instance #{server.id}"
         server.create_instance
-        server.bootstrap
+        result = server.bootstrap
+        failout server, "Failed to bootstrap #{server.id}" unless result
       end
 
       if options.deploy
@@ -34,9 +35,7 @@ module Kit
           campfire.speak ":tada: Allez cuisine! Chairman launched #{server.id} :tada:"
           campfire.play 'tada'
         else
-          campfire.speak "FAILURE Chairman tried to launch #{server.id}"
-          campfire.play 'drama'
-          campfire.speak server.log
+          failout server, "Deploy was unsuccessful"
         end
       end
 
@@ -93,6 +92,14 @@ module Kit
           :token => 'TOKEN'
 
         @campfire = lobby.rooms.first
+      end
+
+      def failout(server, message)
+        campfire.speak "FAILURE Chairman tried to launch #{server.id}"
+        campfire.play 'drama'
+        campfire.speak server.log
+        server.destroy!
+        raise message
       end
     end
   end
