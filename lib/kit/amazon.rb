@@ -61,7 +61,7 @@ module Kit
     end
 
     def self.instance_id(host_ip)
-      info = `kit list_instances ec2 | grep #{host_ip}`
+      info = `bin/kit list_instances ec2 | grep #{host_ip}`
       info.split(/\s/).first
     end
   end
