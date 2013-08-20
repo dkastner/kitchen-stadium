@@ -8,7 +8,7 @@
         "instance_type": "t1.micro",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
-        "ip": "107.21.140.57"
+        "ip": "54.227.98.6"
       }
     }
   },
