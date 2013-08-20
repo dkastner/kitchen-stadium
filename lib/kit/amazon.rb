@@ -24,8 +24,8 @@ module Kit
       instance_type = server.instance_type
       key = KEY_PAIRS[server.site] || server.site
 
-      cmd = "bundle exec knife ec2 server create -f #{server.instance_type} -I #{server.image} -Z #{server.zone} -S #{key} -G #{server.security_groups} -N #{server.site}-#{server.type}-#{server.color} --ssh-user=#{server.user} -i #{server.ssh_key}"
-      cmd += "--elastic-ip #{server.ip}" if server.ip
+      cmd = "bundle exec knife ec2 server create -f #{server.instance_type} -I #{server.image} -Z #{server.zone} -S #{key} -G #{server.security_groups} -N #{server.instance_name} --ssh-user=#{server.user} -i #{server.ssh_key}"
+      cmd += "--elastic-ip #{server.static_ip}" if server.static_ip
 
       puts cmd
       cmd_data = sh cmd
@@ -40,10 +40,6 @@ module Kit
 
     def self.delete_instance(instance_id)
       puts `knife ec2 server delete #{instance_id} -y`
-    end
-
-    def self.list_instances
-      puts `knife ec2 server list`
     end
 
     def self.image(server)
@@ -61,8 +57,8 @@ module Kit
     end
 
     def self.instance_id(host_ip)
-      info = `bin/kit list_instances ec2 | grep #{host_ip}`
-      info.split(/\s/).first
+      server = ServerList.find_by_ip(host_ip)
+      server.instance_id
     end
   end
 end

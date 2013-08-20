@@ -1,5 +1,7 @@
 require 'kit'
+require 'kit/amazon'
 require 'kit/knife'
+require 'kit/smart_os'
 
 module Kit
   class Server
@@ -10,7 +12,20 @@ module Kit
       inspire_www_latest: 'ami-328a165b'
     }
 
-    attr_accessor :site, :type, :color, :instance_id, :ip, :log
+    def self.find_by_ip(ip)
+      found = nil
+      Kit.hosts.each do |site, types|
+        types.each do |type, hosts|
+          hosts.each do |color, data|
+            found = Server.new(site, type, color) if data['static_ip'] == ip
+          end
+        end
+      end
+      found
+    end
+
+    attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
+      :created_at, :status, :static_ip
 
     def initialize(site, type, color)
       self.site = site
@@ -38,16 +53,20 @@ module Kit
       end
     end
 
-    def ip
-      @ip ||= config['ip']
-    end
-    def ip=(val)
-      @ip = val
-      config['ip'] = val
-    end
-
     def platform
       config['platform'].to_sym
+    end
+    def platform_helper
+      case platform
+      when :amazon
+        Amazon
+      when :smartos_smartmachine then
+        SmartOS::SmartMachine
+      when :smartos_ubuntu then
+        SmartOS::Ubuntu
+      else
+        Amazon
+      end
     end
 
     def image
@@ -63,7 +82,7 @@ module Kit
     end
 
     def zone
-      config['zone']
+      @zone ||= config['zone']
     end
 
     def security_groups
@@ -82,10 +101,22 @@ module Kit
       config['chef_user']
     end
 
+    def uptime
+      if created_at
+        hours = (Time.now.to_i - created_at.to_i) / 60 / 60
+        mins = ((Time.now.to_i - created_at.to_i) / 60) - (hours * 60)
+        "#{hours}h#{mins}m"
+      end
+    end
+
     def instance_id
       @instance_id ||= config['instance_id'] ||
         find_instance_id_by_ip ||
         find_instance_id_by_label
+    end
+
+    def instance_name
+      [site, type, color].join('-')
     end
 
     def find_instance_id_by_ip
@@ -95,24 +126,28 @@ module Kit
     def find_instance_id_by_label
     end
 
+    def status_line
+      [site, type, color, status, ip, instance_id, uptime]
+    end
+
+    def update_info!(real_server)
+      self.instance_id = real_server.id
+      self.ip = real_server.public_ip_address
+      self.zone = real_server.availability_zone
+      self.created_at = real_server.created_at
+      self.status = real_server.state
+    end
+
     def create_instance
-      self.ip = nil
-
-      case platform
-      when :smartos_smartmachine then
-        self.instance_id = SmartOS::SmartMachine.create_instance site, type, config
-      when :smartos_ubuntu then
-        self.instance_id = SmartOS::Ubuntu.create_instance site, type, config
-      else
-        self.instance_id = Amazon.create_instance self
-        self.ip = `bin/kit list_instances amazon | grep #{instance_id} | awk '{print $2;}'`.chomp
-      end
-
-      save if ip
+      self.instance_id = platform_helper.create_instance site, type, config
     end
 
     def instantiated?
       !instance_id.nil?
+    end
+
+    def running?
+      status == 'running'
     end
 
     def wait
@@ -145,7 +180,7 @@ module Kit
     end
 
     def cook
-      shellout "bundle exec knife solo cook ubuntu@#{ip} -i ~/.ssh/app-ssh.pem"
+      knife.cook ip
     end
 
     def deploy
@@ -167,11 +202,10 @@ module Kit
     end
 
     def destroy!
-      raise "No instance found for #{id}!" if instance_id.blank?
-      Amazon.delete_instance instance_id
-      self.instance_id = nil
-      self.ip = nil
-      save
+      if instance_id.nil? || instance_id == ''
+        raise "No instance found for #{id}!"
+      end
+      platform_helper.delete_instance instance_id
     end
   end
 end

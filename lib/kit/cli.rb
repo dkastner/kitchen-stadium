@@ -5,6 +5,7 @@ require 'kit/amazon'
 require 'kit/helpers'
 require 'kit/knife'
 require 'kit/server'
+require 'kit/server_list'
 require 'kit/smart_os'
 
 module Kit
@@ -19,18 +20,12 @@ module Kit
 
     desc 'list', 'list all hosts'
     def list
-      require 'terminal-table'
-      items = []
-      items << ['Site', 'Type', 'Color', 'IP']
-      Kit.hosts.each do |site, types|
-        types.each do |type, hosts|
-          hosts.each do |name, data|
-            items << [site, type, name, data['ip']]
-          end
-        end
-      end
-      table = Terminal::Table.new :rows => items
-      puts table
+      ServerList.formatted :all
+    end
+
+    desc 'running', 'list running instances'
+    def running
+      ServerList.formatted :running
     end
 
     desc 'create_instance SITE TYPE COLOR',
@@ -53,15 +48,6 @@ module Kit
       end
     end
 
-    desc 'list_instances PLATFORM', 'list running instances'
-    def list_instances(platform)
-      if platform =~ /amazon/ || platform =~ /ec2/
-        Amazon.list_instances
-      else
-        SmartOS.list_instances
-      end
-    end
-
     desc 'bootstrap SITE TYPE COLOR [IP]', 'run chef recipes on host'
     def bootstrap(site, type, color, ip = nil)
       server = Server.new site, type, color
@@ -70,13 +56,12 @@ module Kit
 
     desc 'ssh SITE TYPE COLOR', 'ssh to the host'
     def ssh(site, type, color, user = nil)
-      host = Kit.hosts[site][type][color]
-      user ||= host['user'] || 'ubuntu'
-      use_ssh_key = (user == 'ubuntu')
+      server = choose_server(site, type, color, 'connect to')
+      use_ssh_key = (server.user == 'ubuntu')
 
       cmd = 'ssh'
-      cmd += " -i #{host['ssh_key']}" if host['ssh_key'] && use_ssh_key
-      cmd += " #{user}@#{host['ip']}"
+      cmd += " -i #{server.ssh_key}" if server.ssh_key && use_ssh_key
+      cmd += " #{server.user}@#{server.ip}"
       puts cmd
       exec cmd
     end
@@ -123,21 +108,9 @@ module Kit
 
     desc 'destroy SITE TYPE COLOR', 'delete the instance'
     def destroy(site, type, color)
-      host = Kit.hosts[site][type][color]
-      report "Deleting server #{instance_id}..." do
-        if host['platform'] =~ /smartos/
-          info = `bin/kit list_instances smartos | grep #{site}-#{type}`
-          puts "Are you sure you want to destroy #{info}?"
-          return unless STDIN.gets =~ /y/i
-          instance_id = info.split(/\s/).first
-          SmartOS.delete_instance instance_id
-        else
-          info = `bin/kit list_instances ec2 | grep #{host['ip']}`
-          puts "Are you sure you want to destroy #{info}?"
-          return unless STDIN.gets =~ /y/i
-          instance_id = info.split(/\s/).first
-          Amazon.delete_instance instance_id
-        end
+      server = choose_server(site, type, color, 'destroy', true)
+      report "Deleting server #{server.id}..." do
+        server.destroy!
       end
     end
 
@@ -163,6 +136,24 @@ module Kit
     no_commands do
       def logger
         @logger ||= Logger.new(STDOUT)
+      end
+
+      def choose_server(site, type, color, action, confirm = false)
+        choices = ServerList.find_by_name site, type, color
+
+        if choices.length > 1
+          puts "Please choose a host to #{action}:"
+          ServerList.formatted(choices, numbered: true)
+          choice = STDIN.gets 
+          choices[choice.to_i]
+        else
+          server = choices.first
+          if confirm
+            puts "Are you sure you want to #{action} #{server.id}?"
+            return unless STDIN.gets =~ /y/i
+          end
+          server
+        end
       end
     end
   end
