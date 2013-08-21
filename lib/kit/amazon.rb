@@ -1,64 +1,125 @@
-require 'kit/helpers'
 require 'fog'
 
 module Kit
   module Amazon
-    extend Kit::Helpers
-
     KEY_PAIRS = {
       'kitchen-stadium' => 'app-catalog',
       'app' => 'app-catalog',
       'inspire' => 'inspire-www'
     }
 
+    AMIS = {
+      u1204_64_us_east: 'ami-fd20ad94',
+      inspire_www_latest: 'ami-328a165b'
+    }
+
     def self.aws
-      @aws ||= Fog::Compute.new({
+      return @aws unless @aws.nil?
+
+      @aws = Fog::Compute.new({
         :provider                 => 'AWS',
         :aws_access_key_id        => ENV['AWS_ACCESS_KEY_ID'],
         :aws_secret_access_key    => ENV['AWS_SECRET_ACCESS_KEY']
       })
+      Fog.credentials.merge!({
+        private_key_path: "#{ENV['HOME']}/.ssh/app-ssh.pem",
+        public_key_path: "#{ENV['HOME']}/.ssh/app-ssh.pub"
+      })
+
+      @aws
     end
 
+    def aws_server
+      @aws_server ||= Amazon.aws.servers.find { |s| s.id == instance_id }
+    end
+    def aws_server=(val)
+      @aws_server = val
+    end
 
-    def self.create_instance(server)
-      instance_type = server.instance_type
-      key = KEY_PAIRS[server.site] || server.site
-
-      cmd = "bundle exec knife ec2 server create -f #{server.instance_type} -I #{server.image} -Z #{server.zone} -S #{key} -G #{server.security_groups} -N #{server.instance_name} --ssh-user=#{server.user} -i #{server.ssh_key}"
-      cmd += "--elastic-ip #{server.static_ip}" if server.static_ip
-
-      puts cmd
-      cmd_data = sh cmd
-      puts cmd_data
-
-      instance_id = if item = cmd_data.split(/:/).last
-        item.chomp
+    #def wait
+      #aws_server.wait
+    #end
+    def wait
+      ip = static_ip
+      report "Waiting for server #{ip}", 'ready!' do
+        waiting = true
+        while waiting
+          status = ''
+          cmd = "ssh -y"
+          cmd += " -i #{ssh_key}" if ssh_key
+          cmd += %{ -o "ConnectTimeout=5" -o "StrictHostKeyChecking=false" #{chef_user}@#{ip} "echo OK"}
+          IO.popen(cmd) do |ssh|
+            status += ssh.gets.to_s
+          end
+          if waiting = (status !~ /OK/)
+            sleep 1
+          end
+          dot
+        end
       end
-
-      instance_id
+      yield if block_given?
     end
 
-    def self.delete_instance(instance_id)
-      puts `knife ec2 server delete #{instance_id} -y`
+    def create_instance(default_image = true)
+      key = KEY_PAIRS[site] || site
+      image = default_image ? AMIS[:u1204_64_us_east] : image
+      image ||= AMIS[:u1204_64_us_east]
+
+      attrs = {
+        instance_type: instance_type,
+        image_id: image,
+        availability_zone: zone,
+        security_groups: security_groups,
+        tags: { 'Name' => instance_name },
+        username: user,
+        key_name: key
+      }
+      attrs[:elastic_ip] = static_ip if static_ip
+
+      self.aws_server = Amazon.aws.servers.bootstrap attrs
+
+      update_info!(aws_server)
+    end
+    def launch_image
+      create_instance(false)
     end
 
-    def self.image(server)
-      image_name = "#{server.id}-#{Time.now.strftime('%Y%m%d%h%m%s')}"
+    def update_info!(real_server)
+      self.instance_id = real_server.id
+      self.ip = real_server.public_ip_address
+      self.zone = real_server.availability_zone
+      self.created_at = real_server.created_at
+      self.status = real_server.state
+    end
+
+    def create_image!
+      image_name = "#{id}-#{Time.now.strftime('%Y%m%d%h%m%s')}"
       data = nil
       begin
-        data = aws.create_image(server.instance_id, image_name,
+        data = Amazon.aws.create_image(instance_id, image_name,
                                 'Created automatically by Kitchen Stadium')
       rescue => e
         puts e.response.inspect
         puts e.inspect
         raise e
       end
-      data.body['imageId']
+      self.image = data.body['imageId']
+      save
     end
 
-    def self.instance_id(host_ip)
-      server = ServerList.find_by_ip(host_ip)
-      server.instance_id
+    def destroy!
+      if instance_id.nil? || instance_id == ''
+        raise "No instance found for #{id}!"
+      end
+      puts `knife ec2 server delete #{instance_id} -y`
+    end
+
+
+    def find_instance_id_by_ip
+      if ip
+        server = ServerList.find_by_ip(ip)
+        server.instance_id
+      end
     end
   end
 end

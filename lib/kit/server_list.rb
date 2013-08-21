@@ -1,4 +1,5 @@
 require 'kit/amazon'
+require 'kit/server'
 
 module Kit
   class ServerList < Array
@@ -17,7 +18,7 @@ module Kit
             server = Server.new site, type, color
             if subset = aws_servers.delete(server.instance_name)
               subset.each do |aws_server|
-                s = server.dup
+                s = Server.new site, type, color, platform: :amazon
                 s.update_info!(aws_server)
                 servers << s
               end
@@ -31,7 +32,7 @@ module Kit
       remaining = aws_servers.map do |instance_name, subset|
         subset.each do |aws_server|
           server = Server.find_by_ip aws_server.public_ip_address
-          server ||= Server.new '?', '?', '?'
+          server ||= Server.new('?', '?', '?', platform: :amazon)
           server.update_info!(aws_server)
 
           servers << server
@@ -47,16 +48,12 @@ module Kit
     end
 
     def self.running
-      all.running
+      all.running.sort { |a, b| b.created_at <=> a.created_at }
     end
 
     def self.formatted(method_or_list, options = {})
       require 'terminal-table'
       items = []
-      headers = []
-      headers << 'Selection' if options[:numbered]
-      headers += ['Site', 'Type', 'Color', 'Status', 'IP', 'ID', 'Uptime']
-      items << headers
 
       list = if method_or_list.is_a?(Symbol)
                send(method_or_list)
@@ -72,8 +69,9 @@ module Kit
         item
       end
 
-      table = Terminal::Table.new :rows => items
-      puts table
+      headings = %w{Site Type Color Status IP ID Uptime}
+      headings.unshift 'Selection' if options[:numbered]
+      puts Terminal::Table.new(rows: items, headings: headings)
     end
 
     def self.find_by_ip(ip)
