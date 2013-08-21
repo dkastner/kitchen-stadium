@@ -5,4 +5,6 @@
   "chef_type": "role",
 
   "run_list": [
-    "recipe[company::app_ubuntu]"
+    "recipe[company::app_development_ubuntu]"
+  ]
+}
