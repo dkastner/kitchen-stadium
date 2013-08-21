@@ -42,16 +42,13 @@ module Kit
       logger.info "Created host #{site}-#{type}-#{color}@#{server.ip} (#{server.instance_id})"
 
       server.register_known_host
-
-      server.wait do
-        server.bootstrap
-      end
+      server.upload_secret
     end
 
     desc 'bootstrap SITE TYPE COLOR [IP]', 'run chef recipes on host'
     def bootstrap(site, type, color, ip = nil)
-      server = Server.new site, type, color
-      server.bootstrap
+      server = choose_server(site, type, color, 'bootstrap')
+      server.bootstrap_chef
     end
 
     desc 'ssh SITE TYPE COLOR', 'ssh to the host'
@@ -60,6 +57,7 @@ module Kit
       use_ssh_key = (server.user == 'ubuntu')
 
       cmd = 'ssh'
+      cmd += %{ -o "StrictHostKeyChecking=false"}
       cmd += " -i #{server.ssh_key}" if server.ssh_key && use_ssh_key
       cmd += " #{server.user}@#{server.ip}"
       puts cmd
@@ -69,15 +67,14 @@ module Kit
 
     desc 'cook SITE TYPE COLOR', 'run chef recipes on host'
     def cook(site, type, color)
-      server = Server.new site, type, color
-      Kit.copy_node_config(site, type, server.ip)
+      server = choose_server(site, type, color, 'cook')
       server.cook
     end
 
     desc 'deploy SITE TYPE COLOR', 'run capistrano deploy scripts'
     def deploy(site, type, color)
-      server = Server.new site, type, color
-      server.deploy
+      servers = choose_server(site, type, color, 'image', multiple: true)
+      servers.map(&:deploy)
     end
 
     desc 'browse SITE TYPE COLOR', 'open browser to show host'
@@ -88,9 +85,11 @@ module Kit
 
     desc 'image SITE TYPE COLOR', 'make a bootable image of a running server'
     def image(site, type, color = 'red')
-      server = Server.new site, type, color
-      id = server.image
-      puts "Created image #{id}"
+      servers = choose_server(site, type, color, 'image', multiple: true)
+      servers.each do |server|
+        server.create_image!
+        puts "Created image #{server.image} of #{server.id}"
+      end
     end
 
     desc 'promote_image SITE TYPE IMAGE', 'configure all non-build instances to use new image'
@@ -107,10 +106,15 @@ module Kit
     end
 
     desc 'destroy SITE TYPE COLOR', 'delete the instance'
+    method_option :override, type: :boolean, default: false, aliases: '-y'
     def destroy(site, type, color)
-      server = choose_server(site, type, color, 'destroy', true)
-      report "Deleting server #{server.id}..." do
-        server.destroy!
+      servers = choose_server(site, type, color, 'destroy',
+                              confirm: true, multiple: true,
+                              override: options[:override])
+      servers.each do |server|
+        report "Deleting server #{server.id}..." do
+          server.destroy!
+        end
       end
     end
 
@@ -138,22 +142,30 @@ module Kit
         @logger ||= Logger.new(STDOUT)
       end
 
-      def choose_server(site, type, color, action, confirm = false)
+      def choose_server(site, type, color, action, options = {})
         choices = ServerList.find_by_name site, type, color
 
-        if choices.length > 1
+        result = if choices.length > 1
           puts "Please choose a host to #{action}:"
           ServerList.formatted(choices, numbered: true)
           choice = STDIN.gets 
-          choices[choice.to_i]
+          if choice =~ /a/ && options[:multiple]
+            choices
+          elsif choice =~ /\d/
+            choice.split(/\s+/).map do |c|
+              choices[c.to_i]
+            end
+          end
         else
           server = choices.first
-          if confirm
+          if options[:confirm] && !options[:override]
             puts "Are you sure you want to #{action} #{server.id}?"
             return unless STDIN.gets =~ /y/i
           end
           server
         end
+
+        options[:multiple] ? Array(result) : result
       end
     end
   end

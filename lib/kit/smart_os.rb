@@ -1,10 +1,8 @@
 require 'net/ssh'
 
 module Kit
-  class SmartOS
-    include Kit::Helpers
-
-    def self.delete_instance(instance_id)
+  module SmartOS
+    def destroy
       Net::SSH.start('houston', 'root') do |ssh|
         puts ssh.exec! "vmadm destroy #{instance_id}"
       end
@@ -16,12 +14,25 @@ module Kit
       end
     end
 
-    attr_accessor :site, :type, :host, :instance_id, :image
-
-    def initialize(site, type, host)
-      self.site = site
-      self.type = type
-      self.host = host
+    def wait
+      ip = static_ip
+      report "Waiting for server #{ip}", 'ready!' do
+        waiting = true
+        while waiting
+          status = ''
+          cmd = "ssh -y"
+          cmd += " -i #{ssh_key}" if ssh_key
+          cmd += %{ -o "ConnectTimeout=5" -o "StrictHostKeyChecking=false" #{chef_user}@#{ip} "echo OK"}
+          IO.popen(cmd) do |ssh|
+            status += ssh.gets.to_s
+          end
+          if waiting = (status !~ /OK/)
+            sleep 1
+          end
+          dot
+        end
+      end
+      yield if block_given?
     end
 
     def create_instance
@@ -40,6 +51,7 @@ module Kit
 
       fail 'Creation failed' if instance_id.nil?
 
+      Kit.copy_node_config(site, type, ip)
       puts "Created host #{instance_id}@#{host['ip']} with image #{image}"
 
       instance_id
@@ -60,7 +72,9 @@ module Kit
       }
     end
 
-    class SmartMachine < SmartOS
+    module SmartMachine 
+      include SmartOS
+
       IMAGE = 'f669428c-a939-11e2-a485-b790efc0f0c1'
 
       ZONES = {
@@ -83,7 +97,7 @@ module Kit
         }
       }
 
-      def self.create_instance(site, type, host)
+      def create_instance
         smartos = new site, type, host
         smartos.create_instance
       end
@@ -101,7 +115,9 @@ module Kit
       end
     end
 
-    class Ubuntu < SmartOS
+    module Ubuntu
+      include SmartOS
+
       IMAGE = 'd2ba0f30-bbe8-11e2-a9a2-6bc116856d85'
 
       ZONES = {
@@ -134,7 +150,7 @@ module Kit
         }
       }
 
-      def self.create_instance(site, type, host)
+      def create_instance
         ubuntu = new site, type, host
         ubuntu.create_instance
       end

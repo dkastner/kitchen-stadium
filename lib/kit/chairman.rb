@@ -11,7 +11,9 @@ module Kit
     method_option :deploy, :type => :boolean, :default => true
     method_option :destroy, :type => :boolean, :default => true
     def launch(site, type, color = 'red')
-      server = Server.new site, type, color
+      #server = Server.new site, type, color
+      server = ServerList.find_by_name(site, type, color).first
+      server ||= Server.new site, type, color
 
       puts 'ALLEZ CUISINE!!!'
       if RUBY_PLATFORM =~ /darwin/ && Random.rand(100) > 90
@@ -20,14 +22,12 @@ module Kit
 
       if options.create
         logger.info "Creating instance #{server.id}"
-        server.create_instance
-        result = server.bootstrap
+        server.launch_image
+        result = server.bootstrap_chef
         failout server, "Failed to bootstrap #{server.id}" unless result
       end
 
       if options.deploy
-        logger.info "Waiting for instance #{server.id} to become available"
-        server.wait
         logger.info "Deploying instance #{server.id}"
         success = server.deploy
 
@@ -70,7 +70,7 @@ module Kit
 
       if options.image
         logger.info "Creating image of instance #{server.id}"
-        server.create_image!
+        server.create_image
         puts "Creating image #{server.image}"
       end
 
@@ -95,9 +95,9 @@ module Kit
       end
 
       def failout(server, message)
-        campfire.speak "FAILURE Chairman tried to launch #{server.id}"
-        campfire.play 'drama'
-        campfire.speak server.log
+        #campfire.speak "FAILURE Chairman tried to launch #{server.id}"
+        #campfire.play 'drama'
+        #campfire.speak server.log
         server.destroy!
         raise message
       end
