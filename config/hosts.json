@@ -52,7 +52,8 @@
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem"
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "image": "ami-5d0f4c34"
       }
     },
     "exporter": {
