@@ -26,34 +26,31 @@ set :use_sudo, false
 ssh_options[:forward_agent] = true
 ssh_options[:keys] = [
   File.join(ENV['HOME'], '.ssh', 'app-ssh.pem')]
-ssh_options[:verbose] = :debug
+#ssh_options[:verbose] = :debug
 ssh_options[:user] = 'ubuntu'
 default_run_options[:pty] = true
 
-set :hosts, JSON.parse(File.read('config/hosts.json'))
+$:.unshift File.expand_path('../../lib', __FILE__)
+require 'kit/server_list'
 
-hosts.each do |site, type_data|
-  task site do
-    set :site, site
+running_servers = Kit::ServerList.running
+
+running_servers.each do |server|
+  task server.site do
+    set :site, server.site
   end
-
-  type_data.each do |type, color_data|
-    task type do
-      set :type, type
-    end
-
-    color_data.each do |color, host_data|
-      task color do
-        set :color, color
-      end
+  task server.type do
+    set :type, server.type
+  end
+  if server.color
+    task server.color do
+      set :color, server.color
     end
   end
 end
 
 
 task :process, role: :indexer do
-  $:.unshift File.expand_path('../../lib', __FILE__)
-  require 'kit/server_list'
   servers = Kit::ServerList.find_by_name site, type, color
   servers.each do |server|
     role server.type.to_sym, server.ip if server.ip
@@ -64,7 +61,9 @@ task :process, role: :indexer do
   when 'indexer'
     run "cd $HOME/indexer && rake index"
   when 'importer'
-    run "cd $HOME/import && rake import"
+    run "cd $HOME/importer && rake import"
+  when 'exporter'
+    run "cd $HOME/exporter && rake export_and_package"
   when 'deal-mailer'
     run "cd $HOME/deal-mailer && rake deals:fetch"
     run "cd $HOME/importer && rake deal_resources"

@@ -34,9 +34,6 @@ module Kit
         cmd += ' --template-file config/joyent-smartmachine.erb'
       end
       shellout cmd
-
-      puts "bundle exec knife solo prepare ubuntu@#{server.ip} -i ~/.ssh/app-ssh.pem"
-      shellout "bundle exec knife solo prepare ubuntu@#{server.ip} -i ~/.ssh/app-ssh.pem"
     end
 
     def cook

@@ -16,8 +16,8 @@ module Kit
     @hosts ||= JSON.parse(File.read(HOSTS_PATH))
   end
 
-  def self.copy_node_config(site, type, ip)
-    source = File.join NODES_PATH, "#{site}-#{type}.json"
+  def self.copy_node_config(site, type, ip, method = 'build')
+    source = File.join NODES_PATH, "#{site}-#{type}-#{method}.json"
     if File.exists?(source)
       FileUtils.cp source, File.join(NODES_PATH, "#{ip}.json")
     end

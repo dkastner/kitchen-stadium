@@ -2,7 +2,6 @@
   "run_list": [
     "role[linux]",
     "role[worker]",
-    "recipe[company::ruby_app]",
     "recipe[company::app_importer_ubuntu]"
   ]
 }

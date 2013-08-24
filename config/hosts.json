@@ -1,7 +1,7 @@
 {
   "kitchen-stadium": {
     "chairman": {
-      "kaga": {
+      "_default": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
@@ -13,21 +13,23 @@
   },
   "stats": {
     "main": {
-      "red": {
+      "_default": {
         "chef_user": "ubuntu",
-        "static_ip": "54.225.206.236",
         "zone": "us-east-1c",
-        "hostname": "stats.app.net",
         "ssh_key": "~/.ssh/stats-ssh.pem",
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "graphiti,graphite,statsd,sshd"
+      },
+      "red": {
+        "hostname": "stats.app.net",
+        "static_ip": "54.225.206.236"
       }
     }
   },
   "app": {
     "database": {
-      "heroku": {
+      "_default": {
         "hostname": "catalog"
       }
     },
@@ -46,18 +48,18 @@
       }
     },
     "indexer": {
-      "red": {
+      "_default": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
-        "image": "ami-5d0f4c34"
+        "image": "ami-33adee5a"
       }
     },
     "exporter": {
-      "red": {
+      "_default": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
@@ -65,22 +67,14 @@
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-c286c7ab"
-      },
-      "build": {
-        "chef_user": "ubuntu",
-        "zone": "us-east-1c",
-        "platform": "u1204_64_us_east",
-        "instance_type": "t1.micro",
-        "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem"
       }
     },
     "importer": {
-      "red": {
+      "_default": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
-        "instance_type": "t1.micro",
+        "instance_type": "m1.small",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem"
       },
@@ -93,15 +87,7 @@
       }
     },
     "deal-mailer": {
-      "red": {
-        "chef_user": "ubuntu",
-        "zone": "us-east-1c",
-        "platform": "u1204_64_us_east",
-        "instance_type": "t1.micro",
-        "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem"
-      },
-      "build": {
+      "_default": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
@@ -112,23 +98,19 @@
       }
     },
     "solr": {
-      "blue": {
+      "_default": {
         "chef_user": "ubuntu",
-        "static_ip": "54.224.139.132",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
         "security_groups": "sshd,app-catalog",
         "instance_type": "m1.small",
         "ssh_key": "~/.ssh/app-ssh.pem"
       },
+      "blue": {
+        "static_ip": "54.224.139.132"
+      },
       "red": {
-        "chef_user": "ubuntu",
-        "static_ip": "107.20.247.164",
-        "zone": "us-east-1c",
-        "platform": "u1204_64_us_east",
-        "security_groups": "sshd",
-        "instance_type": "m1.small",
-        "ssh_key": "~/.ssh/app-ssh.pem"
+        "static_ip": "107.20.247.164"
       },
       "internal": {
         "chef_user": "root",
@@ -137,21 +119,18 @@
       }
     },
     "redis": {
-      "blue": {
+      "_default": {
         "chef_user": "ubuntu",
-        "static_ip": "54.225.205.218",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem"
       },
+      "blue": {
+        "static_ip": "54.225.205.218"
+      },
       "red": {
-        "chef_user": "ubuntu",
-        "static_ip": "107.20.247.164",
-        "zone": "us-east-1c",
-        "platform": "u1204_64_us_east",
-        "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem"
+        "static_ip": "107.20.247.164"
       }
     }
   }
