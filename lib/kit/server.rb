@@ -19,8 +19,44 @@ module Kit
       found
     end
 
+    def self.find_color(site, type)
+      list = site == 'kitchen-stadium' ?
+        %w{kaga dacascos} :
+        %w{red orange yellow green blue purple brown white black}
+
+      color = (list - ServerList.running_colors(site, type)).first
+      raise "I'm out of colors!" if color.nil?
+      color
+    end
+
+    def self.from_scratch(site, type, color = nil)
+      color ||= find_color(site, type)
+      server = Server.new site, type, color
+
+      server.create_instance
+      fail "Failed to create instance" unless server.instantiated?
+
+      server.register_known_host
+      server.upload_secret
+
+      server
+    end
+
+    def self.launch(site, type, color = nil)
+      color ||= find_color(site, type)
+      server = Server.new site, type, color
+
+      server.launch_image
+      fail "Failed to create instance" unless server.instantiated?
+
+      server.register_known_host
+      server.upload_secret
+
+      server
+    end
+
     attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
-      :created_at, :status, :static_ip
+      :created_at, :status, :static_ip, :image, :platform
 
     def initialize(site, type, color, attrs = {})
       self.site = site
@@ -44,26 +80,22 @@ module Kit
     end
 
     def config
+      return @config unless @config.nil?
+      
       begin
-        @config ||= Kit.hosts[site][type][color]
+        @config = Kit.hosts[site][type]['_default'].merge(
+          Kit.hosts[site][type][color] || {})
       rescue NoMethodError => e
-        {}
+        @config = {}
       end
     end
 
     def platform
       @platform ||= config['platform'] ? config['platform'].to_sym : nil
     end
-    def platform=(val)
-      @platform = val
-    end
 
     def image
       config['image']
-    end
-    def image=(val)
-      @image = val
-      config['image'] = val
     end
 
     def user
@@ -101,8 +133,8 @@ module Kit
 
     def instance_id
       @instance_id ||= config['instance_id'] ||
-        find_instance_id_by_ip ||
-        find_instance_id_by_label
+      @instance_id ||= find_instance_id_by_ip if respond_to?(:find_instance_id_by_ip)
+      @instance_id ||= find_instance_id_by_label if respond_to?(:find_instance_id_by_label)
     end
 
     def instance_name
@@ -113,7 +145,8 @@ module Kit
     end
 
     def status_line
-      [site, type, color, status, ip, instance_id, uptime]
+      display_color = color == '_default' ? '*' : color
+      [site, type, display_color, status, ip, instance_id, uptime]
     end
 
     def instantiated?
@@ -137,7 +170,6 @@ module Kit
     end
 
     def bootstrap_chef
-      upload_secret
       knife.bootstrap_chef
     end
 
@@ -147,11 +179,6 @@ module Kit
 
     def deploy
       shellout "cap #{site} #{type} #{color} process"
-    end
-
-    def save
-      Kit.update_host(site, type, color, config)
-      true
     end
 
     def register_known_host

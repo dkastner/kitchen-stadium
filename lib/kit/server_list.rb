@@ -31,8 +31,9 @@ module Kit
 
       remaining = aws_servers.map do |instance_name, subset|
         subset.each do |aws_server|
+          site, type, color = instance_name.split('-')
           server = Server.find_by_ip aws_server.public_ip_address
-          server ||= Server.new('?', '?', '?', platform: :amazon)
+          server ||= Server.new(site, type, color, platform: :amazon)
           server.update_info!(aws_server)
 
           servers << server
@@ -76,6 +77,11 @@ module Kit
 
     def self.find_by_ip(ip)
       all.find_by_ip(ip)
+    end
+
+    def self.running_colors(site, type)
+      running.find_all { |s| s.site == site && s.type == type }.
+        map(&:color)
     end
 
     def running

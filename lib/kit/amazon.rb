@@ -18,8 +18,8 @@ module Kit
 
       @aws = Fog::Compute.new({
         :provider                 => 'AWS',
-        :aws_access_key_id        => ENV['AWS_ACCESS_KEY_ID'],
-        :aws_secret_access_key    => ENV['AWS_SECRET_ACCESS_KEY']
+        :aws_access_key_id        => ENV['AWS_ACCESS_KEY'],
+        :aws_secret_access_key    => ENV['AWS_ACCESS_SECRET']
       })
       Fog.credentials.merge!({
         private_key_path: "#{ENV['HOME']}/.ssh/app-ssh.pem",
@@ -82,6 +82,8 @@ module Kit
     end
     def launch_image
       create_instance(false)
+      register_known_host
+      upload_secret
     end
 
     def update_info!(real_server)
@@ -103,15 +105,20 @@ module Kit
         puts e.inspect
         raise e
       end
+
       self.image = data.body['imageId']
-      save
+
+      data = Kit.hosts[site][type]['_default'].merge 'image' => image
+      Kit.update_host(site, type, '_default', data)
+
+      image
     end
 
     def destroy!
       if instance_id.nil? || instance_id == ''
         raise "No instance found for #{id}!"
       end
-      puts `knife ec2 server delete #{instance_id} -y`
+      aws_server.destroy
     end
 
 

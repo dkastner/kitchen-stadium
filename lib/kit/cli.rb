@@ -28,21 +28,18 @@ module Kit
       ServerList.formatted :running
     end
 
-    desc 'create_instance SITE TYPE COLOR',
-      'create a new ec2 instance, e.g. `app solr red'
-    def create_instance(site, type, color)
-      server = Server.new site, type, color
-
-      report 'Creating instance...' do
-        server.create_instance
-      end
-
-      fail "Failed to create instance" unless server.instantiated?
-
+    desc 'build SITE TYPE [COLOR]',
+      'build a new instance from scratch, e.g. `app solr` or `app solr red`'
+    def create_instance(site, type, color = nil)
+      server = Server.from_scratch logger, site, type, color
       logger.info "Created host #{site}-#{type}-#{color}@#{server.ip} (#{server.instance_id})"
+    end
 
-      server.register_known_host
-      server.upload_secret
+    desc 'launch SITE TYPE [COLOR]',
+      'launch a new instance from an image, e.g. `app solr` or `app solr red`'
+    def create_instance(site, type, color = nil)
+      server = Server.launch site, type, color
+      logger.info "Created host #{site}-#{type}-#{server.color}@#{server.ip} (#{server.instance_id})"
     end
 
     desc 'bootstrap SITE TYPE COLOR [IP]', 'run chef recipes on host'
@@ -118,24 +115,6 @@ module Kit
       end
     end
 
-    #desc 'migrate HOST', 'migrate servers to use new statsd server'
-    #def migrate(color = :red)
-      ##report 'Migrating solr...' do
-        ##`cd ~/stats; heroku run WEBSOLR_URL=http://#{host}:8080/solr rake sunspot:reindex[100,Resource]`
-      ##end
-
-      #STATSD_CLIENTS.each do |client|
-        #report 'Configuring statsd clients' do
-          #`heroku config:set WEBSOLR_URL=http://#{IPS[color.to_sym]}:8080/solr -a #{client}`
-        #end
-      #end
-
-      #COLLECTD_CLIENTS.each do |client|
-        #report 'Configuring collectd clients' do
-          #`heroku config:set REDIS_HOST=#{IPS[color.to_sym]}:6379 -a #{client}`
-        #end
-      #end
-    #end
 
     no_commands do
       def logger
@@ -151,10 +130,12 @@ module Kit
           choice = STDIN.gets 
           if choice =~ /a/ && options[:multiple]
             choices
-          elsif choice =~ /\d/
+          elsif choice =~ /\d/ && options[:multiple]
             choice.split(/\s+/).map do |c|
               choices[c.to_i]
             end
+          else
+            choices[choice.to_i]
           end
         else
           server = choices.first
