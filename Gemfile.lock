@@ -69,6 +69,14 @@ GEM
       signet (>= 0.4.4)
       uuidtools (>= 2.1.0)
     hashie (1.2.0)
+    heroku (2.40.0)
+      heroku-api (~> 0.3.7)
+      launchy (>= 0.3.2)
+      netrc (~> 0.7.7)
+      rest-client (~> 1.6.1)
+      rubyzip
+    heroku-api (0.3.11)
+      excon (~> 0.22.1)
     highline (1.6.19)
     http_parser.rb (0.5.3)
     ipaddress (0.8.0)
@@ -106,6 +114,7 @@ GEM
     net-ssh-multi (1.1)
       net-ssh (>= 2.1.4)
       net-ssh-gateway (>= 0.99.0)
+    netrc (0.7.7)
     nokogiri (1.5.9)
     ohai (6.16.0)
       ipaddress
@@ -118,6 +127,7 @@ GEM
     rest-client (1.6.7)
       mime-types (>= 1.16)
     ruby-hmac (0.4.0)
+    rubyzip (0.9.9)
     signet (0.4.5)
       addressable (>= 2.2.3)
       faraday (~> 0.8.1)
@@ -150,6 +160,7 @@ DEPENDENCIES
   capistrano
   dotenv
   fog
+  heroku
   knife-ec2!
   knife-solo
   knife-solo_data_bag
