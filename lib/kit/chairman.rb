@@ -78,6 +78,29 @@ module Kit
       end
     end
 
+    desc 'exec', 'SITE TYPE COMMAND'
+    method_option :destroy, :type => :boolean, :default => false
+    def exec(site, type, command)
+      logger.info "Creating instance #{site}-#{type}"
+      server = Server.launch site, type, nil
+      result = server.bootstrap_chef(false)
+      failout server, "Failed to bootstrap #{server.id}", options unless result
+
+      logger.info "Deploying instance #{server.id}"
+      success = server.run command
+
+      if success
+        logger.info "Command was unsuccessful"
+      else
+        fail "Command failed"
+      end
+
+      if options.destroy
+        logger.info "Destroying instance #{server.id}"
+        server.destroy!
+      end
+    end
+
     no_commands do
       def logger
         @logger ||= Logger.new(STDOUT)
