@@ -33,7 +33,7 @@ module Kit
       color ||= find_color(site, type)
       server = Server.new site, type, color
 
-      server.create_instance
+      server.create_instance(true)
       fail "Failed to create instance" unless server.instantiated?
 
       server.register_known_host
@@ -82,8 +82,12 @@ module Kit
     def config
       return @config unless @config.nil?
       
+      unless Kit.hosts[site] && Kit.hosts[site][type]
+        raise "Invalid server type #{site}-#{type} specified" 
+      end
+      default_config = Kit.hosts[site][type]['_default']
       begin
-        @config = Kit.hosts[site][type]['_default'].merge(
+        @config = default_config.merge(
           Kit.hosts[site][type][color] || {})
       rescue NoMethodError => e
         @config = {}
@@ -169,8 +173,8 @@ module Kit
       knife.upload_secret
     end
 
-    def bootstrap_chef
-      knife.bootstrap_chef
+    def bootstrap_chef(build = true)
+      knife.bootstrap_chef build
     end
 
     def cook
@@ -179,6 +183,16 @@ module Kit
 
     def deploy
       shellout "cap #{site} #{type} #{color} process"
+    end
+
+    def run(cmd)
+      cmd = if cmd =~ /[;&]/
+              cmd
+            else
+              "rake #{cmd}"
+            end
+
+      shellout %{cap #{site} #{type} #{color} invoke COMMAND="#{cmd}"}
     end
 
     def register_known_host
