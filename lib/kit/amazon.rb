@@ -60,14 +60,14 @@ module Kit
       yield if block_given?
     end
 
-    def create_instance(default_image = true)
+    def create_instance(default_image = false)
       key = KEY_PAIRS[site] || site
-      image = default_image ? AMIS[:u1204_64_us_east] : image
-      image ||= AMIS[:u1204_64_us_east]
+      image_id = default_image ? AMIS[:u1204_64_us_east] : image
+      image_id ||= AMIS[:u1204_64_us_east]
 
       attrs = {
-        instance_type: instance_type,
-        image_id: image,
+        flavor_id: instance_type,
+        image_id: image_id,
         availability_zone: zone,
         security_groups: security_groups,
         tags: { 'Name' => instance_name },
@@ -81,7 +81,7 @@ module Kit
       update_info!(aws_server)
     end
     def launch_image
-      create_instance(false)
+      create_instance
       register_known_host
       upload_secret
     end
