@@ -5,7 +5,7 @@
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
-        "instance_type": "t1.micro",
+        "instance_type": "m1.small",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem"
       }
@@ -52,7 +52,7 @@
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
-        "instance_type": "t1.micro",
+        "instance_type": "m1.small",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-33adee5a"
@@ -63,7 +63,7 @@
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
-        "instance_type": "t1.micro",
+        "instance_type": "m1.small",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-c286c7ab"
@@ -76,7 +76,8 @@
         "platform": "u1204_64_us_east",
         "instance_type": "m1.small",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem"
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "image": "ami-43b8f52a"
       },
       "internal": {
         "chef_user": "root",
@@ -86,15 +87,15 @@
         "platform": "smartos_ubuntu"
       }
     },
-    "deal-mailer": {
+    "deal_mailer": {
       "_default": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
-        "instance_type": "t1.micro",
+        "instance_type": "m1.small",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
-        "image": "ami-62afee0b"
+        "image": "ami-25bcf14c"
       }
     },
     "solr": {
@@ -104,7 +105,8 @@
         "platform": "u1204_64_us_east",
         "security_groups": "sshd,app-catalog",
         "instance_type": "m1.small",
-        "ssh_key": "~/.ssh/app-ssh.pem"
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "image": "ami-b71855de"
       },
       "blue": {
         "static_ip": "54.224.139.132"
