@@ -30,7 +30,7 @@ module Kit
 
     desc 'build SITE TYPE [COLOR]',
       'build a new instance from scratch, e.g. `app solr` or `app solr red`'
-    def create_instance(site, type, color = nil)
+    def build(site, type, color = nil)
       server = Server.from_scratch logger, site, type, color
       logger.info "Created host #{site}-#{type}-#{color}@#{server.ip} (#{server.instance_id})"
     end
