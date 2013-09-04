@@ -51,12 +51,6 @@ end
 
 
 task :process, role: :indexer do
-  servers = Kit::ServerList.find_by_name site, type, color
-  servers.each do |server|
-    role server.type.to_sym, server.ip if server.ip
-  end
-  raise "No servers named '#{site}-#{type}-#{color}' running" if servers.empty?
-
   case type
   when 'indexer'
     run "cd $HOME/indexer && rake index"
@@ -64,9 +58,20 @@ task :process, role: :indexer do
     run "cd $HOME/importer && rake import"
   when 'exporter'
     run "cd $HOME/exporter && rake export_and_package"
-  when 'deal-mailer'
+  when 'deal_mailer'
     run "cd $HOME/deal-mailer && rake deals:fetch"
     run "cd $HOME/importer && rake deal_resources"
     run "cd $HOME/deal-mailer && rake deals:activate"
   end
 end
+
+task :set_roles do
+  servers = Kit::ServerList.find_by_name site, type, color
+  servers.each do |server|
+    role server.type.to_sym, server.ip if server.ip
+  end
+  raise "No servers named '#{site}-#{type}-#{color}' running" if servers.empty?
+end
+
+before :invoke, :set_roles
+before :process, :set_roles

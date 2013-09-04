@@ -24,11 +24,14 @@ module Kit
       end
     end
 
-    def bootstrap_chef
+    def bootstrap_chef(build = true)
       destination_path = '/tmp/encrypted_data_bag_secret'
       secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
 
-      cmd = "bundle exec knife solo bootstrap #{server.user}@#{server.ip} -N #{server.site}-#{server.type}"
+      node_type = "#{server.site}-#{server.type}"
+      node_type = node_type + "-launch" unless build
+
+      cmd = "bundle exec knife solo bootstrap #{server.user}@#{server.ip} -N #{node_type}"
       cmd += " -i #{server.ssh_key}" if server.ssh_key
       if server.platform.to_s == 'smartos_smartmachine'
         cmd += ' --template-file config/joyent-smartmachine.erb'

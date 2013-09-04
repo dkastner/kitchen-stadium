@@ -1,7 +1,5 @@
 {
   "run_list": [
-    "role[linux]",
-    "role[worker]",
     "recipe[company::app_exporter_ubuntu]"
   ]
 }

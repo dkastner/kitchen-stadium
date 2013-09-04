@@ -1,0 +1,5 @@
+{
+  "run_list": [
+    "recipe[company::app_importer_ubuntu]"
+  ]
+}

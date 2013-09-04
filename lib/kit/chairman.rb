@@ -21,8 +21,8 @@ module Kit
       if options.create
         logger.info "Creating instance #{site}-#{type}"
         server = Server.launch site, type, color
-        result = server.bootstrap_chef
-        failout server, "Failed to bootstrap #{server.id}" unless result
+        result = server.bootstrap_chef(false)
+        failout server, "Failed to bootstrap #{server.id}", options unless result
       end
 
       if options.deploy
@@ -33,7 +33,7 @@ module Kit
           campfire.speak ":tada: Allez cuisine! Chairman launched #{server.id} :tada:"
           campfire.play 'tada'
         else
-          failout server, "Deploy was unsuccessful"
+          failout server, "Deploy was unsuccessful", options
         end
       end
 
@@ -53,22 +53,17 @@ module Kit
       server = Server.new site, type, 'build'
 
       if options.create
-        logger.info "Creating instance #{server.id}"
-        server.create_instance
+        logger.info "Creating instance #{site}-#{type}"
+        server = Server.from_scratch(site, type, 'build')
       end
 
       if options.bootstrap
-        server.bootstrap
-      end
-
-      if options.cook
-        logger.info "Cooking instance #{server.id}"
-        server.cook
+        server.bootstrap_chef
       end
 
       if options.image
         logger.info "Creating image of instance #{server.id}"
-        server.create_image
+        server.create_image!
         puts "Creating image #{server.image}"
       end
 
@@ -115,11 +110,11 @@ module Kit
         @campfire = lobby.rooms.first
       end
 
-      def failout(server, message)
+      def failout(server, message, options)
         campfire.speak "FAILURE Chairman tried to launch #{server.id}"
         campfire.play 'drama'
         campfire.speak server.log
-        server.destroy!
+        server.destroy! if options.destroy
         raise message
       end
     end

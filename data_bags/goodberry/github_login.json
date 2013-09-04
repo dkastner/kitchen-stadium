@@ -1,1 +1,21 @@
-{"name":"data_bag_item_app_github_login","json_class":"Chef::DataBagItem","chef_type":"data_bag_item","data_bag":"app","raw_data":{"id":"github_login","username":{"encrypted_data":"bfMjaTlR9XA63Ixz4iqQOT4H2KlKfXyDfqKc2Xf/sx8=\n","iv":"x6XxfOe0uSuiyV2OOAFJlw==\n","version":1,"cipher":"aes-256-cbc"},"password":{"encrypted_data":"aC0xOt0QrdvJvkw7QKHxOmuP9K6tIft0gAaLPqzldNEqhwTqfkwZApOdemEF\nt5tK\n","iv":"HKfxs9B2ZEfsn9pfH4D4IQ==\n","version":1,"cipher":"aes-256-cbc"}}}
+{
+  "name": "data_bag_item_app_github_login",
+  "json_class": "Chef::DataBagItem",
+  "chef_type": "data_bag_item",
+  "data_bag": "app",
+  "raw_data": {
+    "id": "github_login",
+    "username": {
+      "encrypted_data": "z9jVGike9sB8puEj1RcbEEDF9WXQcrCCXcB88+s7kAM=\n",
+      "iv": "XIlJhu7DKPC5/HYEnF5m9w==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    },
+    "password": {
+      "encrypted_data": "YWzwlVfITuSHQwO918F/DSFIhG9gf9DujCYJPj/oMP59v5vnkiEb6LwQh/KZ\nl6HP\n",
+      "iv": "5wwumfO7Ysg86bTJcky+ng==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    }
+  }
+}

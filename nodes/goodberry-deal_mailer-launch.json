@@ -1,0 +1,6 @@
+{
+  "run_list": [
+    "recipe[company::app_importer_ubuntu]",
+    "recipe[company::app_deal_mailer_ubuntu]"
+  ]
+}
