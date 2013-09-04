@@ -1,2 +1,5 @@
 cookbooks
 tmp
+.env*
+bin
+.bundle*
