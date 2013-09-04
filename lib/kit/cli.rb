@@ -15,6 +15,7 @@ module Kit
     attr_accessor :host, :instance_id, :execution_mode
 
     APP_SOLR_CLIENTS = %w{app-admin app-catalog}
+    APP_DB_CLIENTS = %w{app-admin app-catalog app-accounts app-checkout app-deals}
     STATSD_CLIENTS = %w{stats}
     COLLECTD_CLIENTS = %w{app-solr}
 
@@ -115,6 +116,24 @@ module Kit
       end
     end
 
+    desc 'set_redis SITE TYPE COLOR', 'set new redis server'
+    def set_redis(site, type, color)
+      set_server_env(site, type, color, 'REDIS_HOST', %w{app-accounts
+        app-admin app-checkout app-deals app-mailer})
+    end
+
+    desc 'set_solr SITE TYPE COLOR', 'set new solr server'
+    def set_solr(site, type, color)
+      set_server_env(site, type, color, 'WEBSOLR_URL', %w{app-catalog})
+    end
+
+    desc 'get_db', 'get configured database urls'
+    def get_db
+      APP_DB_CLIENTS.each do |site|
+        url = `heroku config --app #{site} | grep -e ^DATABASE_URL`
+        puts "#{site}: #{url.chomp}"
+      end
+    end
 
     no_commands do
       def logger
@@ -147,6 +166,22 @@ module Kit
         end
 
         options[:multiple] ? Array(result) : result
+      end
+
+      def set_server_env(site, type, color, var, clients)
+        server = choose_server(site, type, color, 'choose server')
+
+        value = case var
+               when 'REDIS_HOST' then
+                 "#{server.ip}:6379"
+               when 'WEBSOLR_URL' then
+                 "http://#{server.ip}:8080/solr"
+               end
+
+        clients.each do |app|
+          logger.info "#{app} #{var} #{server.ip}"
+          logger.info `heroku config:set #{var}=#{value} --app #{app}`
+        end
       end
     end
   end
