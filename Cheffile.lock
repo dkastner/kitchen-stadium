@@ -1,81 +1,85 @@
 SITE
   remote: http://community.opscode.com/api/v1
   specs:
-    apache2 (1.6.2)
-    apt (1.10.0)
-    aws (0.101.0)
-    build-essential (1.4.0)
+    apache2 (1.7.0)
+    apt (2.1.1)
+    aws (0.101.4)
+    build-essential (1.4.2)
     chef_handler (1.1.4)
-    cron (1.2.2)
+    cron (1.2.4)
     curl (1.1.0)
     dmg (1.1.0)
-    git (2.5.0)
+    dpkg_autostart (0.1.6)
+    git (2.5.2)
       build-essential (>= 0.0.0)
       dmg (>= 0.0.0)
       runit (>= 1.0)
       windows (>= 0.0.0)
       yum (>= 0.0.0)
-    hostname (0.0.6)
+    hostname (0.1.0)
       hostsfile (>= 0.0.0)
-    hostsfile (1.0.1)
+    hostsfile (2.0.0)
     imagemagick (0.2.2)
     iptables (0.12.0)
-    logrotate (1.2.0)
-    lxc (1.0.0)
+    logrotate (1.2.2)
+    lxc (1.1.2)
+      dpkg_autostart (~> 0.1.6)
     memcached (1.4.0)
       runit (~> 1.0)
       yum (>= 0.0.0)
     modules (0.1.2)
     monit (0.7.1)
-    mysql (3.0.0)
-      build-essential (>= 0.0.0)
+    mysql (3.0.2)
+      build-essential (> 1.1.0)
       openssl (>= 0.0.0)
-    nginx (1.6.0)
+    nginx (1.7.0)
       apt (>= 0.0.0)
       build-essential (>= 0.0.0)
       ohai (>= 1.1.4)
       runit (>= 0.0.0)
       yum (>= 0.0.0)
-    nodejs (1.1.2)
+    nodejs (1.3.0)
       apt (>= 0.0.0)
       build-essential (>= 0.0.0)
+      yum (>= 0.0.0)
     ntp (1.3.2)
-    ohai (1.1.8)
-    openssh (1.1.4)
+    ohai (1.1.10)
+    openssh (1.2.0)
+      iptables (>= 0.0.0)
     openssl (1.0.2)
-    passenger_apache2 (2.0.0)
+    passenger_apache2 (2.0.2)
       apache2 (>= 1.0.4)
       build-essential (>= 0.0.0)
     pkgin (0.4.0)
-    postgresql (3.0.0)
+    postgresql (3.0.2)
       apt (>= 0.0.0)
       build-essential (>= 0.0.0)
       openssl (>= 0.0.0)
-    python (1.3.0)
+    python (1.3.6)
       build-essential (>= 0.0.0)
       yum (>= 0.0.0)
     rbac (1.0.1)
-    redisio (1.4.1)
+    redisio (1.7.0)
       ulimit (>= 0.1.2)
-    runit (1.1.4)
+    runit (1.1.6)
       build-essential (>= 0.0.0)
       yum (>= 0.0.0)
     ssl (1.0.7)
-    sudo (2.1.2)
+    sudo (2.1.4)
     sysstat (1.2.0)
     timezone (0.0.1)
-    tmux (1.2.2)
+    tmux (1.3.0)
     ubuntu (1.1.2)
       apt (>= 0.0.0)
-    ulimit (0.2.0)
-    unicorn (1.2.2)
+    ulimit (0.3.0)
+    unicorn (1.3.0)
     vim (1.0.2)
-    windows (1.9.0)
+    windows (1.10.0)
       chef_handler (>= 0.0.0)
     xfs (1.1.0)
     xml (1.1.2)
       build-essential (>= 0.0.0)
-    yum (2.2.2)
+    yum (2.3.0)
     zlib (2.0.0)
 
 GIT
@@ -139,19 +143,19 @@ GIT
 GIT
   remote: git://github.com/hectcastro/chef-statsd.git
   ref: master
-  sha: f9aa8718ebd2cd8b337a07e1fc13b8477e6fafa3
+  sha: d77e04d64ccb002d062aba3c268d3ff04dbeaf4a
   specs:
-    statsd (0.1.4)
+    statsd (1.1.3)
       git (>= 0.0.0)
-      logrotate (>= 0.0.0)
       nodejs (>= 0.0.0)
+      runit (>= 0.0.0)
 
 GIT
   remote: git://github.com/hw-cookbooks/graphite.git
   ref: master
-  sha: 164b4830431e6e8fb4ffc03197780369d51321e3
+  sha: 8ecd804c49eeb29c07983521002b124749eeedf5
   specs:
-    graphite (0.4.2)
+    graphite (0.4.3)
       apache2 (>= 0.0.0)
       memcached (>= 0.0.0)
       python (>= 0.0.0)
@@ -160,7 +164,7 @@ GIT
 GIT
   remote: git://github.com/markolson/chef-ssh.git
   ref: master
-  sha: 05d27ce77b0e6d5ee3ae82f961d58a8f59546a92
+  sha: b1abfed314edd82dd19e4ed358b4f967cbe793e7
   specs:
     ssh (0.6.3)
 
@@ -178,9 +182,9 @@ GIT
 GIT
   remote: git://github.com/modcloth-cookbooks/smartos.git
   ref: master
-  sha: 9dba81e172580f87772d554d512edd2155e9aa26
+  sha: 2a85ee85130b0810e097d516213ec7655facb35f
   specs:
-    smartos (0.0.7)
+    smartos (0.2.0)
       ohai (>= 0.0.0)
 
 GIT
@@ -207,43 +211,9 @@ GIT
       smartos (>= 0.0.0)
 
 GIT
-  remote: https://github.com/NOX73/chef-golang
+  remote: git@github.com:Lanio/company-cookbook.git
   ref: master
-  sha: 417dc472aec3e547da3c0a919b66c5bfa6960a5e
-  specs:
-    golang (1.0.2)
-
-GIT
-  remote: https://github.com/ToQoz/chef-jetty
-  ref: master
-  sha: 850c0aa867c640abb81dd0f69ab560ea71eb2173
-  specs:
-    jetty (0.1.0)
-      iptables (>= 0.0.0)
-      java (>= 0.0.0)
-
-GIT
-  remote: https://github.com/bflad/chef-docker
-  ref: master
-  sha: 87bf07a1c5212ac6490424e9da3788ca067f41e7
-  specs:
-    docker (0.3.0)
-      apt (>= 0.0.0)
-      git (>= 0.0.0)
-      golang (>= 0.0.0)
-      lxc (>= 0.0.0)
-      modules (>= 0.0.0)
-
-GIT
-  remote: https://github.com/dkastner/chef-solr
-  ref: master
-  sha: c46d550f8c4e4113de0ad4aa20966c94fcd4374b
-  specs:
-    solr (0.1.2)
-      jetty (>= 0.0.0)
-
-PATH
-  remote: ../company-cookbook
+  sha: 9d3ead209b2af4b76c965df736c16b4593d2be16
   specs:
     company (0.1.0)
       database (>= 0.0.0)
@@ -261,6 +231,43 @@ PATH
       solr (>= 0.0.0)
       ssh (>= 0.0.0)
       user (>= 0.0.0)
+
+GIT
+  remote: https://github.com/NOX73/chef-golang
+  ref: master
+  sha: 2cc2bbdaf8f57d1c1d3fca2fb533e5e381bc9acf
+  specs:
+    golang (1.1.1)
+      git (>= 0.0.0)
+
+GIT
+  remote: https://github.com/ToQoz/chef-jetty
+  ref: master
+  sha: 850c0aa867c640abb81dd0f69ab560ea71eb2173
+  specs:
+    jetty (0.1.0)
+      iptables (>= 0.0.0)
+      java (>= 0.0.0)
+
+GIT
+  remote: https://github.com/bflad/chef-docker
+  ref: master
+  sha: 81ccd764558495ec359a3e2b6b066f90a3b982c0
+  specs:
+    docker (0.7.0)
+      apt (>= 0.0.0)
+      git (>= 0.0.0)
+      golang (>= 0.0.0)
+      lxc (>= 0.0.0)
+      modules (>= 0.0.0)
+
+GIT
+  remote: https://github.com/dkastner/chef-solr
+  ref: master
+  sha: 578ab0f9ff1dba4214bf3b0e12f03866859f745a
+  specs:
+    solr (0.1.2)
+      jetty (>= 0.0.0)
 
 DEPENDENCIES
   apache2 (>= 0)

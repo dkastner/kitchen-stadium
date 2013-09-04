@@ -50,7 +50,7 @@ cookbook 'database', git: 'git://github.com/michaelklapper/database.git',
 
 cookbook 'fanfare', git: 'git://github.com/Lanio/chef-fanfare.git'
 #cookbook 'company', path: '../company-cookbook'
-cookbook 'company', git: 'git@github.com:dkastner/app-cookbook.git'
+cookbook 'company', git: 'git@github.com:Lanio/company-cookbook.git'
 
 # Development
 cookbook 'tmux'
@@ -67,6 +67,7 @@ cookbook 'monit'
 cookbook 'apache2'
 cookbook 'passenger_apache2'
 
+#cookbook 'solr', github: 'theozaurus/chef-solr'
 cookbook 'solr', github: 'dkastner/chef-solr'
 #cookbook 'maven'
 #cookbook 'solr-jetty-maven', path: '../chef-solr-jetty-maven' # git: 'git://github.com/dkastner/chef-solr'
