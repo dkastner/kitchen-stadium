@@ -55,7 +55,7 @@
         "instance_type": "m1.small",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
-        "image": "ami-33adee5a"
+        "image": "ami-6df5ba04"
       }
     },
     "exporter": {
@@ -74,10 +74,10 @@
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
-        "instance_type": "m1.small",
+        "instance_type": "m1.xlarge",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
-        "image": "ami-43b8f52a"
+        "image": "ami-23753a4a"
       },
       "internal": {
         "chef_user": "root",
