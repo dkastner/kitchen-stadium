@@ -95,7 +95,7 @@ module Kit
     end
 
     def create_image!
-      image_name = "#{id}-#{Time.now.strftime('%Y%m%d%h%m%s')}"
+      image_name = "#{id}-#{Time.now.strftime('%Y%m%d-%H%M')}"
       data = nil
       begin
         data = Amazon.aws.create_image(instance_id, image_name,
