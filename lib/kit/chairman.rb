@@ -13,7 +13,7 @@ module Kit
     def launch(site, type, color = nil)
       server = ServerList.find_by_name(site, type, color).first
 
-      puts 'ALLEZ CUISINE!!!'
+      logger.info 'ALLEZ CUISINE!!!'
       if RUBY_PLATFORM =~ /darwin/ && Random.rand(100) > 90
         `say -vAlex ah-lay cuisine!` 
       end
@@ -64,17 +64,14 @@ module Kit
       if options.image
         logger.info "Creating image of instance #{server.id}"
         server.create_image!
-        puts "Creating image #{server.image}"
+        logger.info "Creating image #{server.image}"
       end
 
-      if options.destroy
-        logger.info "Destroying instance #{server.id}"
-        server.destroy!
-      end
+      puts "Please destroy #{server.id} once the image has finished building"
     end
 
     desc 'exec', 'SITE TYPE COMMAND'
-    method_option :destroy, :type => :boolean, :default => false
+    method_option :destroy, :type => :boolean, :default => true
     def exec(site, type, command)
       logger.info "Creating instance #{site}-#{type}"
       server = Server.launch site, type, nil
