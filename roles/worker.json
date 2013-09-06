@@ -21,21 +21,25 @@
     },
 
     "rbenv" : {
-      "rubies": ["1.9.3-p362"],
+      "rubies": ["1.9.3-p448"],
       "user_installs": [
         {
           "user": "ubuntu",
           "home": "/home/ubuntu",
-          "rubies" : ["1.9.3-p362"],
-          "user_rubies" : "1.9.3-p362",
-          "global" : "1.9.3-p362",
+          "rubies" : ["1.9.3-p448"],
+          "user_rubies" : "1.9.3-p448",
+          "global" : "1.9.3-p448",
           "gems": {
-            "1.9.3-p362": [
+            "1.9.3-p448": [
               { "name": "bundler" }
             ]
           }
         }
       ]
+    },
+
+    "ruby_build": {
+      "git_ref": "v20130806"
     }
   }
 }
