@@ -87,12 +87,23 @@
         "platform": "smartos_ubuntu"
       }
     },
+    "deal_fetcher": {
+      "_default": {
+        "chef_user": "ubuntu",
+        "zone": "us-east-1c",
+        "platform": "u1204_64_us_east",
+        "instance_type": "t1.micro",
+        "security_groups": "sshd",
+        "ssh_key": "~/.ssh/app-ssh.pem",
+        "image": "ami-25bcf14c"
+      }
+    },
     "deal_mailer": {
       "_default": {
         "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "platform": "u1204_64_us_east",
-        "instance_type": "m1.small",
+        "instance_type": "t1.micro",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-25bcf14c"
