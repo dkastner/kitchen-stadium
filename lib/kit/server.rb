@@ -99,7 +99,7 @@ module Kit
     end
 
     def image
-      config['image']
+      @image ||= config['image']
     end
 
     def user
