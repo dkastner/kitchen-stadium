@@ -22,16 +22,16 @@
     },
 
     "rbenv" : {
-      "rubies": ["1.9.3-p448"],
+      "rubies": ["2.0.0-p247"],
       "user_installs": [
         {
           "user": "ubuntu",
           "home": "/home/ubuntu",
-          "rubies" : ["1.9.3-p448"],
-          "user_rubies" : "1.9.3-p448",
-          "global" : "1.9.3-p448",
+          "rubies" : ["2.0.0-p247"],
+          "user_rubies" : "2.0.0-p247",
+          "global" : "2.0.0-p247",
           "gems": {
-            "1.9.3-p448": [
+            "2.0.0-p247": [
               { "name": "bundler" }
             ]
           }
