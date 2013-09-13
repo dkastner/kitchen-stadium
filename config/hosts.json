@@ -66,7 +66,7 @@
         "instance_type": "m1.small",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
-        "image": "ami-c286c7ab"
+        "image": "ami-55246d3c"
       }
     },
     "importer": {
@@ -95,7 +95,7 @@
         "instance_type": "t1.micro",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem",
-        "image": "ami-25bcf14c"
+        "image": "ami-1fce8776"
       }
     },
     "deal_mailer": {
