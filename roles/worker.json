@@ -5,6 +5,7 @@
   "chef_type": "role",
 
   "run_list": [
+    "recipe[company::github]",
     "recipe[company::ruby_app]",
     "recipe[company::app_app]",
     "recipe[ruby_build]",
