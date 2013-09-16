@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+site 'http://community.opscode.com/api/v1'
+
+#cookbook 'ubuntu'
+#cookbook 'apt', '>= 1.4.8'
+
+#cookbook 'user'
+#cookbook 'sudo', '>= 1.1.0'
+#cookbook 'cron', '>= 1.0.4'
+
+#cookbook 'openssl', '>= 1.0.0'
+#cookbook 'logrotate', '>= 0.8.2'
+
+#cookbook 'git'
+#cookbook 'build-essential'
+#cookbook 'imagemagick', '>= 0.2.2'
+#cookbook 'xml'
+#cookbook 'zlib'
+
+#cookbook 'pkgin'
+#cookbook 'aws'
+
+# SmartOS
+#cookbook 'smartos', :git => 'git://github.com/modcloth-cookbooks/smartos.git'
+#cookbook 'smf', :git => 'git://github.com/modcloth-cookbooks/smf.git'
+#cookbook 'java', :path => '../java' #:git => 'git://github.com/wanelo-chef/java.git'
+
+# Web Application
+#cookbook 'nginx'
+#cookbook 'unicorn'
+#cookbook 'ssl', '>= 1.0.7'
+#cookbook 'mysql'
+
+#cookbook 'ssh', :git => 'git://github.com/markolson/chef-ssh.git'
+#cookbook 'ssh-keys', :git => 'git://github.com/dkastner/chef-ssh-keys.git'
+
+#Ruby
+#cookbook 'rbenv', git: 'git://github.com/fnichol/chef-rbenv.git', :ref => 'v0.7.2'
+#cookbook 'ruby_build', git: 'git://github.com/fnichol/chef-ruby_build.git', :ref => 'v0.7.2'

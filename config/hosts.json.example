@@ -1,0 +1,39 @@
+{
+  "app_one": {
+    "database": {
+      "_default": {
+        "hostname": "catalog"
+      }
+    },
+    "indexer": {
+      "_default": {
+        "chef_user": "ubuntu",
+        "zone": "us-east-1c",
+        "platform": "u1204_64_us_east",
+        "instance_type": "m1.small",
+        "security_groups": "sshd",
+        "ssh_key": "/path/to/ssh.pem",
+        "image": "ami-1234"
+      }
+    },
+    "redis": {
+      "_default": {
+        "chef_user": "ubuntu",
+        "zone": "us-east-1c",
+        "security_groups": "sshd,redis",
+        "ssh_key": "/path/to/ssh.pem"
+      },
+      "blue": {
+        "static_ip": "54.225.205.218"
+      },
+      "red": {
+        "static_ip": "107.20.247.164"
+      },
+      "internal": {
+        "chef_user": "root",
+        "platform": "smartos",
+        "static_ip": "10.0.1.1"
+      }
+    }
+  }
+}
