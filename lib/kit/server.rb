@@ -1,7 +1,6 @@
 require 'kit'
-require 'kit/amazon'
+require 'kit/cloud'
 require 'kit/knife'
-require 'kit/smart_os'
 
 module Kit
   class Server
@@ -56,7 +55,7 @@ module Kit
     end
 
     attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
-      :created_at, :status, :static_ip, :image, :platform
+      :created_at, :status, :static_ip, :image, :platform, :cloud
 
     def initialize(site, type, color, attrs = {})
       self.site = site
@@ -96,6 +95,10 @@ module Kit
 
     def platform
       @platform ||= config['platform'] ? config['platform'].to_sym : nil
+    end
+
+    def cloud
+      @cloud ||= config['cloud'] ? config['cloud'].to_sym : nil
     end
 
     def image
@@ -200,14 +203,14 @@ module Kit
     end
 
     def actualize!
-      if platform
-        mod = case platform
-        when :smartos_smartmachine then
-          SmartOS::SmartMachine
-        when :smartos_ubuntu then
-          SmartOS::Ubuntu
+      if cloud
+        mod = case cloud
+        when :amazon then
+          Cloud::Amazon
+        when :smartos then
+          Cloud::SmartOS
         else
-          Amazon
+          Cloud::Vagrant
         end
         extend mod
       end

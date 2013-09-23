@@ -1,10 +1,11 @@
-source :rubygems
+source 'https://rubygems.org'
 
 gem 'capistrano'
 gem 'dotenv'
 gem 'fog'
 gem 'heroku'
 gem 'librarian'
+gem 'ruby-libvirt'
 gem 'knife-ec2', github: 'actionverb/knife-ec2', ref: 'e16ead0746313e80391227339e9dc4873ccadf99'
 gem 'knife-solo'
 gem 'knife-solo_data_bag'

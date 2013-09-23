@@ -57,7 +57,7 @@ task :process, role: :indexer do
   when 'importer'
     run "cd $HOME/importer && rake import"
   when 'exporter'
-    run "cd $HOME/exporter && rake export_and_package"
+    run "cd $HOME/exporter; bundle install; rake export_and_package"
   when 'deal_fetcher'
     run "cd $HOME/deal-mailer && rake deals:fetch"
     run "cd $HOME/importer && rake deal_resources"

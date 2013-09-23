@@ -1,8 +1,6 @@
 {
   "run_list": [
-    "role[ec2_linux]",
     "recipe[java]",
-    "recipe[company::solr]",
     "recipe[solr]"
   ],
 

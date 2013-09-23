@@ -9,8 +9,7 @@
     "recipe[sudo]",
     "recipe[vim]",
     "recipe[timezone]",
-    "recipe[logrotate]",
-    "recipe[hostname]"
+    "recipe[logrotate]"
   ],
 
   "override_attributes": {
