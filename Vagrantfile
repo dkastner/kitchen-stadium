@@ -7,7 +7,7 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu1104"
+  config.vm.box = "ubuntu1204"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -44,8 +44,10 @@ Vagrant::Config.run do |config|
     chef.cookbooks_path = 'cookbooks'
     chef.roles_path = 'roles'
     chef.data_bags_path = 'data_bags'
-    chef.add_role 'graphite'
-    chef.add_role 'graphiti'
+
+    chef.add_role 'linux'
+    chef.add_role 'worker'
+    chef.add_recipe 'company::app_chairman_ubuntu'
   
     # You may also specify custom JSON attributes:
     #chef.json = { :mysql_password => 'password' }
