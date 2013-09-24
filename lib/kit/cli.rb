@@ -1,12 +1,10 @@
 require 'json'
 require 'thor'
 
-require 'kit/amazon'
 require 'kit/helpers'
 require 'kit/knife'
 require 'kit/server'
 require 'kit/server_list'
-require 'kit/smart_os'
 
 module Kit
   class CLI < Thor

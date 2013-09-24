@@ -5,6 +5,6 @@ require 'dotenv'
 Dotenv.load
 
 $:.unshift File.expand_path('../../lib', __FILE__)
-require 'kit'
+require 'kit/cli'
 
 Kit::CLI.start(ARGV)

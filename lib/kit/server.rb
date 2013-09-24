@@ -54,8 +54,24 @@ module Kit
       server
     end
 
+    def self.config_var(name, default = nil)
+      attr_accessor name
+      define_method name do
+        ivar = "@#{name}"
+        if val = instance_variable_get(ivar)
+          val
+        else
+          instance_variable_set ivar, (config[name.to_s] || default)
+        end
+      end
+    end
+
+    config_var :cloud, Kit.default_cloud
+    config_var :image
+    config_var :ssh_port, 22
+
     attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
-      :created_at, :status, :static_ip, :image, :platform, :cloud
+      :created_at, :status, :static_ip, :image, :cloud, :ssh_port
 
     def initialize(site, type, color, attrs = {})
       self.site = site
@@ -81,10 +97,9 @@ module Kit
     def config
       return @config unless @config.nil?
       
-      unless Kit.hosts[site] && Kit.hosts[site][type]
-        raise "Invalid server type #{site}-#{type} specified" 
-      end
-      default_config = Kit.hosts[site][type]['_default']
+      site_config = Kit.hosts[site] || {}
+      type_config = site_config[type] || {}
+      default_config = type_config['_default'] || {}
       begin
         @config = default_config.merge(
           Kit.hosts[site][type][color] || {})
@@ -94,15 +109,7 @@ module Kit
     end
 
     def platform
-      @platform ||= config['platform'] ? config['platform'].to_sym : nil
-    end
-
-    def cloud
-      @cloud ||= config['cloud'] ? config['cloud'].to_sym : nil
-    end
-
-    def image
-      @image ||= config['image']
+      super.to_sym
     end
 
     def user

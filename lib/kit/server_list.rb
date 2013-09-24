@@ -1,10 +1,10 @@
-require 'kit/amazon'
+require 'kit/cloud/amazon'
 require 'kit/server'
 
 module Kit
   class ServerList < Array
     def self.all
-      aws_servers = Amazon.aws.servers.inject({}) do |hsh, server|
+      aws_servers = Cloud::Amazon.aws.servers.inject({}) do |hsh, server|
         key = server.tags['Name']
         hsh[key] ||= []
         hsh[key] << server
@@ -18,7 +18,7 @@ module Kit
             server = Server.new site, type, color
             if subset = aws_servers.delete(server.instance_name)
               subset.each do |aws_server|
-                s = Server.new site, type, color, platform: :amazon
+                s = Server.new site, type, color, cloud: :amazon
                 s.update_info!(aws_server)
                 servers << s
               end
@@ -33,8 +33,8 @@ module Kit
         subset.each do |aws_server|
           site, type, color = instance_name.split('-')
           server = Server.find_by_ip aws_server.public_ip_address
-          server ||= Server.new(site, type, color, platform: :amazon)
-          server.update_info!(aws_server)
+          server ||= Server.new(site, type, color, cloud: :amazon)
+          server.update_info!(aws_server) if server.respond_to?(:update_info!)
 
           servers << server
         end
