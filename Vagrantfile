@@ -6,7 +6,13 @@ Vagrant::Config.run do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
 
+<<<<<<< HEAD
   # Every Vagrant virtual environment requires a box to build off of.  config.vm.box = "ubuntu1104" 
+=======
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "ubuntu1204"
+
+>>>>>>> d79169d35264d0669fb2d4a41e5d6ed21e4ac648
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   config.vm.box = "precise32"
@@ -43,21 +49,12 @@ Vagrant::Config.run do |config|
     chef.cookbooks_path = 'cookbooks'
     chef.roles_path = 'roles'
     chef.data_bags_path = 'data_bags'
-    chef.add_recipe 'java'
-    chef.add_recipe 'solr'
 
-    chef.json = { 
-      "solr" => {
-        "version" => "4.4.0",
-        "link" => "http://mirrors.ibiblio.org/apache/lucene/solr/4.4.0/solr-4.4.0-src.tgz",
-        "checksum" => nil
-      },
-
-      "override_attributes" => {
-        "jetty" => {
-          "port" => 8983
-        }
-      }
-    }
+    chef.add_role 'linux'
+    chef.add_role 'worker'
+    chef.add_recipe 'company::app_chairman_ubuntu'
+  
+    # You may also specify custom JSON attributes:
+    #chef.json = { :mysql_password => 'password' }
   end
 end
