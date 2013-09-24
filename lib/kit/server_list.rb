@@ -1,4 +1,5 @@
 require 'kit/cloud/amazon'
+require 'kit/cloud/vagrant'
 require 'kit/server'
 
 module Kit

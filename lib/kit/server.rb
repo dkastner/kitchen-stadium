@@ -54,24 +54,32 @@ module Kit
       server
     end
 
-    def self.config_var(name, default = nil)
+    def self.config_var(name, default = nil, format = nil)
       attr_accessor name
       define_method name do
         ivar = "@#{name}"
-        if val = instance_variable_get(ivar)
+        result = if val = instance_variable_get(ivar)
           val
         else
-          instance_variable_set ivar, (config[name.to_s] || default)
+          val = (config[name.to_s] || default)
+          instance_variable_set ivar, val
+          val
+        end
+
+        if format && result.respond_to?(format)
+          result.send format
+        else
+          result
         end
       end
     end
 
-    config_var :cloud, Kit.default_cloud
+    config_var :cloud, Kit.default_cloud, :to_sym
     config_var :image
     config_var :ssh_port, 22
 
     attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
-      :created_at, :status, :static_ip, :image, :cloud, :ssh_port
+      :created_at, :status, :static_ip
 
     def initialize(site, type, color, attrs = {})
       self.site = site
@@ -106,10 +114,6 @@ module Kit
       rescue NoMethodError => e
         @config = {}
       end
-    end
-
-    def platform
-      super.to_sym
     end
 
     def user
@@ -210,17 +214,15 @@ module Kit
     end
 
     def actualize!
-      if cloud
-        mod = case cloud
-        when :amazon then
-          Cloud::Amazon
-        when :smartos then
-          Cloud::SmartOS
-        else
-          Cloud::Vagrant
-        end
-        extend mod
+      mod = case cloud
+      when :amazon then
+        Cloud::Amazon
+      when :smartos then
+        Cloud::SmartOS
+      else
+        Cloud::Vagrant
       end
+      extend mod
     end
   end
 end

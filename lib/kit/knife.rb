@@ -33,7 +33,7 @@ module Kit
 
       cmd = "bundle exec knife solo bootstrap #{server.user}@#{server.ip} -N #{node_type}"
       cmd += " -i #{server.ssh_key}" if server.ssh_key
-      if server.platform.to_s == 'smartos_smartmachine'
+      if server.cloud == :smart_os
         cmd += ' --template-file config/joyent-smartmachine.erb'
       end
       shellout cmd

@@ -2,7 +2,7 @@ require 'logger'
 require 'thor'
 require 'tinder'
 
-require 'kit/server'
+require 'kit/server_list'
 
 module Kit
   class Chairman < Thor
