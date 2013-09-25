@@ -21,7 +21,7 @@ module Kit
     def self.find_color(site, type, options)
       list = if site == 'kitchen-stadium'
         %w{kaga dacascos}
-      elsif options[:cloud].to_sym == :vagrant
+      elsif options[:cloud].to_s.to_sym == :vagrant
         Cloud::Vagrant::COLORS
       else
         Kit::COLORS
