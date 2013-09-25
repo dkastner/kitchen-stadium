@@ -14,6 +14,46 @@ module Kit
         inspire_www_latest: 'ami-328a165b'
       }
 
+      def self.server_list
+        aws_servers = aws.servers.inject({}) do |hsh, server|
+          key = server.tags['Name']
+          hsh[key] ||= []
+          hsh[key] << server
+          hsh
+        end
+
+        servers = []
+        Kit.hosts.each do |site, types|
+          types.each do |type, hosts|
+            hosts.each do |color, data|
+              server = Server.new site, type, color
+              if subset = aws_servers.delete(server.instance_name)
+                subset.each do |aws_server|
+                  s = Server.new site, type, color, cloud: :amazon
+                  s.update_info!(aws_server)
+                  servers << s
+                end
+              else
+                servers << server
+              end
+            end
+          end
+        end
+
+        remaining = aws_servers.map do |instance_name, subset|
+          subset.each do |aws_server|
+            site, type, color = instance_name.split('-')
+            server = Server.find_by_ip aws_server.public_ip_address
+            server ||= Server.new(site, type, color, cloud: :amazon)
+            server.update_info!(aws_server) if server.respond_to?(:update_info!)
+
+            servers << server
+          end
+        end
+
+        servers
+      end
+
       def self.aws
         return @aws unless @aws.nil?
 

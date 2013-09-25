@@ -4,9 +4,7 @@ module Kit
   module Cloud
     module Vagrant
 
-      BOXES = {
-        u1204_64_us_east: 'ami-fd20ad94'
-      }
+      COLORS = %w{boxcar cholly yegg skunk jones}
 
       #def self.vm
         #@vm ||= Fog::Compute.new(provider: :libvirt,
@@ -19,6 +17,50 @@ module Kit
       #def vm_server=(val)
         #@vm_server = val
       #end
+
+      def self.server_list
+        raw_list = `vagrant status`.split(/\n/)[2..-1].
+          map { |line| line.strip }.
+          map { |line| line.split(/\s+/) }.
+          find_all { |row| row.count == 3 }
+
+        vagrant_servers = raw_list.inject({}) do |hsh, row|
+          name, status, source = row
+          hsh[name] ||= []
+          hsh[name] << status
+          hsh
+        end
+
+        servers = []
+        Kit.hosts.each do |site, types|
+          types.each do |type, hosts|
+            hosts.each do |color, data|
+              server = Server.new site, type, color
+              if subset = vagrant_servers.delete(server.instance_name)
+                subset.each do |status|
+                  s = Server.new site, type, color, cloud: :vagrant
+                  s.update_info!(status)
+                  servers << s
+                end
+              else
+                servers << server
+              end
+            end
+          end
+        end
+
+        remaining = vagrant_servers.map do |instance_name, subset|
+          subset.each do |status|
+            site, type, color = instance_name.split('-')
+            server = Server.new(site, type, color, cloud: :vagrant)
+            server.update_info!(status)
+
+            servers << server
+          end
+        end
+
+        servers
+      end
 
       def wait
         ip = static_ip
@@ -42,9 +84,9 @@ module Kit
       end
 
       def create_instance(default_image = false)
+        shellout "vagrant up #{label}"
 
-
-        update_info!(vm_server)
+        update_info!('running')
       end
       def launch_image
         create_instance
@@ -52,47 +94,31 @@ module Kit
         upload_secret
       end
 
-      def update_info!(real_server)
-        self.instance_id = real_server.id
-        self.ip = real_server.public_ip_address
-        self.zone = real_server.availability_zone
-        self.created_at = real_server.created_at
-        self.status = real_server.state
-      end
-
-      def create_image!
-        image_name = "#{id}-#{Time.now.strftime('%Y%m%d-%H%M')}"
-        data = nil
-        begin
-          data = Amazon.vm.create_image(instance_id, image_name,
-                                  'Created automatically by Kitchen Stadium')
-        rescue => e
-          puts e.response.inspect
-          puts e.inspect
-          raise e
+      def update_info!(status)
+        self.status = status
+        if status == 'running'
+          info = `vagrant ssh-config #{label}`.split(/\n/)
+          info.each do |line|
+            property, value = line.strip.split(/\s/)
+            case property
+            when 'HostName'
+              self.ip = value
+            when 'Port'
+              self.ssh_port = value
+            when 'IdentityFile'
+              self.ssh_key = value
+            when 'User'
+              self.user = value
+            end
+          end
         end
-
-        self.image = data.body['imageId']
-
-        data = Kit.hosts[site][type]['_default'].merge 'image' => image
-        Kit.update_host(site, type, '_default', data)
-
-        image
       end
 
       def destroy!
-        if instance_id.nil? || instance_id == ''
+        unless running?
           raise "No instance found for #{id}!"
         end
-        vm_server.destroy
-      end
-
-
-      def find_instance_id_by_ip
-        if ip
-          server = ServerList.find_by_ip(ip)
-          server.instance_id
-        end
+        shellout "vagrant destroy -f #{label}"
       end
     end
   end

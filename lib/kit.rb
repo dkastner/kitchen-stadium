@@ -5,6 +5,7 @@ module Kit
 
   HOSTS_PATH = File.expand_path('../../config/hosts.json', __FILE__)
   NODES_PATH = File.expand_path('../../nodes', __FILE__)
+  COLORS = %w{red orange yellow green blue purple brown white black}
 
   def update_host(site, type, color, data)
     hosts[site][type][color] = data

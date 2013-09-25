@@ -1,0 +1,17 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  
+  <% Kit::ServerList.all.each do |server| %>
+    <% Kit::Cloud::Vagrant::COLORS.each do |color| %>
+      config.vm.define "<%= "#{server.site}-#{server.type}-#{color}" %>" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    <% end %>
+  <% end %>
+
+end

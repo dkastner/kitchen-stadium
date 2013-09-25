@@ -18,18 +18,22 @@ module Kit
       found
     end
 
-    def self.find_color(site, type)
-      list = site == 'kitchen-stadium' ?
-        %w{kaga dacascos} :
-        %w{red orange yellow green blue purple brown white black}
+    def self.find_color(site, type, options)
+      list = if site == 'kitchen-stadium'
+        %w{kaga dacascos}
+      elsif options[:cloud].to_sym == :vagrant
+        Cloud::Vagrant::COLORS
+      else
+        Kit::COLORS
+      end
 
       color = (list - ServerList.running_colors(site, type)).first
       raise "I'm out of colors!" if color.nil?
       color
     end
 
-    def self.from_scratch(site, type, color = nil)
-      color ||= find_color(site, type)
+    def self.from_scratch(site, type, color = nil, options = {})
+      color ||= find_color(site, type, options)
       server = Server.new site, type, color
 
       server.create_instance(true)
@@ -41,9 +45,9 @@ module Kit
       server
     end
 
-    def self.launch(site, type, color = nil)
-      color ||= find_color(site, type)
-      server = Server.new site, type, color
+    def self.launch(site, type, color = nil, options = {})
+      color ||= find_color(site, type, options)
+      server = Server.new site, type, color, options
 
       server.launch_image
       fail "Failed to create instance" unless server.instantiated?
@@ -76,7 +80,9 @@ module Kit
 
     config_var :cloud, Kit.default_cloud, :to_sym
     config_var :image
+    config_var :ssh_key
     config_var :ssh_port, 22
+    config_var :user, 'ubuntu'
 
     attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
       :created_at, :status, :static_ip
@@ -94,8 +100,12 @@ module Kit
       actualize!
     end
 
+    def label
+      [site, type, color].join('-')
+    end
+
     def id
-      sig = [site, type, color]
+      sig = [label]
       sig << instance_id if instance_id
       sig << ip if !instance_id && ip
       sig << image if image
@@ -116,20 +126,12 @@ module Kit
       end
     end
 
-    def user
-      config['user'] || 'ubuntu'
-    end
-
     def zone
       @zone ||= config['zone']
     end
 
     def security_groups
       config['security_groups']
-    end
-
-    def ssh_key
-      config['ssh_key']
     end
 
     def instance_type
@@ -164,7 +166,7 @@ module Kit
 
     def status_line
       display_color = color == '_default' ? '*' : color
-      [site, type, display_color, status, ip, instance_id, uptime]
+      [site, type, display_color, cloud, status, ip, instance_id, uptime]
     end
 
     def instantiated?
@@ -188,6 +190,7 @@ module Kit
     end
 
     def bootstrap_chef(build = true)
+      upload_secret
       knife.bootstrap_chef build
     end
 
@@ -210,6 +213,7 @@ module Kit
     end
 
     def register_known_host
+      raise "no ip" if ip.nil?
       shellout "ssh-keygen -R #{ip}"
     end
 

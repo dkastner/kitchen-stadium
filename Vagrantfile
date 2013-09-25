@@ -2,59 +2,1228 @@
 # vi: set ft=ruby :
 
 Vagrant::Config.run do |config|
-  # All Vagrant configuration is done here. The most common configuration
-  # options are documented and commented below. For a complete reference,
-  # please see the online documentation at vagrantup.com.
-
-<<<<<<< HEAD
-  # Every Vagrant virtual environment requires a box to build off of.  config.vm.box = "ubuntu1104" 
-=======
-  # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu1204"
-
->>>>>>> d79169d35264d0669fb2d4a41e5d6ed21e4ac648
-  # The url from where the 'config.vm.box' box will be fetched if it
-  # doesn't already exist on the user's system.
-  config.vm.box = "precise32"
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
-
-  # Boot with a GUI so you can see the screen. (Default is headless)
-  # config.vm.boot_mode = :gui
-
-  # Assign this VM to a host-only network IP, allowing you to access it
-  # via the IP. Host-only networks can talk to the host machine as well as
-  # any other machines on the same network, but cannot be accessed (through this
-  # network interface) by any external networks.
-  # config.vm.network :hostonly, "192.168.33.10"
-
-  # Assign this VM to a bridged network, allowing you to connect directly to a
-  # network using the host's network device. This makes the VM appear as another
-  # physical device on your network.
-  # config.vm.network :bridged
-
-  # Forward a port from the guest to the host, which allows for outside
-  # computers to access the VM, whereas host only networking does not.
-  # config.vm.forward_port 80, 8080
-
-  # Share an additional folder to the guest VM. The first argument is
-  # an identifier, the second is the path on the guest to mount the
-  # folder, and the third is the path on the host to the actual folder.
-  # config.vm.share_folder "v-data", "/vagrant_data", "../data"
-
-  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-  # path, and data_bags path (all relative to this Vagrantfile), and adding 
-  # some recipes and/or roles.
-  #
-  config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = 'cookbooks'
-    chef.roles_path = 'roles'
-    chef.data_bags_path = 'data_bags'
-
-    chef.add_role 'linux'
-    chef.add_role 'worker'
-    chef.add_recipe 'company::app_chairman_ubuntu'
   
-    # You may also specify custom JSON attributes:
-    #chef.json = { :mysql_password => 'password' }
-  end
+  
+    
+      config.vm.define "kitchen_stadium-chairman-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "kitchen_stadium-chairman-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "kitchen_stadium-chairman-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "kitchen_stadium-chairman-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "kitchen_stadium-chairman-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "stats-main-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "stats-main-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-database-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-database-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-database-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-database-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-database-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-indexer-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-indexer-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-indexer-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-indexer-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-indexer-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-exporter-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-exporter-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-exporter-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-exporter-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-exporter-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-importer-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-importer-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-importer-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-importer-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-importer-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-deal_fetcher-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_fetcher-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_fetcher-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_fetcher-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_fetcher-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-deal_mailer-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_mailer-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_mailer-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_mailer-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_mailer-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-solr-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-solr-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-solr-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-redis-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-redis-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-redis-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-redis-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-solr-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "inspire-www-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "inspire-www-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "inspire-www-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "inspire-www-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "inspire-www-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "kitchen_stadium-chairman-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "kitchen_stadium-chairman-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "kitchen_stadium-chairman-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "kitchen_stadium-chairman-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "kitchen_stadium-chairman-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "stats-main-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "stats-main-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "stats-main-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-database-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-database-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-database-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-database-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-database-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-indexer-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-indexer-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-indexer-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-indexer-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-indexer-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-exporter-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-exporter-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-exporter-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-exporter-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-exporter-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-importer-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-importer-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-importer-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-importer-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-importer-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-deal_fetcher-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_fetcher-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_fetcher-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_fetcher-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_fetcher-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-deal_mailer-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_mailer-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_mailer-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_mailer-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-deal_mailer-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-solr-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-solr-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-solr-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-solr-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-redis-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-redis-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+    
+      config.vm.define "app-redis-boxcar" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-cholly" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-yegg" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-skunk" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+      config.vm.define "app-redis-jones" do |c|
+        c.vm.box = "ubuntu1204"
+        c.vm.box_url = "http://files.vagrantup.com/precise32.box"
+
+        # c.vm.forward_port 80, 8080
+      end
+    
+  
+
 end
