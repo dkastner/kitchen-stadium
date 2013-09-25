@@ -20,19 +20,23 @@ module Kit
         cmd = %{scp -o "StrictHostKeyChecking=false"}
         cmd += " -i #{server.ssh_key}" if server.ssh_key
         cmd += " -P #{server.ssh_port}" if server.ssh_port
-        cmd += " #{secret_path} #{server.user}@#{server.ip}:#{destination_path}"
+        cmd += " #{secret_path} #{server.chef_user}@#{server.ip}:#{destination_path}"
         shellout cmd
       end
+    end
+
+    def node_type(build = true)
+      node_type = "#{server.site}-#{server.type}"
+      node_type = node_type + "-launch" unless build
+      node_type
     end
 
     def bootstrap_chef(build = true)
       destination_path = '/tmp/encrypted_data_bag_secret'
       secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
 
-      node_type = "#{server.site}-#{server.type}"
-      node_type = node_type + "-launch" unless build
-
-      cmd = "bundle exec knife solo bootstrap #{server.user}@#{server.ip} -N #{node_type}"
+      cmd = "bundle exec knife solo bootstrap #{server.chef_user}@#{server.ip}"
+      cmd += " -N #{node_type(build)}"
       cmd += " -i #{server.ssh_key}" if server.ssh_key
       cmd += " -p #{server.ssh_port}" if server.ssh_port
       if server.cloud == :smart_os
@@ -42,7 +46,8 @@ module Kit
     end
 
     def cook
-      cmd = "bundle exec knife solo cook ubuntu@#{server.ip}"
+      cmd = "bundle exec knife solo cook #{server.chef_user}@#{server.ip}"
+      cmd += " -N #{node_type}"
       cmd += " -i #{server.ssh_key}" if server.ssh_key
       cmd += " -p #{server.ssh_port}" if server.ssh_port
       shellout cmd

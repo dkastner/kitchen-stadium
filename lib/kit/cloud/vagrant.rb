@@ -108,7 +108,7 @@ module Kit
             when 'IdentityFile'
               self.ssh_key = value
             when 'User'
-              self.user = value
+              self.chef_user = value
             end
           end
         end

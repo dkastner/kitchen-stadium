@@ -3,7 +3,6 @@
     "chairman": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
@@ -15,7 +14,6 @@
     "main": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "ssh_key": "~/.ssh/stats-ssh.pem",
         "instance_type": "t1.micro",
@@ -37,7 +35,6 @@
     "indexer": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "instance_type": "m1.small",
         "security_groups": "sshd",
@@ -48,7 +45,6 @@
     "exporter": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "instance_type": "m1.small",
         "security_groups": "sshd",
@@ -59,7 +55,6 @@
     "importer": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "instance_type": "m1.xlarge",
         "security_groups": "sshd",
@@ -70,7 +65,6 @@
     "deal_fetcher": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
@@ -81,7 +75,6 @@
     "deal_mailer": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
@@ -92,7 +85,6 @@
     "solr": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "security_groups": "sshd,app-catalog",
         "instance_type": "m1.small",
@@ -109,7 +101,6 @@
     "redis": {
       "_default": {
         "cloud": "amazon",
-        "chef_user": "ubuntu",
         "zone": "us-east-1c",
         "security_groups": "sshd",
         "ssh_key": "~/.ssh/app-ssh.pem"

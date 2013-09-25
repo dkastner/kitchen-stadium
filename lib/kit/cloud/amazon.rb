@@ -112,7 +112,7 @@ module Kit
           availability_zone: zone,
           security_groups: security_groups,
           tags: { 'Name' => instance_name },
-          username: user,
+          username: chef_user,
           key_name: key
         }
         attrs[:elastic_ip] = static_ip if static_ip

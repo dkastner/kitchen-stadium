@@ -82,7 +82,7 @@ module Kit
     config_var :image
     config_var :ssh_key
     config_var :ssh_port, 22
-    config_var :user, 'ubuntu'
+    config_var :chef_user, 'ubuntu'
 
     attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
       :created_at, :status, :static_ip
@@ -136,10 +136,6 @@ module Kit
 
     def instance_type
       config['instance_type']
-    end
-
-    def chef_user
-      config['chef_user']
     end
 
     def uptime
