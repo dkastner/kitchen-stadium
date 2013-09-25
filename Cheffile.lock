@@ -64,6 +64,7 @@ SITE
     runit (1.2.0)
       build-essential (>= 0.0.0)
       yum (>= 0.0.0)
+    smartos (0.0.1)
     ssl (1.0.7)
     sudo (2.1.4)
     sysstat (1.2.0)
@@ -180,14 +181,6 @@ GIT
       xfs (>= 0.0.0)
 
 GIT
-  remote: git://github.com/modcloth-cookbooks/smartos.git
-  ref: master
-  sha: 2a85ee85130b0810e097d516213ec7655facb35f
-  specs:
-    smartos (0.2.0)
-      ohai (>= 0.0.0)
-
-GIT
   remote: git://github.com/modcloth-cookbooks/smf.git
   ref: master
   sha: 4bcf9326610ffb12335652369b7cf793813a8534
@@ -298,7 +291,6 @@ DEPENDENCIES
   redis (>= 0)
   redisio (>= 0)
   ruby_build (>= 0)
-  smartos (>= 0)
   smf (>= 0)
   solr (>= 0)
   ssh (>= 0)

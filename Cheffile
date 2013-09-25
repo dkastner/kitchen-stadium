@@ -34,7 +34,7 @@ cookbook 'pkgin'
 cookbook 'aws'
 
 # SmartOS
-cookbook 'smartos', :git => 'git://github.com/modcloth-cookbooks/smartos.git'
+#cookbook 'smartos', :git => 'git://github.com/modcloth-cookbooks/smartos.git'
 cookbook 'smf', :git => 'git://github.com/modcloth-cookbooks/smf.git'
 #cookbook 'java', :path => '../java' #:git => 'git://github.com/wanelo-chef/java.git'
 cookbook 'java', :git => 'git://github.com/wanelo-chef/java.git'
