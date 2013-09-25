@@ -53,13 +53,13 @@ module Kit
     desc 'ssh SITE TYPE COLOR', 'ssh to the host'
     def ssh(site, type, color, user = nil)
       server = choose_server(site, type, color, 'connect to')
-      #use_ssh_key = (server.user == 'ubuntu')
+      user ||= server.chef_user
 
       cmd = 'ssh'
       cmd += %{ -o "StrictHostKeyChecking=false"}
       cmd += " -i #{server.ssh_key}" if server.ssh_key
       cmd += " -p #{server.ssh_port}" if server.ssh_port
-      cmd += " #{server.user}@#{server.ip}"
+      cmd += " #{user}@#{server.ip}"
       puts cmd
       exec cmd
     end

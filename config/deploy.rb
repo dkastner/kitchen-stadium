@@ -27,7 +27,7 @@ ssh_options[:forward_agent] = true
 ssh_options[:keys] = [
   File.join(ENV['HOME'], '.ssh', 'app-ssh.pem')]
 #ssh_options[:verbose] = :debug
-ssh_options[:user] = 'ubuntu'
+ssh_options[:user] = 'app'
 default_run_options[:pty] = true
 
 $:.unshift File.expand_path('../../lib', __FILE__)
