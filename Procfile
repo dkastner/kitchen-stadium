@@ -1,1 +1,1 @@
-worker: bin/sidekiq -r $PWD/bin/worker.rb -L $PWD/log/sidekiq.log
+worker: bundle exec sidekiq -r $PWD/bin/worker.rb
