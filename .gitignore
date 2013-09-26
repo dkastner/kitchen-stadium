@@ -4,3 +4,4 @@ tmp
 bin
 .bundle*
 .vagrant
+log

@@ -125,7 +125,6 @@ GEM
     rest-client (1.6.7)
       mime-types (>= 1.16)
     ruby-hmac (0.4.0)
-    ruby-libvirt (0.4.0)
     rubyzip (1.0.0)
     sidekiq (2.14.1)
       celluloid (>= 0.14.1)
@@ -166,7 +165,6 @@ DEPENDENCIES
   knife-solo
   knife-solo_data_bag
   librarian
-  ruby-libvirt
   sidekiq
   terminal-table
   thor
