@@ -13,15 +13,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'capistrano'
   gem.add_dependency 'dotenv'
   gem.add_dependency 'fog'
-  gem.add_dependency 'heroku'
-  gem.add_dependency 'librarian'
-  #gem.add_dependency 'ruby-libvirt'
-  gem.add_dependency 'knife-ec2'
-  gem.add_dependency 'knife-solo'
-  gem.add_dependency 'knife-solo_data_bag'
   gem.add_dependency 'sidekiq'
   gem.add_dependency 'terminal-table'
   gem.add_dependency 'thor'

@@ -7,6 +7,17 @@ GIT
       chef (>= 0.10.10)
       fog (~> 1.3)
 
+PATH
+  remote: .
+  specs:
+    kitchen-stadium (1.0.0)
+      dotenv
+      fog
+      sidekiq
+      terminal-table
+      thor
+      tinder
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -150,6 +161,7 @@ DEPENDENCIES
   dotenv
   fog
   heroku
+  kitchen-stadium!
   knife-ec2!
   knife-solo
   knife-solo_data_bag
