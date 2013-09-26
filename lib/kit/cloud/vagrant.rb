@@ -21,6 +21,8 @@ module Kit
       def self.server_list
         raw_list = begin
           `vagrant status`.split(/\n/)[2..-1]
+        rescue NoMethodError
+          []
         rescue Errno::ENOENT
           []
         end
