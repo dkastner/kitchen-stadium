@@ -19,7 +19,9 @@ module Kit
       #end
 
       def self.server_list
-        raw_list = `vagrant status`.split(/\n/)[2..-1].
+        raw_list = `vagrant status`.split(/\n/)[2..-1]
+        return [] if raw_list.nil?
+        raw_list = raw_list.
           map { |line| line.strip }.
           map { |line| line.split(/\s+/) }.
           find_all { |row| row.count == 3 }
