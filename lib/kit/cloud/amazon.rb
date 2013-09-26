@@ -63,8 +63,8 @@ module Kit
           :aws_secret_access_key    => ENV['AWS_ACCESS_SECRET']
         })
         Fog.credentials.merge!({
-          private_key_path: "#{ENV['HOME']}/.ssh/app-ssh.pem",
-          public_key_path: "#{ENV['HOME']}/.ssh/app-ssh.pub"
+          private_key_path: SSHKeys.aws_ssh_private.path,
+          public_key_path: SSHKeys.aws_ssh_public.path
         })
 
         @aws

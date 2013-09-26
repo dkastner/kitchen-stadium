@@ -1,10 +1,9 @@
 require 'kit/helpers'
+require 'kit/ssh_keys'
 
 module Kit
   class Knife
     include Kit::Helpers
-
-    KNIFE_SECRET_PATH = '~/.ssh/app-knife.pem'
 
     attr_accessor :server
 
@@ -14,7 +13,7 @@ module Kit
 
     def upload_secret
       destination_path = '/tmp/encrypted_data_bag_secret'
-      secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
+      secret_path = SSHKeys.knife_secret.path
 
       report "Copying encrypted data bag secret..." do
         cmd = %{scp -o "StrictHostKeyChecking=false"}
@@ -33,7 +32,6 @@ module Kit
 
     def bootstrap_chef(build = true)
       destination_path = '/tmp/encrypted_data_bag_secret'
-      secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
 
       cmd = "bundle exec knife solo bootstrap #{server.chef_user}@#{server.ip}"
       cmd += " -N #{node_type(build)}"
