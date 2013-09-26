@@ -1,0 +1,14 @@
+{
+  :nodes => {
+    :test_node => {
+      :template => 'ubuntu_1204',
+      :union => 'aufs',
+      :run_list => %w(postgresql)
+    }
+  },
+  :local_chef_server => {
+    :enabled => true,
+    :auto_upload => true,
+    :zero => true
+  }
+}
