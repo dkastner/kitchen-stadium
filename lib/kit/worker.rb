@@ -3,6 +3,8 @@ require 'kit/helpers'
 
 module Kit
   class Worker
+    class ExecutionFailed < StandardError; end
+
     include Sidekiq::Worker
     include Kit::Helpers
 
@@ -13,7 +15,9 @@ module Kit
     end
 
     def perform(exe, command, site, type, extra = nil)
-      shellout "bin/#{exe} #{command} #{site} #{type} #{extra}"
+      unless shellout "bin/#{exe} #{command} #{site} #{type} #{extra}"
+        raise ExecutionFailed
+      end
     end
   end
 end
