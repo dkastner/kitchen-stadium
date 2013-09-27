@@ -1,6 +1,7 @@
 require 'kit'
 require 'kit/cloud'
 require 'kit/knife'
+require 'kit/ssh_keys'
 
 module Kit
   class Server
@@ -223,6 +224,14 @@ module Kit
         Cloud::Vagrant
       end
       extend mod
+    end
+
+    def with_private_key(&blk)
+      if ssh_key
+        blk.call ssh_key
+      else
+        SSHKeys.with_keys(private_key_name, &blk)
+      end
     end
   end
 end

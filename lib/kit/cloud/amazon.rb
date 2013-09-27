@@ -41,13 +41,15 @@ module Kit
         end
 
         remaining = aws_servers.map do |instance_name, subset|
-          subset.each do |aws_server|
-            site, type, color = instance_name.split('-')
-            server = Server.find_by_ip aws_server.public_ip_address
-            server ||= Server.new(site, type, color, cloud: :amazon)
-            server.update_info!(aws_server) if server.respond_to?(:update_info!)
+          if instance_name
+            subset.each do |aws_server|
+              site, type, color = instance_name.split('-')
+              server = Server.find_by_ip aws_server.public_ip_address
+              server ||= Server.new(site, type, color, cloud: :amazon)
+              server.update_info!(aws_server) if server.respond_to?(:update_info!)
 
-            servers << server
+              servers << server
+            end
           end
         end
 
@@ -62,12 +64,12 @@ module Kit
           :aws_access_key_id        => ENV['AWS_ACCESS_KEY'],
           :aws_secret_access_key    => ENV['AWS_ACCESS_SECRET']
         })
-        Fog.credentials.merge!({
-          private_key_path: SSHKeys.aws_ssh_private.path,
-          public_key_path: SSHKeys.aws_ssh_public.path
-        })
 
         @aws
+      end
+
+      def private_key_name
+        'AWS_SSH_PRIVATE'
       end
 
       def aws_server
@@ -77,28 +79,8 @@ module Kit
         @aws_server = val
       end
 
-      #def wait
-        #aws_server.wait
-      #end
       def wait
-        ip = static_ip
-        report "Waiting for server #{ip}", 'ready!' do
-          waiting = true
-          while waiting
-            status = ''
-            cmd = "ssh -y"
-            cmd += " -i #{ssh_key}" if ssh_key
-            cmd += %{ -o "ConnectTimeout=5" -o "StrictHostKeyChecking=false" #{chef_user}@#{ip} "echo OK"}
-            IO.popen(cmd) do |ssh|
-              status += ssh.gets.to_s
-            end
-            if waiting = (status !~ /OK/)
-              sleep 1
-            end
-            dot
-          end
-        end
-        yield if block_given?
+        aws_server.wait
       end
 
       def create_instance(default_image = false)
@@ -106,18 +88,22 @@ module Kit
         image_id = default_image ? AMIS[:u1204_64_us_east] : image
         image_id ||= AMIS[:u1204_64_us_east]
 
-        attrs = {
-          flavor_id: instance_type,
-          image_id: image_id,
-          availability_zone: zone,
-          security_groups: security_groups,
-          tags: { 'Name' => instance_name },
-          username: chef_user,
-          key_name: key
-        }
-        attrs[:elastic_ip] = static_ip if static_ip
+        SSHKeys.with_keys('AWS_SSH_PUBLIC', 'AWS_SSH_PRIVATE') do |public_key_path, private_key_path|
+          attrs = {
+            flavor_id: instance_type,
+            image_id: image_id,
+            availability_zone: zone,
+            security_groups: security_groups,
+            tags: { 'Name' => instance_name },
+            username: chef_user,
+            key_name: key,
+            private_key_path: private_key_path,
+            public_key_path: public_key_path
+          }
+          attrs[:elastic_ip] = static_ip if static_ip
 
-        self.aws_server = Amazon.aws.servers.bootstrap attrs
+          self.aws_server = Amazon.aws.servers.bootstrap attrs
+        end
 
         update_info!(aws_server)
       end

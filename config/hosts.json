@@ -5,8 +5,7 @@
         "cloud": "amazon",
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
-        "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem"
+        "security_groups": "sshd"
       }
     }
   },
@@ -15,7 +14,6 @@
       "_default": {
         "cloud": "amazon",
         "zone": "us-east-1c",
-        "ssh_key": "~/.ssh/stats-ssh.pem",
         "instance_type": "t1.micro",
         "security_groups": "graphiti,graphite,statsd,sshd"
       },
@@ -38,7 +36,6 @@
         "zone": "us-east-1c",
         "instance_type": "m1.small",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-6df5ba04"
       }
     },
@@ -48,7 +45,6 @@
         "zone": "us-east-1c",
         "instance_type": "m1.small",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-55246d3c"
       }
     },
@@ -58,7 +54,6 @@
         "zone": "us-east-1c",
         "instance_type": "m1.xlarge",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-23753a4a"
       }
     },
@@ -68,7 +63,6 @@
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-1fce8776"
       }
     },
@@ -78,7 +72,6 @@
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem",
         "image": "ami-25bcf14c"
       }
     },
@@ -87,23 +80,7 @@
         "cloud": "amazon",
         "zone": "us-east-1c",
         "security_groups": "sshd,app-catalog",
-        "instance_type": "m1.small",
-        "ssh_key": "~/.ssh/app-ssh.pem",
-        "image": "ami-b71855de"
-      },
-      "blue": {
-        "static_ip": "54.224.139.132"
-      },
-      "red": {
-        "static_ip": "107.20.247.164"
-      }
-    },
-    "redis": {
-      "_default": {
-        "cloud": "amazon",
-        "zone": "us-east-1c",
-        "security_groups": "sshd",
-        "ssh_key": "~/.ssh/app-ssh.pem"
+        "instance_type": "m1.small"
       },
       "blue": {
         "static_ip": "54.225.205.218"

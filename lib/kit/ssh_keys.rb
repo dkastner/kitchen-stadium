@@ -12,6 +12,16 @@ module Kit
       @aws_ssh_private ||= new('KNIFE_SECRET')
     end
 
+    def self.with_keys(*key_names, &blk)
+      keys = key_names.map { |name| new(name) }
+
+      paths = keys.map(&:path)
+
+      blk.call *paths
+
+      keys.map(&:unlink_temp_file)
+    end
+
     attr_accessor :name
 
     def initialize(name)
@@ -40,18 +50,26 @@ module Kit
     end
 
     def temp_path
-      if @temp_path && File.exist?(@temp_path)
-        @temp_path
-      else
-        file = Tempfile.new 'temp-key'
-        file.write env
-        file.close
-        file.path
-      end
+      temp_file.path
+    end
+
+    def temp_file
+      return @temp_file if @temp_file && File.exist?(@temp_file)
+
+      file = Tempfile.new 'temp-key'
+      file.write env
+      file.close
+      @temp_path = file
     end
 
     def default_path
       "#{ENV['HOME']}/.ssh/kitchen-stadium-#{friendly_name}.key"
+    end
+
+    def unlink_temp_file
+      if path_env.nil? && env
+        key.temp_file.unlink
+      end
     end
   end
 end

@@ -22,16 +22,16 @@ set :default_environment, {
 
 set :use_sudo, false
 
-## ssh options
-ssh_options[:forward_agent] = true
-ssh_options[:keys] = [
-  File.join(ENV['HOME'], '.ssh', 'app-ssh.pem')]
-#ssh_options[:verbose] = :debug
-ssh_options[:user] = 'app'
 default_run_options[:pty] = true
 
 $:.unshift File.expand_path('../../lib', __FILE__)
 require 'kit/server_list'
+require 'kit/ssh_keys'
+
+key = Kit::SSHKeys.new 'AWS_SSH_PRIVATE'
+ssh_options[:keys] = [key.path]
+ssh_options[:user] = 'app'
+ssh_options[:forward_agent] = true
 
 running_servers = Kit::ServerList.running
 

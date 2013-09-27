@@ -16,11 +16,13 @@ module Kit
       secret_path = SSHKeys.knife_secret.path
 
       report "Copying encrypted data bag secret..." do
-        cmd = %{scp -o "StrictHostKeyChecking=false"}
-        cmd += " -i #{server.ssh_key}" if server.ssh_key
-        cmd += " -P #{server.ssh_port}" if server.ssh_port
-        cmd += " #{secret_path} #{server.chef_user}@#{server.ip}:#{destination_path}"
-        shellout cmd
+        server.with_private_key do |key_path|
+          cmd = %{scp -o "StrictHostKeyChecking=false"}
+          cmd += " -i #{key_path}"
+          cmd += " -P #{server.ssh_port}" if server.ssh_port
+          cmd += " #{secret_path} #{server.chef_user}@#{server.ip}:#{destination_path}"
+          shellout cmd
+        end
       end
     end
 
@@ -33,22 +35,26 @@ module Kit
     def bootstrap_chef(build = true)
       destination_path = '/tmp/encrypted_data_bag_secret'
 
-      cmd = "bundle exec knife solo bootstrap #{server.chef_user}@#{server.ip}"
-      cmd += " -N #{node_type(build)}"
-      cmd += " -i #{server.ssh_key}" if server.ssh_key
-      cmd += " -p #{server.ssh_port}" if server.ssh_port
-      if server.cloud == :smart_os
-        cmd += ' --template-file config/joyent-smartmachine.erb'
+      server.with_private_key do |key_path|
+        cmd = "bundle exec knife solo bootstrap #{server.chef_user}@#{server.ip}"
+        cmd += " -N #{node_type(build)}"
+        cmd += " -i #{key_path}"
+        cmd += " -p #{server.ssh_port}" if server.ssh_port
+        if server.cloud == :smart_os
+          cmd += ' --template-file config/joyent-smartmachine.erb'
+        end
+        shellout cmd
       end
-      shellout cmd
     end
 
     def cook
-      cmd = "bundle exec knife solo cook #{server.chef_user}@#{server.ip}"
-      cmd += " -N #{node_type}"
-      cmd += " -i #{server.ssh_key}" if server.ssh_key
-      cmd += " -p #{server.ssh_port}" if server.ssh_port
-      shellout cmd
+      server.with_private_key do |key_path|
+        cmd = "bundle exec knife solo cook #{server.chef_user}@#{server.ip}"
+        cmd += " -N #{node_type}"
+        cmd += " -i #{key_path}"
+        cmd += " -p #{server.ssh_port}" if server.ssh_port
+        shellout cmd
+      end
     end
   end
 end

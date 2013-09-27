@@ -1,12 +1,3 @@
-GIT
-  remote: git://github.com/actionverb/knife-ec2.git
-  revision: e16ead0746313e80391227339e9dc4873ccadf99
-  ref: e16ead0746313e80391227339e9dc4873ccadf99
-  specs:
-    knife-ec2 (0.5.13)
-      chef (>= 0.10.10)
-      fog (~> 1.3)
-
 PATH
   remote: .
   specs:
@@ -80,20 +71,18 @@ GEM
     http_parser.rb (0.5.3)
     ipaddress (0.8.0)
     json (1.7.7)
-    knife-solo (0.3.0)
+    knife-solo (0.2.0)
       chef (>= 10.12)
-      erubis (~> 2.7.0)
+      librarian (~> 0.0.20)
       net-ssh (>= 2.2.2, < 3.0)
     knife-solo_data_bag (0.4.0)
     launchy (2.3.0)
       addressable (~> 2.3)
-    librarian (0.1.1)
-      highline
-      thor (~> 0.15)
-    librarian-chef (0.0.2)
+    librarian (0.0.26)
       archive-tar-minitar (>= 0.5.2)
       chef (>= 0.10)
-      librarian (~> 0.1.0)
+      highline
+      thor (~> 0.15)
     mime-types (1.25)
     mini_portile (0.5.1)
     mixlib-authentication (1.3.0)
@@ -175,10 +164,8 @@ DEPENDENCIES
   fog
   heroku
   kitchen-stadium!
-  knife-ec2!
-  knife-solo
+  knife-solo (= 0.2.0)
   knife-solo_data_bag
-  librarian-chef
   rspec
   sidekiq
   terminal-table
