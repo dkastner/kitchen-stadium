@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'terminal-table'
   gem.add_dependency 'thor'
   gem.add_dependency 'tinder'
+  gem.add_dependency 'vagrant'
 
   gem.add_development_dependency 'rspec'
 end
