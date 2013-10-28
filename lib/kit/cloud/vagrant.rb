@@ -27,6 +27,7 @@ module Kit
           []
         end
 
+        raw_list ||= []
         raw_list = raw_list.
           map { |line| line.strip }.
           map { |line| line.split(/\s+/) }.
