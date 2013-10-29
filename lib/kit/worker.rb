@@ -1,6 +1,8 @@
 require 'sidekiq'
 require 'kit/helpers'
 
+require 'kit/worker/import'
+
 module Kit
   class Worker
     class ExecutionFailed < StandardError; end

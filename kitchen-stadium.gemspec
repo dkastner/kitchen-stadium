@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'dotenv'
   gem.add_dependency 'fog'
   gem.add_dependency 'sidekiq'
+  gem.add_dependency 'sidetiq'
   gem.add_dependency 'terminal-table'
   gem.add_dependency 'thor'
   gem.add_dependency 'tinder'
