@@ -79,6 +79,18 @@ module Kit
         @aws_server = val
       end
 
+      def with_keys(&blk)
+        SSHKeys.with_keys('AWS_SSH_PUBLIC', 'AWS_SSH_PRIVATE') do |pub, priv|
+          blk.call pub, priv
+        end
+      end
+
+      def ssh(cmd)
+        with_private_key do |private_key_path|
+          aws_server.ssh cmd, key_data: [private_key_path]
+        end
+      end
+
       def wait
         aws_server.wait
       end
@@ -88,7 +100,7 @@ module Kit
         image_id = default_image ? AMIS[:u1204_64_us_east] : image
         image_id ||= AMIS[:u1204_64_us_east]
 
-        SSHKeys.with_keys('AWS_SSH_PUBLIC', 'AWS_SSH_PRIVATE') do |public_key_path, private_key_path|
+        with_keys do |pub, priv|
           attrs = {
             flavor_id: instance_type,
             image_id: image_id,

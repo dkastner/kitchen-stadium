@@ -17,7 +17,8 @@ module Kit
     end
 
     def perform(exe, command, site, type, extra = nil)
-      unless shellout "bin/#{exe} #{command} #{site} #{type} #{extra}"
+      bin = exe == 'kit' ? 'bin/kit' : 'bin/chairman'
+      unless shellout "#{bin} #{command} #{site} #{type} #{extra}"
         raise ExecutionFailed
       end
     end

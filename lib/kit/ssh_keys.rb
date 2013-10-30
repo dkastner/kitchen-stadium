@@ -17,9 +17,23 @@ module Kit
 
       paths = keys.map(&:path)
 
-      blk.call *paths
+      result = blk.call *paths
 
       keys.map(&:unlink_temp_file)
+
+      result
+    end
+
+    def self.with_key_contents(*key_names, &blk)
+      keys = key_names.map { |name| new(name) }
+
+      contents = keys.map(&:content)
+
+      result = blk.call *contents
+
+      keys.map(&:unlink_temp_file)
+
+      result
     end
 
     attr_accessor :name
@@ -47,6 +61,10 @@ module Kit
       else
         default_path
       end
+    end
+
+    def content
+      File.read path
     end
 
     def temp_path
