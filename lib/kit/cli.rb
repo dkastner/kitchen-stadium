@@ -55,13 +55,15 @@ module Kit
       server = choose_server(site, type, color, 'connect to')
       user ||= server.chef_user
 
-      cmd = 'ssh'
-      cmd += %{ -o "StrictHostKeyChecking=false"}
-      cmd += " -i #{server.ssh_key}" if server.ssh_key
-      cmd += " -p #{server.ssh_port}" if server.ssh_port
-      cmd += " #{user}@#{server.ip}"
-      puts cmd
-      exec cmd
+      server.with_keys do |pub, priv|
+        cmd = 'ssh'
+        cmd += %{ -o "StrictHostKeyChecking=false"}
+        cmd += " -i #{priv}" if priv
+        cmd += " -p #{server.ssh_port}" if server.ssh_port
+        cmd += " #{user}@#{server.ip}"
+        puts cmd
+        exec cmd
+      end
     end
 
 
