@@ -49,8 +49,8 @@ cookbook 'database', git: 'git://github.com/michaelklapper/database.git',
   ref: 'grant_statement'
 
 cookbook 'fanfare', git: 'git://github.com/Lanio/chef-fanfare.git'
-cookbook 'company', path: '../company-cookbook'
-#cookbook 'company', git: 'git@github.com:Lanio/company-cookbook.git'
+#cookbook 'company', path: '../company-cookbook'
+cookbook 'company', git: 'git@github.com:Lanio/company-cookbook.git'
 
 # Development
 cookbook 'tmux'
@@ -68,8 +68,8 @@ cookbook 'apache2'
 cookbook 'passenger_apache2'
 
 #cookbook 'solr', github: 'theozaurus/chef-solr'
-#cookbook 'solr', github: 'dkastner/chef-solr'
-cookbook 'solr', path: '../chef-solr'
+cookbook 'solr', github: 'dkastner/chef-solr'
+#cookbook 'solr', path: '../chef-solr'
 #cookbook 'maven'
 #cookbook 'solr-jetty-maven', path: '../chef-solr-jetty-maven' # git: 'git://github.com/dkastner/chef-solr'
 cookbook 'redis', git: 'git://github.com/wanelo-chef/redis.git'

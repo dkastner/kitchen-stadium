@@ -18,7 +18,7 @@ SITE
       yum (>= 0.0.0)
     hostname (0.1.0)
       hostsfile (>= 0.0.0)
-    hostsfile (2.0.0)
+    hostsfile (2.4.1)
     imagemagick (0.2.2)
     iptables (0.12.0)
     logrotate (1.2.2)
@@ -204,6 +204,28 @@ GIT
       smartos (>= 0.0.0)
 
 GIT
+  remote: git@github.com:Lanio/company-cookbook.git
+  ref: master
+  sha: c8786b777340f8e7845a74adcd99f688c41eb49d
+  specs:
+    company (0.1.0)
+      database (>= 0.0.0)
+      git (>= 0.0.0)
+      hostname (>= 0.0.0)
+      iptables (>= 0.0.0)
+      nginx (>= 0.0.0)
+      ohai (>= 0.0.0)
+      postgresql (>= 0.0.0)
+      rbenv (>= 0.0.0)
+      redis (>= 0.0.0)
+      ruby_build (>= 0.0.0)
+      smartos (>= 0.0.0)
+      smf (>= 0.0.0)
+      solr (>= 0.0.0)
+      ssh (>= 0.0.0)
+      user (>= 0.0.0)
+
+GIT
   remote: https://github.com/NOX73/chef-golang
   ref: master
   sha: 2cc2bbdaf8f57d1c1d3fca2fb533e5e381bc9acf
@@ -232,31 +254,13 @@ GIT
       lxc (>= 0.0.0)
       modules (>= 0.0.0)
 
-PATH
-  remote: ../chef-solr
+GIT
+  remote: https://github.com/dkastner/chef-solr
+  ref: master
+  sha: 4562aac5d8d5f212eded09787df7429ca02f6e35
   specs:
     solr (0.1.2)
       jetty (>= 0.0.0)
-
-PATH
-  remote: ../company-cookbook
-  specs:
-    company (0.1.0)
-      database (>= 0.0.0)
-      git (>= 0.0.0)
-      hostname (>= 0.0.0)
-      iptables (>= 0.0.0)
-      nginx (>= 0.0.0)
-      ohai (>= 0.0.0)
-      postgresql (>= 0.0.0)
-      rbenv (>= 0.0.0)
-      redis (>= 0.0.0)
-      ruby_build (>= 0.0.0)
-      smartos (>= 0.0.0)
-      smf (>= 0.0.0)
-      solr (>= 0.0.0)
-      ssh (>= 0.0.0)
-      user (>= 0.0.0)
 
 DEPENDENCIES
   apache2 (>= 0)
