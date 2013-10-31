@@ -54,7 +54,7 @@
         "zone": "us-east-1c",
         "instance_type": "m1.xlarge",
         "security_groups": "sshd",
-        "image": "ami-23753a4a"
+        "image": "ami-79e8b610"
       }
     },
     "deal_fetcher": {

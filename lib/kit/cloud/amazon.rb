@@ -100,7 +100,7 @@ module Kit
         image_id = default_image ? AMIS[:u1204_64_us_east] : image
         image_id ||= AMIS[:u1204_64_us_east]
 
-        with_keys do |pub, priv|
+        with_keys do |pub_key, priv_key|
           attrs = {
             flavor_id: instance_type,
             image_id: image_id,
@@ -109,8 +109,8 @@ module Kit
             tags: { 'Name' => instance_name },
             username: chef_user,
             key_name: key,
-            private_key_path: private_key_path,
-            public_key_path: public_key_path
+            private_key_path: priv_key,
+            public_key_path: pub_key
           }
           attrs[:elastic_ip] = static_ip if static_ip
 
