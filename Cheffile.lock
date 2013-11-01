@@ -206,7 +206,7 @@ GIT
 GIT
   remote: git@github.com:Lanio/company-cookbook.git
   ref: master
-  sha: c8786b777340f8e7845a74adcd99f688c41eb49d
+  sha: e24389c48c29627ab5f8651eaf39dc85c9e45dee
   specs:
     company (0.1.0)
       database (>= 0.0.0)
