@@ -84,6 +84,8 @@ module Kit
     config_var :ssh_key
     config_var :ssh_port, 22
     config_var :chef_user, 'ubuntu'
+    config_var :deploy_command,  'whoami'
+    config_var :deploy_user,  'ubuntu'
 
     attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
       :created_at, :status, :static_ip
@@ -196,26 +198,17 @@ module Kit
     end
 
     def deploy
-      case type
-      when 'indexer'
-        run "cd $HOME/indexer && rake index"
-      when 'importer'
-        run "cd $HOME/importer && rake import"
-      when 'exporter'
-        run "cd $HOME/exporter; bundle install; rake export_and_package"
-      when 'deal_fetcher'
-        run "cd $HOME/deal-mailer && rake deals:fetch"
-        run "cd $HOME/importer && rake deal_resources"
-        run "cd $HOME/deal-mailer && rake deals:activate"
-      when 'deal_mailer'
-        run "cd $HOME/deal-mailer && rake deals:mail"
+      Array(deploy_command).each do |cmd|
+        run cmd
       end
     end
 
     def run(cmd)
       results = ssh cmd
       results.each do |result|
-        puts cmd, result.stdout, result.stderr, result.status
+        logger.info  "Running `#{cmd}"
+        logger.info  result.stdout
+        logger.error result.stderr if result.stderr
       end
     end
 

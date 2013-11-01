@@ -22,9 +22,12 @@ module Kit
       out
     end
 
+    def logger
+      @logger ||= Logger.new(STDOUT)
+    end
+
     def shellout(cmd)
       result = nil
-      logger = Logger.new(STDOUT)
       IO.popen cmd do |io|
         while line = io.gets
           self.log += line if respond_to?(:log)

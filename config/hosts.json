@@ -36,7 +36,9 @@
         "zone": "us-east-1c",
         "instance_type": "m1.small",
         "security_groups": "sshd",
-        "image": "ami-6df5ba04"
+        "image": "ami-6df5ba04",
+        "deploy_user": "app",
+        "deploy_command": "cd $HOME/indexer; rake index"
       }
     },
     "exporter": {
@@ -45,7 +47,9 @@
         "zone": "us-east-1c",
         "instance_type": "m1.small",
         "security_groups": "sshd",
-        "image": "ami-55246d3c"
+        "image": "ami-55246d3c",
+        "deploy_user": "app",
+        "deploy_command": "cd $HOME/exporter; rake export_and_package"
       }
     },
     "importer": {
@@ -54,7 +58,9 @@
         "zone": "us-east-1c",
         "instance_type": "m1.xlarge",
         "security_groups": "sshd",
-        "image": "ami-79e8b610"
+        "image": "ami-b9633ad0",
+        "deploy_user": "app",
+        "deploy_command": "cd $HOME/importer; rake import"
       }
     },
     "deal_fetcher": {
@@ -63,7 +69,13 @@
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
-        "image": "ami-1fce8776"
+        "image": "ami-1fce8776",
+        "deploy_user": "app",
+        "deploy_command": [
+          "cd $HOME/deal-mailer && rake deals:fetch",
+          "cd $HOME/importer && rake deal_resources",
+          "cd $HOME/deal-mailer && rake deals:activate"
+        ]
       }
     },
     "deal_mailer": {
@@ -72,7 +84,9 @@
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
-        "image": "ami-25bcf14c"
+        "image": "ami-25bcf14c",
+        "deploy_user": "app",
+        "deploy_command": "cd $HOME/deal-mailer && rake deals:mail"
       }
     },
     "solr": {
