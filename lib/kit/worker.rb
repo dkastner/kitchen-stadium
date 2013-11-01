@@ -1,6 +1,7 @@
 require 'sidekiq'
 require 'kit/helpers'
 
+require 'kit/worker/export'
 require 'kit/worker/import'
 
 module Kit
