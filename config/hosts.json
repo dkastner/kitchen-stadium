@@ -69,7 +69,7 @@
         "zone": "us-east-1c",
         "instance_type": "t1.micro",
         "security_groups": "sshd",
-        "image": "ami-1fce8776",
+        "image": "ami-81bbe2e8",
         "deploy_user": "app",
         "deploy_command": [
           "cd $HOME/deal-mailer && rake deals:fetch",
