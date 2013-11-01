@@ -17,9 +17,9 @@ module Kit
       @log ||= ''
     end
 
-    def perform(exe, command, site, type, extra = nil)
+    def perform(exe, *extra)
       bin = exe == 'kit' ? 'bin/kit' : 'bin/chairman'
-      unless shellout "#{bin} #{command} #{site} #{type} #{extra}"
+      unless shellout "#{bin} #{extra.join(' ')}"
         raise ExecutionFailed
       end
     end
