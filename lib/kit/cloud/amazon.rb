@@ -87,7 +87,8 @@ module Kit
 
       def ssh(cmd)
         with_private_key do |private_key_path|
-          aws_server.ssh cmd, key_data: [private_key_path]
+          aws_server.username = deploy_user
+          aws_server.ssh [cmd], keys: [private_key_path]
         end
       end
 
