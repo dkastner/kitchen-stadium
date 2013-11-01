@@ -86,7 +86,7 @@ module Kit
 
     def unlink_temp_file
       if path_env.nil? && env
-        key.temp_file.unlink
+        temp_file.unlink
       end
     end
   end
