@@ -120,6 +120,13 @@ module Kit
       end
     end
 
+    desc 'databag OPERATION BAG ITEM', 'create/edit a databag'
+    def databag(operation, bag, item)
+      secret_path = SSHKeys.knife_secret.path
+      exec "knife solo data bag #{operation} #{bag} #{item} --secret-file #{secret_path}"
+    end
+
+
     desc 'set_redis SITE TYPE COLOR', 'set new redis server'
     def set_redis(site, type, color)
       set_server_env(site, type, color, 'REDIS_HOST', %w{app-accounts
