@@ -9,6 +9,7 @@ module Kit
 
     def initialize(server)
       self.server = server
+      self.logger = server.logger
     end
 
     def upload_secret

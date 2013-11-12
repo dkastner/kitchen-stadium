@@ -20,7 +20,7 @@ module Kit
     def perform(exe, *extra)
       bin = exe == 'kit' ? 'bin/kit' : 'bin/chairman'
       unless shellout "#{bin} #{extra.join(' ')}"
-        raise ExecutionFailed
+        raise ExecutionFailed, log
       end
     end
   end

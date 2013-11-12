@@ -26,6 +26,10 @@ module Kit
       @logger ||= Logger.new(STDOUT)
     end
 
+    def logger=(val)
+      @logger = val
+    end
+
     def shellout(cmd)
       result = nil
       IO.popen cmd do |io|
