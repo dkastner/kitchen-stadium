@@ -47,7 +47,7 @@
         "zone": "us-east-1c",
         "instance_type": "m1.small",
         "security_groups": "sshd",
-        "image": "ami-55246d3c",
+        "image": "ami-cb795ca2",
         "deploy_user": "app",
         "deploy_command": "cd $HOME/exporter; rake export_and_package"
       }
