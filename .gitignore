@@ -3,3 +3,5 @@ tmp
 .env*
 bin
 .bundle*
+.vagrant
+log

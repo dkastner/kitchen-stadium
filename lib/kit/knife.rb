@@ -1,46 +1,63 @@
 require 'kit/helpers'
+require 'kit/ssh_keys'
 
 module Kit
   class Knife
     include Kit::Helpers
 
-    KNIFE_SECRET_PATH = '~/.ssh/app-knife.pem'
+    KNIFE_SECRET_PATH = '~/.ssh/kit-knife.pem'
 
     attr_accessor :server
 
     def initialize(server)
       self.server = server
+      self.logger = server.logger
     end
 
     def upload_secret
       destination_path = '/tmp/encrypted_data_bag_secret'
-      secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
+      secret_path = SSHKeys.knife_secret.path
 
       report "Copying encrypted data bag secret..." do
-        cmd = %{scp -o "StrictHostKeyChecking=no"}
-        cmd += " -i #{server.ssh_key}" if server.ssh_key
-        cmd += " #{secret_path} #{server.user}@#{server.ip}:#{destination_path}"
-        shellout cmd
+        server.with_private_key do |key_path|
+          cmd = %{scp -o "StrictHostKeyChecking=false"}
+          cmd += " -i #{key_path}"
+          cmd += " -P #{server.ssh_port}" if server.ssh_port
+          cmd += " #{secret_path} #{server.chef_user}@#{server.ip}:#{destination_path}"
+          shellout cmd
+        end
       end
+    end
+
+    def node_type(build = true)
+      node_type = "#{server.site}-#{server.type}"
+      node_type = node_type + "-launch" unless build
+      node_type
     end
 
     def bootstrap_chef(build = true)
       destination_path = '/tmp/encrypted_data_bag_secret'
-      secret_path = ENV['KNIFE_SECRET_PATH'] || KNIFE_SECRET_PATH
 
-      node_type = "#{server.site}-#{server.type}"
-      node_type = node_type + "-launch" unless build
-
-      cmd = "bundle exec knife solo bootstrap #{server.user}@#{server.ip} -N #{node_type}"
-      cmd += " -i #{server.ssh_key}" if server.ssh_key
-      if server.platform.to_s == 'smartos_smartmachine'
-        cmd += ' --template-file config/joyent-smartmachine.erb'
+      server.with_private_key do |key_path|
+        cmd = "bundle exec knife solo bootstrap #{server.chef_user}@#{server.ip}"
+        cmd += " -N #{node_type(build)}"
+        cmd += " -i #{key_path}"
+        cmd += " -p #{server.ssh_port}" if server.ssh_port
+        if server.cloud == :smart_os
+          cmd += ' --template-file config/joyent-smartmachine.erb'
+        end
+        shellout cmd
       end
-      shellout cmd
     end
 
     def cook
-      shellout "bundle exec knife solo cook ubuntu@#{server.ip} -i ~/.ssh/app-ssh.pem"
+      server.with_private_key do |key_path|
+        cmd = "bundle exec knife solo cook #{server.chef_user}@#{server.ip}"
+        cmd += " -N #{node_type}"
+        cmd += " -i #{key_path}"
+        cmd += " -p #{server.ssh_port}" if server.ssh_port
+        shellout cmd
+      end
     end
   end
 end

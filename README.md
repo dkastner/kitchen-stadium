@@ -43,3 +43,7 @@ The main program for interaction is `kit`. It will create, list, and destroy run
 ## Apologies
 
 I apologize to those annoyed by the myriad chef puns-as-project-names and to the Food Network.
+=======
+# Kit
+
+Basic instance management commands.

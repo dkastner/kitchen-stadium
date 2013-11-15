@@ -2,7 +2,7 @@ require 'logger'
 require 'thor'
 require 'tinder'
 
-require 'kit/server'
+require 'kit/server_list'
 
 module Kit
   class Chairman < Thor
@@ -10,7 +10,10 @@ module Kit
     method_option :create, :type => :boolean, :default => true
     method_option :deploy, :type => :boolean, :default => true
     method_option :destroy, :type => :boolean, :default => true
+    method_options %w(log l) => :string
     def launch(site, type, color = nil)
+      @logger_path = options.log
+        
       server = ServerList.find_by_name(site, type, color).first
 
       logger.info 'ALLEZ CUISINE!!!'
@@ -20,7 +23,7 @@ module Kit
 
       if options.create
         logger.info "Creating instance #{site}-#{type}"
-        server = Server.launch site, type, color
+        server = Server.launch site, type, color, logger: logger
         result = server.bootstrap_chef(false)
         failout server, "Failed to bootstrap #{server.id}", options unless result
       end
@@ -95,7 +98,11 @@ module Kit
 
     no_commands do
       def logger
-        @logger ||= Logger.new(STDOUT)
+        return @logger unless @logger.nil?
+
+        type = @logger_path || STDOUT
+           
+        @logger = Logger.new(type)
       end
 
       def campfire

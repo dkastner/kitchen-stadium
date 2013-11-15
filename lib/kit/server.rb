@@ -1,7 +1,7 @@
 require 'kit'
-require 'kit/amazon'
+require 'kit/cloud'
 require 'kit/knife'
-require 'kit/smart_os'
+require 'kit/ssh_keys'
 
 module Kit
   class Server
@@ -19,18 +19,22 @@ module Kit
       found
     end
 
-    def self.find_color(site, type)
-      list = site == 'kitchen-stadium' ?
-        %w{kaga dacascos} :
-        %w{red orange yellow green blue purple brown white black}
+    def self.find_color(site, type, options)
+      list = if site == 'kitchen-stadium'
+        %w{kaga dacascos}
+      elsif options[:cloud].to_s.to_sym == :vagrant
+        Cloud::Vagrant::COLORS
+      else
+        Kit::COLORS
+      end
 
       color = (list - ServerList.running_colors(site, type)).first
       raise "I'm out of colors!" if color.nil?
       color
     end
 
-    def self.from_scratch(site, type, color = nil)
-      color ||= find_color(site, type)
+    def self.from_scratch(site, type, color = nil, options = {})
+      color ||= find_color(site, type, options)
       server = Server.new site, type, color
 
       server.create_instance(true)
@@ -42,9 +46,9 @@ module Kit
       server
     end
 
-    def self.launch(site, type, color = nil)
-      color ||= find_color(site, type)
-      server = Server.new site, type, color
+    def self.launch(site, type, color = nil, options = {})
+      color ||= find_color(site, type, options)
+      server = Server.new site, type, color, options
 
       server.launch_image
       fail "Failed to create instance" unless server.instantiated?
@@ -55,8 +59,36 @@ module Kit
       server
     end
 
+    def self.config_var(name, default = nil, format = nil)
+      attr_accessor name
+      define_method name do
+        ivar = "@#{name}"
+        result = if val = instance_variable_get(ivar)
+          val
+        else
+          val = (config[name.to_s] || default)
+          instance_variable_set ivar, val
+          val
+        end
+
+        if format && result.respond_to?(format)
+          result.send format
+        else
+          result
+        end
+      end
+    end
+
+    config_var :cloud, Kit.default_cloud, :to_sym
+    config_var :image
+    config_var :ssh_key
+    config_var :ssh_port, 22
+    config_var :chef_user, 'ubuntu'
+    config_var :deploy_command,  'whoami'
+    config_var :deploy_user,  'ubuntu'
+
     attr_accessor :site, :type, :color, :instance_id, :ip, :log, :zone,
-      :created_at, :status, :static_ip, :image, :platform
+      :created_at, :status, :static_ip
 
     def initialize(site, type, color, attrs = {})
       self.site = site
@@ -71,8 +103,12 @@ module Kit
       actualize!
     end
 
+    def label
+      [site, type, color].join('-')
+    end
+
     def id
-      sig = [site, type, color]
+      sig = [label]
       sig << instance_id if instance_id
       sig << ip if !instance_id && ip
       sig << image if image
@@ -82,28 +118,15 @@ module Kit
     def config
       return @config unless @config.nil?
       
-      unless Kit.hosts[site] && Kit.hosts[site][type]
-        raise "Invalid server type #{site}-#{type} specified" 
-      end
-      default_config = Kit.hosts[site][type]['_default']
+      site_config = Kit.hosts[site] || {}
+      type_config = site_config[type] || {}
+      default_config = type_config['_default'] || {}
       begin
         @config = default_config.merge(
           Kit.hosts[site][type][color] || {})
       rescue NoMethodError => e
         @config = {}
       end
-    end
-
-    def platform
-      @platform ||= config['platform'] ? config['platform'].to_sym : nil
-    end
-
-    def image
-      @image ||= config['image']
-    end
-
-    def user
-      config['user'] || 'ubuntu'
     end
 
     def zone
@@ -114,16 +137,8 @@ module Kit
       config['security_groups']
     end
 
-    def ssh_key
-      config['ssh_key']
-    end
-
     def instance_type
       config['instance_type']
-    end
-
-    def chef_user
-      config['chef_user']
     end
 
     def uptime
@@ -150,7 +165,7 @@ module Kit
 
     def status_line
       display_color = color == '_default' ? '*' : color
-      [site, type, display_color, status, ip, instance_id, uptime]
+      [site, type, display_color, cloud, status, ip, instance_id, uptime]
     end
 
     def instantiated?
@@ -174,6 +189,7 @@ module Kit
     end
 
     def bootstrap_chef(build = true)
+      upload_secret
       knife.bootstrap_chef build
     end
 
@@ -182,34 +198,42 @@ module Kit
     end
 
     def deploy
-      shellout "cap #{site} #{type} #{color} process"
+      Array(deploy_command).each do |cmd|
+        run cmd
+      end
     end
 
     def run(cmd)
-      cmd = if cmd =~ /[;&]/
-              cmd
-            else
-              "rake #{cmd}"
-            end
-
-      shellout %{cap #{site} #{type} #{color} invoke COMMAND="#{cmd}"}
+      logger.info  "Running `#{cmd}"
+      results = ssh cmd
+      results.each do |result|
+        logger.info  result.stdout
+        logger.error result.stderr if result.stderr
+      end
     end
 
     def register_known_host
+      raise "no ip" if ip.nil?
       shellout "ssh-keygen -R #{ip}"
     end
 
     def actualize!
-      if platform
-        mod = case platform
-        when :smartos_smartmachine then
-          SmartOS::SmartMachine
-        when :smartos_ubuntu then
-          SmartOS::Ubuntu
-        else
-          Amazon
-        end
-        extend mod
+      mod = case cloud
+      when :amazon then
+        Cloud::Amazon
+      when :smartos then
+        Cloud::SmartOS
+      else
+        Cloud::Vagrant
+      end
+      extend mod
+    end
+
+    def with_private_key(&blk)
+      if ssh_key
+        blk.call ssh_key
+      else
+        SSHKeys.with_keys(private_key_name, &blk)
       end
     end
   end

@@ -1,12 +1,10 @@
 require 'json'
 require 'thor'
 
-require 'kit/amazon'
 require 'kit/helpers'
 require 'kit/knife'
 require 'kit/server'
 require 'kit/server_list'
-require 'kit/smart_os'
 
 module Kit
   class CLI < Thor
@@ -31,15 +29,18 @@ module Kit
 
     desc 'build SITE TYPE [COLOR]',
       'build a new instance from scratch, e.g. `app solr` or `app solr red`'
+    method_option :cloud, :type => :string, :default => Kit.default_cloud
     def build(site, type, color = nil)
-      server = Server.from_scratch logger, site, type, color
+      server = Server.from_scratch logger, site, type, color,
+        cloud: options.cloud
       logger.info "Created host #{site}-#{type}-#{color}@#{server.ip} (#{server.instance_id})"
     end
 
-    desc 'launch SITE TYPE [COLOR]',
-      'launch a new instance from an image, e.g. `app solr` or `app solr red`'
+    desc 'create_instance SITE TYPE [COLOR]',
+      'create a new instance from an image, e.g. `app solr` or `app solr red`'
+    method_option :cloud, :type => :string, :default => Kit.default_cloud
     def create_instance(site, type, color = nil)
-      server = Server.launch site, type, color
+      server = Server.launch site, type, color, cloud: options.cloud
       logger.info "Created host #{site}-#{type}-#{server.color}@#{server.ip} (#{server.instance_id})"
     end
 
@@ -52,14 +53,17 @@ module Kit
     desc 'ssh SITE TYPE COLOR', 'ssh to the host'
     def ssh(site, type, color, user = nil)
       server = choose_server(site, type, color, 'connect to')
-      use_ssh_key = (server.user == 'ubuntu')
+      user ||= server.chef_user
 
-      cmd = 'ssh'
-      cmd += %{ -o "StrictHostKeyChecking=false"}
-      cmd += " -i #{server.ssh_key}" if server.ssh_key && use_ssh_key
-      cmd += " #{server.user}@#{server.ip}"
-      puts cmd
-      exec cmd
+      server.with_keys do |pub, priv|
+        cmd = 'ssh'
+        cmd += %{ -o "StrictHostKeyChecking=false"}
+        cmd += " -i #{priv}" if priv
+        cmd += " -p #{server.ssh_port}" if server.ssh_port
+        cmd += " #{user}@#{server.ip}"
+        puts cmd
+        exec cmd
+      end
     end
 
 
@@ -116,6 +120,13 @@ module Kit
       end
     end
 
+    desc 'databag OPERATION BAG ITEM', 'create/edit a databag'
+    def databag(operation, bag, item)
+      secret_path = SSHKeys.knife_secret.path
+      exec "knife solo data bag #{operation} #{bag} #{item} --secret-file #{secret_path}"
+    end
+
+
     desc 'set_redis SITE TYPE COLOR', 'set new redis server'
     def set_redis(site, type, color)
       set_server_env(site, type, color, 'REDIS_HOST', %w{app-accounts
@@ -132,6 +143,18 @@ module Kit
       APP_DB_CLIENTS.each do |site|
         url = `heroku config --app #{site} | grep -e ^DATABASE_URL`
         puts "#{site}: #{url.chomp}"
+      end
+    end
+
+    desc 'vagrantfile', 'generate a Vagrantfile for your project'
+    def vagrantfile
+      require 'erb'
+      template = File.expand_path('../../../Vagrantfile.erb', __FILE__)
+      erb = ERB.new File.read(template)
+
+      vagrantfile = File.join(Dir.pwd, 'Vagrantfile')
+      File.open vagrantfile, 'w' do |f|
+        f.puts erb.result
       end
     end
 

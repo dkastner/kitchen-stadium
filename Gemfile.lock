@@ -7,164 +7,189 @@ GIT
       chef (>= 0.10.10)
       fog (~> 1.3)
 
-GEM
-  remote: http://rubygems.org/
+PATH
+  remote: .
   specs:
-    addressable (2.3.4)
+    kitchen-stadium (1.0.0)
+      dotenv
+      fog
+      sidekiq
+      sidetiq
+      terminal-table
+      thor
+      tinder
+      vagrant
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (4.0.1)
+      i18n (~> 0.6, >= 0.6.4)
+      minitest (~> 4.2)
+      multi_json (~> 1.3)
+      thread_safe (~> 0.1)
+      tzinfo (~> 0.3.37)
+    addressable (2.2.8)
     archive-tar-minitar (0.5.2)
-    autoparse (0.3.3)
-      addressable (>= 2.3.1)
-      extlib (>= 0.9.15)
-      multi_json (>= 1.0.0)
-    builder (3.2.0)
-    capistrano (2.13.5)
-      highline
-      net-scp (>= 1.0.0)
-      net-sftp (>= 2.0.0)
-      net-ssh (>= 2.0.14)
-      net-ssh-gateway (>= 1.1.0)
-    chef (11.4.4)
-      erubis
-      highline (>= 1.6.9)
+    atomic (1.1.14)
+    builder (3.2.2)
+    celluloid (0.15.2)
+      timers (~> 1.1.0)
+    chef (11.6.2)
+      erubis (~> 2.7)
+      highline (~> 1.6, >= 1.6.9)
       json (>= 1.4.4, <= 1.7.7)
-      mixlib-authentication (>= 1.3.0)
-      mixlib-cli (~> 1.3.0)
-      mixlib-config (>= 1.1.2)
-      mixlib-log (>= 1.3.0)
-      mixlib-shellout
+      mixlib-authentication (~> 1.3)
+      mixlib-cli (~> 1.3)
+      mixlib-config (~> 1.1, >= 1.1.2)
+      mixlib-log (~> 1.3)
+      mixlib-shellout (~> 1.1)
       net-ssh (~> 2.6)
       net-ssh-multi (~> 1.1.0)
-      ohai (>= 0.6.0)
+      ohai (>= 0.6.0, < 7.0.0)
       rest-client (>= 1.0.4, < 1.7.0)
       yajl-ruby (~> 1.1)
-    dotenv (0.8.0)
+    connection_pool (1.1.0)
+    diff-lcs (1.2.5)
+    dotenv (0.9.0)
     erubis (2.7.0)
     eventmachine (1.0.3)
-    excon (0.22.1)
-    extlib (0.9.16)
-    faraday (0.8.7)
-      multipart-post (~> 1.1)
-    faraday_middleware (0.9.0)
-      faraday (>= 0.7.4, < 0.9)
-    fog (1.11.0)
+    excon (0.28.0)
+    faraday (0.5.7)
+      addressable (~> 2.2.4)
+      multipart-post (~> 1.1.0)
+      rack (>= 1.1.0, < 2)
+    ffi (0.6.4)
+    fog (1.18.0)
       builder
-      excon (~> 0.20)
+      excon (~> 0.28.0)
       formatador (~> 0.2.0)
-      google-api-client (~> 0.6.2)
-      json (~> 1.7)
       mime-types
+      multi_json (~> 1.0)
       net-scp (~> 1.1)
       net-ssh (>= 2.1.3)
-      nokogiri (~> 1.5.0)
+      nokogiri (~> 1.5)
       ruby-hmac
     formatador (0.2.4)
-    google-api-client (0.6.3)
-      addressable (>= 2.3.2)
-      autoparse (>= 0.3.3)
-      extlib (>= 0.9.15)
-      faraday (~> 0.8.4)
-      jwt (>= 0.1.5)
-      launchy (>= 2.1.1)
-      multi_json (>= 1.0.0)
-      signet (>= 0.4.4)
-      uuidtools (>= 2.1.0)
-    hashie (1.2.0)
-    heroku (2.40.0)
-      heroku-api (~> 0.3.7)
+    heroku (2.25.0)
       launchy (>= 0.3.2)
-      netrc (~> 0.7.7)
+      netrc (~> 0.7.1)
       rest-client (~> 1.6.1)
       rubyzip
-    heroku-api (0.3.11)
-      excon (~> 0.22.1)
-    highline (1.6.19)
+    highline (1.6.20)
     http_parser.rb (0.5.3)
+    i18n (0.6.5)
+    ice_cube (0.11.1)
     ipaddress (0.8.0)
     json (1.7.7)
-    jwt (0.1.8)
-      multi_json (>= 1.5)
     knife-solo (0.2.0)
       chef (>= 10.12)
       librarian (~> 0.0.20)
       net-ssh (>= 2.2.2, < 3.0)
-    knife-solo_data_bag (0.3.2)
-    launchy (2.3.0)
-      addressable (~> 2.3)
+    knife-solo_data_bag (0.4.0)
+    launchy (2.1.0)
+      addressable (~> 2.2.6)
     librarian (0.0.26)
       archive-tar-minitar (>= 0.5.2)
       chef (>= 0.10)
       highline
       thor (~> 0.15)
-    mime-types (1.23)
+    mario (0.0.6)
+    mime-types (2.0)
+    mini_portile (0.5.2)
+    minitest (4.7.5)
     mixlib-authentication (1.3.0)
       mixlib-log
     mixlib-cli (1.3.0)
     mixlib-config (1.1.2)
     mixlib-log (1.6.0)
-    mixlib-shellout (1.1.0)
-    multi_json (1.7.3)
-    multipart-post (1.2.0)
-    net-scp (1.1.1)
+    mixlib-shellout (1.2.0)
+    multi_json (1.8.2)
+    multipart-post (1.1.5)
+    net-scp (1.1.2)
       net-ssh (>= 2.6.5)
-    net-sftp (2.0.5)
-      net-ssh (>= 2.0.9)
-    net-ssh (2.6.7)
+    net-ssh (2.7.0)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     net-ssh-multi (1.1)
       net-ssh (>= 2.1.4)
       net-ssh-gateway (>= 0.99.0)
     netrc (0.7.7)
-    nokogiri (1.5.9)
-    ohai (6.16.0)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
+    ohai (6.20.0)
       ipaddress
       mixlib-cli
       mixlib-config
       mixlib-log
       mixlib-shellout
-      systemu
+      systemu (~> 2.5.2)
       yajl-ruby
+    rack (1.5.2)
+    redis (3.0.6)
+    redis-namespace (1.3.2)
+      redis (~> 3.0.4)
     rest-client (1.6.7)
       mime-types (>= 1.16)
+    rspec (2.14.1)
+      rspec-core (~> 2.14.0)
+      rspec-expectations (~> 2.14.0)
+      rspec-mocks (~> 2.14.0)
+    rspec-core (2.14.7)
+    rspec-expectations (2.14.4)
+      diff-lcs (>= 1.1.3, < 2.0)
+    rspec-mocks (2.14.4)
     ruby-hmac (0.4.0)
-    rubyzip (0.9.9)
-    signet (0.4.5)
-      addressable (>= 2.2.3)
-      faraday (~> 0.8.1)
-      jwt (>= 0.1.5)
-      multi_json (>= 1.0.0)
+    rubyzip (1.1.0)
+    sidekiq (2.15.2)
+      celluloid (>= 0.15.2)
+      connection_pool (>= 1.0.0)
+      json
+      redis (>= 3.0.4)
+      redis-namespace (>= 1.3.1)
+    sidetiq (0.4.3)
+      celluloid (>= 0.14.1)
+      ice_cube (~> 0.11.0)
+      sidekiq (~> 2.15.0)
     simple_oauth (0.1.9)
     systemu (2.5.2)
     terminal-table (1.4.5)
     thor (0.18.1)
-    tinder (1.9.2)
-      eventmachine (~> 1.0)
-      faraday (~> 0.8)
-      faraday_middleware (~> 0.9)
-      hashie (~> 1.0)
-      json (~> 1.7.5)
-      mime-types (~> 1.19)
-      multi_json (~> 1.5)
-      twitter-stream (~> 0.1)
+    thread_safe (0.1.3)
+      atomic
+    timers (1.1.0)
+    tinder (1.4.4)
+      activesupport
+      eventmachine
+      faraday (~> 0.5.1)
+      mime-types
+      multipart-post
+      twitter-stream
     twitter-stream (0.1.16)
       eventmachine (>= 0.12.8)
       http_parser.rb (~> 0.5.1)
       simple_oauth (~> 0.1.4)
-    uuidtools (2.1.4)
+    tzinfo (0.3.38)
+    vagrant (0.5.4)
+      archive-tar-minitar (= 0.5.2)
+      erubis (>= 2.6.6)
+      json (>= 1.4.3)
+      mario (~> 0.0.6)
+      net-scp (>= 1.0.2)
+      net-ssh (>= 2.0.19)
+      virtualbox (~> 0.7.3)
+    virtualbox (0.7.9)
+      ffi (~> 0.6.3)
     yajl-ruby (1.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  capistrano
-  dotenv
-  fog
   heroku
+  kitchen-stadium!
   knife-ec2!
-  knife-solo
+  knife-solo (= 0.2.0)
   knife-solo_data_bag
   librarian
-  terminal-table
-  thor
-  tinder
+  rspec

@@ -1,14 +1,9 @@
-source :rubygems
+source 'https://rubygems.org'
 
-gem 'capistrano'
-gem 'dotenv'
-gem 'fog'
+gemspec
+
 gem 'heroku'
 gem 'librarian'
 gem 'knife-ec2', github: 'actionverb/knife-ec2', ref: 'e16ead0746313e80391227339e9dc4873ccadf99'
-gem 'knife-solo'
+gem 'knife-solo', '0.2.0'
 gem 'knife-solo_data_bag'
-gem 'terminal-table'
-gem 'thor'
-gem 'tinder'
-#gem 'vagrant', :git => 'git://github.com/mitchellh/vagrant.git'
