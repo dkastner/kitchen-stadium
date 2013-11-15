@@ -24,7 +24,7 @@ The `config/hosts.json` file is the master list of different types of instances 
 
 The main program for interaction is `kit`. It will create, list, and destroy running servers. 
 
-`kit create\_instance sellstuff.com web` would create an instance using the web role defined in `roles/web.json`. It will be given a color, similar to how Heroku's database instance naming works. The first one created will probably be "sellstuff.com-web-red".
+`kit create_instance sellstuff.com web` would create an instance using the web role defined in `roles/web.json`. It will be given a color, similar to how Heroku's database instance naming works. The first one created will probably be "sellstuff.com-web-red".
 
 `kit list` will list all running instances.
 
@@ -43,7 +43,3 @@ The main program for interaction is `kit`. It will create, list, and destroy run
 ## Apologies
 
 I apologize to those annoyed by the myriad chef puns-as-project-names and to the Food Network.
-=======
-# Kit
-
-Basic instance management commands.
