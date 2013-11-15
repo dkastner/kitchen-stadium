@@ -204,9 +204,9 @@ module Kit
     end
 
     def run(cmd)
+      logger.info  "Running `#{cmd}"
       results = ssh cmd
       results.each do |result|
-        logger.info  "Running `#{cmd}"
         logger.info  result.stdout
         logger.error result.stderr if result.stderr
       end
